@@ -781,7 +781,7 @@
                 console.log('✅ Inline script executed!');
                 setTimeout(function() {
                     console.log('🔵 Fetching users...');
-                    fetch('http://localhost:3000/api/users')
+                    fetch(window.location.origin + '/api/users')
                         .then(res => {
                             console.log('📡 Response:', res.status);
                             return res.json();
