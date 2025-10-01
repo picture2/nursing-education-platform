@@ -1402,6 +1402,11 @@ email.addEventListener('input', function(e) {
 
 // Enhanced password validation
 password.addEventListener('input', function(e) {
+    // تتبع الكتابة بالعيون (حتى لو العيون مغطية)
+    if (!eyesCovered) {
+        caretMove();
+    }
+    
     const passwordValue = e.target.value;
     if (passwordValue.length > 0) {
         if (validatePassword(passwordValue)) {
