@@ -419,7 +419,7 @@
         async function loadSectionsFromAdmin() {
             try {
                 console.log('جاري تحميل الأقسام من السيرفر...');
-                const response = await fetch('http://localhost:3000/api/sections');
+                const response = await fetch(window.location.origin + '/api/sections');
                 const data = await response.json();
                 
                 if (data.success) {
@@ -724,6 +724,47 @@
  
      .whatsapp-icon:hover {
          color: #25d366; 
+     }
+     
+     /* Responsive Footer */
+     @media (max-width: 768px) {
+         .footer-container {
+             padding: 15px 0;
+         }
+         
+         .name-text {
+             font-size: 1.1rem;
+         }
+         
+         .glass-icon {
+             width: 45px;
+             height: 45px;
+             font-size: 1.3rem;
+         }
+         
+         .social-links {
+             gap: 20px;
+         }
+     }
+     
+     @media (max-width: 480px) {
+         .footer-container {
+             padding: 12px 0;
+         }
+         
+         .name-text {
+             font-size: 1rem;
+         }
+         
+         .glass-icon {
+             width: 40px;
+             height: 40px;
+             font-size: 1.1rem;
+         }
+         
+         .social-links {
+             gap: 15px;
+         }
      }
  </style>
  

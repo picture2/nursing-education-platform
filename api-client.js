@@ -1,5 +1,5 @@
 // ملف للتعامل مع API الخاص بالسيرفر
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = window.location.origin + '/api';
 
 // دالة عامة للطلبات
 async function apiRequest(endpoint, options = {}) {

@@ -654,7 +654,7 @@ function displayPDFsModal(section, sectionPDFs) {
             incrementPDFView(pdfId);
             
             // فتح PDF في نافذة جديدة
-            window.open(`http://localhost:3000${pdf.path}`, '_blank');
+            window.open(`${window.location.origin}${pdf.path}`, '_blank');
         } else {
             alert('❌ لا يمكن عرض هذا الملف');
         }
@@ -664,7 +664,7 @@ function displayPDFsModal(section, sectionPDFs) {
         const pdf = sectionPDFs.find(p => p.id == pdfId);
         if (pdf) {
             const link = document.createElement('a');
-            link.href = `http://localhost:3000${pdf.path}`;
+            link.href = `${window.location.origin}${pdf.path}`;
             link.download = filename;
             link.click();
         } else {

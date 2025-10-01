@@ -915,7 +915,7 @@
         async function loadPDFFiles() {
             try {
                 console.log('جاري تحميل ملفات PDF من السيرفر...');
-                const response = await fetch('http://localhost:3000/api/pdfs');
+                const response = await fetch(window.location.origin + '/api/pdfs');
                 const data = await response.json();
                 
                 if (data.success) {
@@ -1048,7 +1048,7 @@
                 pdfCard.style.position = 'relative';
                 
                 // استخدام صورة PDF المرفوعة أو أيقونة افتراضية
-                const pdfPath = pdf.path ? `http://localhost:3000${pdf.path}` : null;
+                const pdfPath = pdf.path ? `${window.location.origin}${pdf.path}` : null;
                 const previewContent = `<i class="fas fa-file-pdf pdf-preview-icon"></i>`;
                 
                 // التحقق من المفضلة
@@ -1126,7 +1126,7 @@
                 
                 // تسجيل المشاهدة على السيرفر
                 try {
-                    await fetch(`http://localhost:3000/api/pdfs/${pdfId}/view`, {
+                    await fetch(`${window.location.origin}/api/pdfs/${pdfId}/view`, {
                         method: 'POST'
                     });
                     pdf.views++;
@@ -1148,7 +1148,7 @@
                     
                     if (pdf.path) {
                         // فتح PDF من السيرفر في نافذة جديدة
-                        const pdfUrl = `http://localhost:3000${pdf.path}`;
+                        const pdfUrl = `${window.location.origin}${pdf.path}`;
                         window.open(pdfUrl, '_blank');
                     } else {
                         showToast(`تم فتح ${pdf.title}`, 'success');
@@ -1169,7 +1169,7 @@
                     if (pdf.path) {
                         // تحميل PDF من السيرفر
                         const link = document.createElement('a');
-                        link.href = `http://localhost:3000${pdf.path}`;
+                        link.href = `${window.location.origin}${pdf.path}`;
                         link.download = pdf.filename;
                         link.target = '_blank';
                         document.body.appendChild(link);
@@ -1190,7 +1190,7 @@
             if (confirm(`هل أنت متأكد من حذف "${pdf.title}"؟`)) {
                 try {
                     showLoading();
-                    const response = await fetch(`http://localhost:3000/api/pdfs/${pdfId}`, {
+                    const response = await fetch(`${window.location.origin}/api/pdfs/${pdfId}`, {
                         method: 'DELETE'
                     });
                     const data = await response.json();
@@ -1443,7 +1443,7 @@
                     formData.append('description', description);
                     formData.append('section', currentSection);
                     
-                    const response = await fetch('http://localhost:3000/api/pdfs/upload', {
+                    const response = await fetch(window.location.origin + '/api/pdfs/upload', {
                         method: 'POST',
                         body: formData
                     });

@@ -518,7 +518,7 @@
 
         async function loadFavoritePDFs(favIds) {
             try {
-                const response = await fetch('http://localhost:3000/api/pdfs');
+                const response = await fetch(window.location.origin + '/api/pdfs');
                 const data = await response.json();
 
                 if (data.success) {
