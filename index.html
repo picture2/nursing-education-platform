@@ -1285,10 +1285,10 @@ function handleLogin(e) {
             
             // Show admin success message
             showAdminSuccess();
-            // Redirect to loading page then admin panel
+            // Redirect to dashboard
             setTimeout(() => {
                 console.log('Redirecting to dashboard...');
-                window.location.href = 'loading.html?redirect=dashboard';
+                window.location.href = 'dashboard.html';
             }, 1000);
         }, 2000);
     } else {
@@ -1326,9 +1326,9 @@ function handleLogin(e) {
             localStorage.setItem('adminUsers', JSON.stringify(users));
             // Show success message
             showSuccess();
-            // Redirect to loading page then dashboard
+            // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = 'loading.html?redirect=dashboard';
+                window.location.href = 'dashboard.html';
             }, 1000);
         }, 2000);
     }
