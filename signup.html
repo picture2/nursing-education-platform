@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - مركز التمريض</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            overflow-y: auto;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+        }
+        
+        /* النجوم الصغيرة */
+        .particles {
+            background: radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.3), transparent),
+                        radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.2), transparent),
+                        radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.2), transparent),
+                        radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.3), transparent),
+                        radial-gradient(2px 2px at 90% 60%, rgba(255, 255, 255, 0.2), transparent),
+                        radial-gradient(1px 1px at 33% 80%, rgba(255, 255, 255, 0.2), transparent),
+                        radial-gradient(2px 2px at 15% 90%, rgba(255, 255, 255, 0.3), transparent);
+            background-size: 200% 200%;
+            background-position: 0% 0%;
+            animation: twinkle 10s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        form {
+            position: fixed;
+            max-width: 500px;
+            padding: 2.5em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .signup-title {
+            text-align: center;
+            color: #667eea;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .signup-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 1.5em;
+        }
+        /* تكبير الـ Avatar وجعله في المنتصف */
+        
+        form .svgContainer {
+            margin: 0 auto 1.5em;
+        }
+        
+        .inputGroup label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        .inputGroup input {
+            width: 100%;
+            padding: 0.9em 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+        
+        .inputGroup input::placeholder {
+            color: #999;
+        }
+        
+        .inputGroup input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-wrapper input {
+            padding-left: 50px !important;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s;
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .password-toggle:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .password-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        /* عين حقيقية متحركة بألوان واقعية */
+        
+        .eye-svg {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .eye-outer {
+            fill: #ffffff;
+            stroke: #d4a574;
+            stroke-width: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .eye-iris {
+            fill: url(#brownGradient);
+            transition: all 0.3s;
+        }
+        
+        .eye-pupil {
+            fill: #1a1a1a;
+        }
+        
+        .eyelid {
+            fill: #f5d4b0;
+            stroke: #d4a574;
+            stroke-width: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .password-toggle:hover .eye-iris {
+            filter: brightness(1.1);
+        }
+        
+        button[type="submit"] {
+            width: 100%;
+            padding: 1.2em 2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        button[type="submit"]:hover::before {
+            left: 100%;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        button[type="submit"]:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5em;
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+        
+        .login-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .validation-message {
+            display: none;
+            padding: 0.7em;
+            border-radius: 8px;
+            margin-top: 0.5em;
+            font-size: 0.85em;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .validation-message.show {
+            display: block;
+        }
+        
+        .validation-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .validation-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            form {
+                max-width: 98%;
+                padding: 2.5em 2em;
+                min-height: 85vh;
+            }
+            .signup-title {
+                font-size: 1.8em;
+            }
+            .inputGroup {
+                margin-bottom: 2em;
+            }
+            input[type="text"], input[type="email"], input[type="password"], button[type="submit"] {
+                font-size: 1.1em;
+                height: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            form {
+                max-width: 100%;
+                padding: 2em 1.5em;
+                min-height: 90vh;
+                border-radius: 15px;
+            }
+            .signup-title {
+                font-size: 1.5em;
+            }
+            form .svgContainer {
+                width: 150px;
+                height: 150px;
+            }
+            input[type="text"], input[type="email"], input[type="password"], button[type="submit"] {
+                font-size: 1em;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+
+    <form id="signupForm">
+        <h1 class="signup-title">إنشاء حساب جديد</h1>
+        <p class="signup-subtitle">انضم إلى منصة التعليم التمريضي</p>
+
+        <!-- Avatar في المنتصف -->
+        <div class="svgContainer">
+            <div>
+                <svg class="mySVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                    <!-- نفس الـ SVG من index.html -->
+                    <defs>
+                        <circle id="armMaskPath" cx="100" cy="100" r="100"></circle>
+                    </defs>
+                    <clipPath id="armMask">
+                        <use xlink:href="#armMaskPath" overflow="visible"></use>
+                    </clipPath>
+                    <circle cx="100" cy="100" r="100" fill="#a9ddf3"></circle>
+                    <g class="body">
+                        <path fill="#FFFFFF" d="M193.3,135.9c-5.8-8.4-15.5-13.9-26.5-13.9H151V72c0-27.6-22.4-50-50-50S51,44.4,51,72v50H34.1 c-10.3,0-18.8,8.4-18.8,18.8v21.8c0,6.9,2.9,13.2,7.7,17.7c0.6,0.5,1.3,1.1,2,1.6c0.5,0.3,1,0.6,1.5,0.9 c1.1,0.6,2.2,1.1,3.4,1.5c0.6,0.2,1.2,0.4,1.8,0.6c1.1,0.3,2.3,0.5,3.5,0.7c0.6,0.1,1.2,0.2,1.9,0.2c1.3,0.1,2.6,0.2,3.9,0.2H151 c2.7,0,5.4-0.4,7.9-1.1c0.6-0.2,1.2-0.4,1.8-0.6c1.1-0.4,2.2-0.9,3.2-1.4c0.6-0.3,1.2-0.6,1.8-1c1-0.6,1.9-1.2,2.8-1.9 c0.4-0.3,0.8-0.6,1.2-1c1-0.8,1.9-1.7,2.7-2.6c0.3-0.4,0.6-0.7,0.9-1.1c2.8-3.5,4.8-7.7,5.6-12.4c0.1-0.6,0.2-1.2,0.3-1.8 c0.1-0.6,0.1-1.2,0.2-1.8c0.1-1.2,0.1-2.5,0.1-3.7V150.8C193.3,145.2,191.5,139.7,193.3,135.9z"></path>
+                        <path fill="#DDF1FA" d="M100,156.4c-22.9,0-43,11.1-54.1,27.7c0.6,0.5,1.3,1.1,2,1.6c0.5,0.3,1,0.6,1.5,0.9 c1.1,0.6,2.2,1.1,3.4,1.5c0.6,0.2,1.2,0.4,1.8,0.6c1.1,0.3,2.3,0.5,3.5,0.7c0.6,0.1,1.2,0.2,1.9,0.2c1.3,0.1,2.6,0.2,3.9,0.2H151 c2.7,0,5.4-0.4,7.9-1.1c0.6-0.2,1.2-0.4,1.8-0.6c1.1-0.4,2.2-0.9,3.2-1.4c0.6-0.3,1.2-0.6,1.8-1c1-0.6,1.9-1.2,2.8-1.9 c0.4-0.3,0.8-0.6,1.2-1c1-0.8,1.9-1.7,2.7-2.6c0.3-0.4,0.6-0.7,0.9-1.1C165.1,167.7,144.6,156.4,100,156.4z"></path>
+                    </g>
+                    <g class="head">
+                        <path fill="#FACCB3" d="M100,48.4c-27.6,0-50,22.4-50,50v10.9h100V98.4C150,70.8,127.6,48.4,100,48.4z"></path>
+                        <path class="chin" fill="#EDAA83" d="M100,135.5c-14.5,0-26.2-12.4-26.2-27.7c0-6,1.9-11.6,5.2-16.1 c0.4-0.5,0.8-1,1.2-1.5c3.2-4,7.5-7.1,12.6-8.8c2.5-0.9,5.3-1.4,8.2-1.4c2.9,0,5.7,0.5,8.2,1.4c5.1,1.7,9.4,4.8,12.6,8.8 c0.4,0.5,0.8,1,1.2,1.5c3.3,4.5,5.2,10.1,5.2,16.1C126.2,123.1,114.5,135.5,100,135.5z"></path>
+                    </g>
+                    <g class="ears">
+                        <path class="earL" fill="#FACCB3" d="M46.2,100.3c-1.3,0-2.4-1.1-2.4-2.4v-10c0-1.3,1.1-2.4,2.4-2.4s2.4,1.1,2.4,2.4v10 C48.6,99.2,47.5,100.3,46.2,100.3z"></path>
+                        <path class="earR" fill="#FACCB3" d="M153.8,100.3c-1.3,0-2.4-1.1-2.4-2.4v-10c0-1.3,1.1-2.4,2.4-2.4s2.4,1.1,2.4,2.4v10 C156.2,99.2,155.1,100.3,153.8,100.3z"></path>
+                    </g>
+                    <g class="eyebrows">
+                        <path class="eyebrowL" fill="#5D453C" d="M68,78c-0.3,0-0.6-0.1-0.9-0.2c-0.8-0.4-1.1-1.4-0.7-2.2c2.7-5.4,8.3-8.9,14.3-8.9 c0.8,0,1.5,0.7,1.5,1.5s-0.7,1.5-1.5,1.5c-4.6,0-8.9,2.7-11,6.9C69.4,77.6,68.7,78,68,78z"></path>
+                        <path class="eyebrowR" fill="#5D453C" d="M132,78c-0.7,0-1.4-0.4-1.7-1.2c-2.1-4.2-6.4-6.9-11-6.9c-0.8,0-1.5-0.7-1.5-1.5 s0.7-1.5,1.5-1.5c6,0,11.6,3.5,14.3,8.9c0.4,0.8,0.1,1.8-0.7,2.2C132.6,77.9,132.3,78,132,78z"></path>
+                    </g>
+                    <g class="eyes">
+                        <g class="eyeL">
+                            <circle class="eyeOuterL" fill="#FFFFFF" cx="74" cy="91" r="8"></circle>
+                            <circle class="eyeIrisL" fill="#4e60a3" cx="74" cy="91" r="4"></circle>
+                            <circle class="eyePupilL" fill="#000000" cx="74" cy="91" r="2"></circle>
+                        </g>
+                        <g class="eyeR">
+                            <circle class="eyeOuterR" fill="#FFFFFF" cx="126" cy="91" r="8"></circle>
+                            <circle class="eyeIrisR" fill="#4e60a3" cx="126" cy="91" r="4"></circle>
+                            <circle class="eyePupilR" fill="#000000" cx="126" cy="91" r="2"></circle>
+                        </g>
+                    </g>
+                    <g class="nose">
+                        <path fill="#ED9F76" d="M100,113.4c-1.2,0-2.3-0.3-3.3-0.9c-1.6-1-2.6-2.8-2.6-4.7c0-3.1,2.6-5.6,5.9-5.6s5.9,2.5,5.9,5.6 c0,1.9-1,3.7-2.6,4.7C102.3,113.1,101.2,113.4,100,113.4z"></path>
+                    </g>
+                    <g class="mouth">
+                        <path fill="#617E92" d="M100,138.2c-8.3,0-15-6.7-15-15h2c0,7.2,5.8,13,13,13s13-5.8,13-13h2 C115,131.5,108.3,138.2,100,138.2z"></path>
+                    </g>
+                    <g class="hair">
+                        <path class="hairGroup" fill="#2F383C" d="M81.5,48.4c-5.4,0-10,3.4-11.8,8.2H81V48.4z M100,48.4c-5.4,0-10,3.4-11.8,8.2h11.8V48.4z M118.5,48.4c-5.4,0-10,3.4-11.8,8.2h11.8V48.4z M137,48.4c-5.4,0-10,3.4-11.8,8.2h11.8V48.4z"></path>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <div class="inputGroup">
+            <label for="fullName">الاسم الكامل</label>
+            <input type="text" id="fullName" placeholder="أدخل اسمك الكامل" required>
+            <div class="validation-message" id="nameValidation"></div>
+        </div>
+
+        <div class="inputGroup">
+            <label for="signupEmail">البريد الإلكتروني</label>
+            <input type="email" id="signupEmail" placeholder="example@domain.com" required>
+            <div class="validation-message" id="emailValidation"></div>
+        </div>
+
+        <div class="inputGroup">
+            <label for="signupPassword">كلمة المرور</label>
+            <div class="password-wrapper">
+                <input type="password" id="signupPassword" placeholder="كلمة مرور قوية" required autocomplete="new-password" data-lpignore="true">
+                <button type="button" class="password-toggle" id="passwordToggle">
+                    <svg class="eye-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- تدرج بني واقعي للقزحية -->
+                            <radialGradient id="brownGradient">
+                                <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#654321;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3d2817;stop-opacity:1" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <!-- بياض العين -->
+                        <ellipse class="eye-outer" cx="12" cy="12" rx="10" ry="6.5"/>
+                        
+                        <!-- عروق دقيقة للواقعية -->
+                        <path d="M4 12 Q6 10, 8 11" fill="none" stroke="#ffcccc" stroke-width="0.3" opacity="0.3"/>
+                        <path d="M16 11 Q18 10, 20 12" fill="none" stroke="#ffcccc" stroke-width="0.3" opacity="0.3"/>
+                        
+                        <!-- الجفن العلوي -->
+                        <path class="eyelid" d="M2 12 Q12 5.5, 22 12"/>
+                        
+                        <!-- القزحية والبؤبؤ -->
+                        <g class="iris-group">
+                            <!-- القزحية البنية -->
+                            <circle class="eye-iris" cx="12" cy="12" r="4"/>
+                            <!-- تفاصيل القزحية -->
+                            <circle cx="12" cy="12" r="4" fill="none" stroke="#4a2f1a" stroke-width="0.3" opacity="0.4"/>
+                            <circle cx="12" cy="12" r="3" fill="none" stroke="#6b4423" stroke-width="0.2" opacity="0.3"/>
+                            <!-- البؤبؤ الأسود -->
+                            <circle class="eye-pupil" cx="12" cy="12" r="1.8"/>
+                            <!-- لمعة بيضاء واقعية -->
+                            <circle cx="13.2" cy="10.8" r="1" fill="white" opacity="0.7"/>
+                            <circle cx="11.5" cy="13" r="0.4" fill="white" opacity="0.4"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <div class="validation-message" id="passwordValidation"></div>
+        </div>
+
+        <div class="inputGroup">
+            <label for="confirmPassword">تأكيد كلمة المرور</label>
+            <div class="password-wrapper">
+                <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور" required autocomplete="new-password" data-lpignore="true">
+                <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                    <svg class="eye-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="brownGradient2">
+                                <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#654321;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3d2817;stop-opacity:1" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <ellipse class="eye-outer" cx="12" cy="12" rx="10" ry="6.5"/>
+                        <path d="M4 12 Q6 10, 8 11" fill="none" stroke="#ffcccc" stroke-width="0.3" opacity="0.3"/>
+                        <path d="M16 11 Q18 10, 20 12" fill="none" stroke="#ffcccc" stroke-width="0.3" opacity="0.3"/>
+                        <path class="eyelid" d="M2 12 Q12 5.5, 22 12"/>
+                        
+                        <g class="iris-group">
+                            <circle class="eye-iris" cx="12" cy="12" r="4" fill="url(#brownGradient2)"/>
+                            <circle cx="12" cy="12" r="4" fill="none" stroke="#4a2f1a" stroke-width="0.3" opacity="0.4"/>
+                            <circle cx="12" cy="12" r="3" fill="none" stroke="#6b4423" stroke-width="0.2" opacity="0.3"/>
+                            <circle class="eye-pupil" cx="12" cy="12" r="1.8"/>
+                            <circle cx="13.2" cy="10.8" r="1" fill="white" opacity="0.7"/>
+                            <circle cx="11.5" cy="13" r="0.4" fill="white" opacity="0.4"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <div class="validation-message" id="confirmValidation"></div>
+        </div>
+
+        <button type="submit">إنشاء الحساب</button>
+
+        <div class="login-link">
+            لديك حساب بالفعل؟ <a href="index.html">تسجيل الدخول</a>
+        </div>
+    </form>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js'></script>
+
+    <script>
+        // إنشاء الـ particles
+        function createParticles() {
+            const isMobile = window.innerWidth <= 768;
+            const particleCount = isMobile ? 15 : 50;
+            const particles = document.getElementById('particles');
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // عناصر النموذج
+        const signupForm = document.getElementById('signupForm');
+        const fullName = document.getElementById('fullName');
+        const signupEmail = document.getElementById('signupEmail');
+        const signupPassword = document.getElementById('signupPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        const nameValidation = document.getElementById('nameValidation');
+        const emailValidation = document.getElementById('emailValidation');
+        const passwordValidation = document.getElementById('passwordValidation');
+        const confirmValidation = document.getElementById('confirmValidation');
+
+        // Password toggle buttons
+        const passwordToggle = document.getElementById('passwordToggle');
+        const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+
+        // Avatar elements (التحقق من وجودها أولاً)
+        const eyeL = document.querySelector('.eyeL') || document.querySelector('.eyeIrisL');
+        const eyeR = document.querySelector('.eyeR') || document.querySelector('.eyeIrisR');
+        const eyeOuterL = document.querySelector('.eyeOuterL');
+        const eyeOuterR = document.querySelector('.eyeOuterR');
+
+        // التحقق من تحميل TweenMax
+        if (typeof TweenMax === 'undefined') {
+            console.warn('TweenMax غير محمّل، سيتم تعطيل الحركات');
+        }
+
+        // دالة إظهار/إخفاء رسائل التحقق
+        function showValidation(element, message, isSuccess) {
+            element.textContent = message;
+            element.className = 'validation-message show ' + (isSuccess ? 'success' : 'error');
+        }
+
+        function hideValidation(element) {
+            element.classList.remove('show');
+        }
+
+        // التحقق من صحة البريد الإلكتروني
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // التحقق من قوة كلمة المرور
+        function validatePassword(password) {
+            return password.length >= 6;
+        }
+
+        // Password toggle functionality with eye animation
+        let passwordVisible = false;
+        let confirmPasswordVisible = false;
+
+        passwordToggle.addEventListener('click', function() {
+            passwordVisible = !passwordVisible;
+            signupPassword.type = passwordVisible ? 'text' : 'password';
+
+            const eyelid = this.querySelector('.eyelid');
+            const irisGroup = this.querySelector('.iris-group');
+
+            if (passwordVisible) {
+                // فتح العين - رفع الجفن
+                eyelid.setAttribute('d', 'M2 12 Q12 6, 22 12');
+                if (irisGroup) irisGroup.style.opacity = '1';
+            } else {
+                // إغلاق العين - إنزال الجفن
+                eyelid.setAttribute('d', 'M2 12 Q12 12, 22 12');
+                if (irisGroup) irisGroup.style.opacity = '0';
+            }
+
+            // تحريك عيون الـ Avatar أيضاً
+            if (typeof TweenMax !== 'undefined' && eyeOuterL && eyeOuterR) {
+                if (passwordVisible) {
+                    TweenMax.to([eyeOuterL, eyeOuterR], 0.2, {
+                        scaleY: 1
+                    });
+                } else {
+                    TweenMax.to([eyeOuterL, eyeOuterR], 0.2, {
+                        scaleY: 0.1
+                    });
+                }
+            }
+        });
+
+        confirmPasswordToggle.addEventListener('click', function() {
+            confirmPasswordVisible = !confirmPasswordVisible;
+            confirmPassword.type = confirmPasswordVisible ? 'text' : 'password';
+
+            const eyelid = this.querySelector('.eyelid');
+            const irisGroup = this.querySelector('.iris-group');
+
+            if (confirmPasswordVisible) {
+                // فتح العين
+                eyelid.setAttribute('d', 'M2 12 Q12 6, 22 12');
+                if (irisGroup) irisGroup.style.opacity = '1';
+            } else {
+                // إغلاق العين
+                eyelid.setAttribute('d', 'M2 12 Q12 12, 22 12');
+                if (irisGroup) irisGroup.style.opacity = '0';
+            }
+        });
+
+        // متغير لتتبع التوقف عن الكتابة
+        let typingTimer;
+
+        // تتبع الكتابة في حقل كلمة المرور
+        signupPassword.addEventListener('input', function() {
+            const value = this.value;
+
+            // إلغاء المؤقت السابق
+            clearTimeout(typingTimer);
+
+            // تحريك العين في الزر لتتبع الكتابة - تنظر لليمين
+            const irisGroup = passwordToggle.querySelector('.iris-group');
+            if (irisGroup && !passwordVisible) {
+                if (value.length > 0) {
+                    // أثناء الكتابة: تحريك العين لليمين
+                    const moveX = Math.min(value.length * 0.8, 5);
+                    const moveY = Math.sin(value.length * 0.3) * 1;
+                    irisGroup.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    irisGroup.style.transition = 'transform 0.3s ease-out';
+
+                    // بعد التوقف عن الكتابة: الرجوع للمنتصف
+                    typingTimer = setTimeout(() => {
+                        irisGroup.style.transform = 'translate(0, 0)';
+                        irisGroup.style.transition = 'transform 0.5s ease';
+                    }, 600); // بعد 0.6 ثانية من التوقف
+                } else {
+                    // إذا فُرغ الحقل: رجوع فوري
+                    irisGroup.style.transform = 'translate(0, 0)';
+                    irisGroup.style.transition = 'transform 0.4s ease';
+                }
+            }
+
+            // تحريك عيون الـ Avatar أيضاً
+            if (typeof TweenMax !== 'undefined' && eyeL && eyeR) {
+                if (value.length > 0) {
+                    const moveAmount = Math.min(value.length * 2, 10);
+                    TweenMax.to([eyeL, eyeR], 0.5, {
+                        x: moveAmount,
+                        y: Math.sin(value.length * 0.2) * 2,
+                        ease: Power2.easeOut
+                    });
+                } else {
+                    TweenMax.to([eyeL, eyeR], 0.5, {
+                        x: 0,
+                        y: 0,
+                        ease: Power2.easeOut
+                    });
+                }
+            }
+
+            // التحقق من القوة
+            if (value.length > 0) {
+                if (validatePassword(value)) {
+                    showValidation(passwordValidation, '✓ كلمة مرور قوية', true);
+                } else {
+                    showValidation(passwordValidation, '⚠ كلمة المرور يجب أن تكون 6 أحرف على الأقل', false);
+                }
+            } else {
+                hideValidation(passwordValidation);
+            }
+        });
+
+        // متغير للحقل الثاني
+        let typingTimer2;
+
+        // التحقق من تطابق كلمات المرور
+        confirmPassword.addEventListener('input', function() {
+            const value = this.value;
+
+            // إلغاء المؤقت السابق
+            clearTimeout(typingTimer2);
+
+            // تحريك العين الثانية أيضاً
+            const irisGroup = confirmPasswordToggle.querySelector('.iris-group');
+            if (irisGroup && !confirmPasswordVisible) {
+                if (value.length > 0) {
+                    // أثناء الكتابة: تحريك العين
+                    const moveX = Math.min(value.length * 0.8, 5);
+                    const moveY = Math.sin(value.length * 0.3) * 1;
+                    irisGroup.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    irisGroup.style.transition = 'transform 0.3s ease-out';
+
+                    // بعد التوقف: الرجوع للمنتصف
+                    typingTimer2 = setTimeout(() => {
+                        irisGroup.style.transform = 'translate(0, 0)';
+                        irisGroup.style.transition = 'transform 0.5s ease';
+                    }, 600);
+                } else {
+                    irisGroup.style.transform = 'translate(0, 0)';
+                    irisGroup.style.transition = 'transform 0.4s ease';
+                }
+            }
+
+            if (value.length > 0) {
+                if (value === signupPassword.value) {
+                    showValidation(confirmValidation, '✓ كلمات المرور متطابقة', true);
+                } else {
+                    showValidation(confirmValidation, '✗ كلمات المرور غير متطابقة', false);
+                }
+            } else {
+                hideValidation(confirmValidation);
+            }
+        });
+
+        // التحقق من البريد الإلكتروني
+        signupEmail.addEventListener('input', function() {
+            const value = this.value;
+
+            if (value.length > 0) {
+                if (validateEmail(value)) {
+                    showValidation(emailValidation, '✓ بريد إلكتروني صحيح', true);
+                } else {
+                    showValidation(emailValidation, '✗ يرجى إدخال بريد إلكتروني صحيح', false);
+                }
+            } else {
+                hideValidation(emailValidation);
+            }
+        });
+
+        // التحقق من الاسم
+        fullName.addEventListener('input', function() {
+            const value = this.value.trim();
+
+            if (value.length > 0) {
+                if (value.length >= 3) {
+                    showValidation(nameValidation, '✓ اسم صحيح', true);
+                } else {
+                    showValidation(nameValidation, '⚠ يجب أن يكون الاسم 3 أحرف على الأقل', false);
+                }
+            } else {
+                hideValidation(nameValidation);
+            }
+        });
+
+        // معالجة إرسال النموذج
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = fullName.value.trim();
+            const email = signupEmail.value.trim();
+            const password = signupPassword.value;
+            const confirm = confirmPassword.value;
+
+            // التحقق من جميع الحقول
+            let isValid = true;
+
+            if (name.length < 3) {
+                showValidation(nameValidation, '✗ الاسم يجب أن يكون 3 أحرف على الأقل', false);
+                isValid = false;
+            }
+
+            if (!validateEmail(email)) {
+                showValidation(emailValidation, '✗ بريد إلكتروني غير صحيح', false);
+                isValid = false;
+            }
+
+            if (!validatePassword(password)) {
+                showValidation(passwordValidation, '✗ كلمة المرور يجب أن تكون 6 أحرف على الأقل', false);
+                isValid = false;
+            }
+
+            if (password !== confirm) {
+                showValidation(confirmValidation, '✗ كلمات المرور غير متطابقة', false);
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            // إرسال البيانات للسيرفر
+            try {
+                const response = await fetch(window.location.origin + '/api/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // نجح التسجيل
+                    // مسح البيانات المؤقتة
+                    sessionStorage.removeItem('pendingUserData');
+                    
+                    alert('✅ تم إنشاء الحساب بنجاح! سيتم تحويلك لصفحة تسجيل الدخول...');
+
+                    // التحويل لصفحة تسجيل الدخول بعد ثانيتين
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    alert('❌ ' + (data.error || 'حدث خطأ في التسجيل'));
+                }
+            } catch (error) {
+                console.error('خطأ في التسجيل:', error);
+                alert('❌ حدث خطأ في الاتصال بالسيرفر');
+            }
+        });
+
+        // تحريك عيون Avatar لأعلى عند بدء الصفحة
+        window.addEventListener('load', function() {
+            if (typeof TweenMax !== 'undefined' && eyeL && eyeR) {
+                TweenMax.to([eyeL, eyeR], 1, {
+                    y: -3,
+                    ease: Power2.easeInOut,
+                    yoyo: true,
+                    repeat: -1,
+                    repeatDelay: 2
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

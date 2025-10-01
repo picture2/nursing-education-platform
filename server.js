@@ -3,9 +3,66 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const compression = require('compression');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// Cache للبيانات المقروءة لتحسين الأداء
+let sectionsCache = null;
+let usersCache = null;
+let pdfsCache = null;
+let cacheTimestamp = {
+    sections: 0,
+    users: 0,
+    pdfs: 0
+};
+const CACHE_DURATION = 60000; // 1 دقيقة
+
+// دالة لقراءة البيانات مع Cache
+function readWithCache(file, cacheKey) {
+    const now = Date.now();
+    if (cacheKey === 'sections' && sectionsCache && (now - cacheTimestamp.sections < CACHE_DURATION)) {
+        return sectionsCache;
+    }
+    if (cacheKey === 'users' && usersCache && (now - cacheTimestamp.users < CACHE_DURATION)) {
+        return usersCache;
+    }
+    if (cacheKey === 'pdfs' && pdfsCache && (now - cacheTimestamp.pdfs < CACHE_DURATION)) {
+        return pdfsCache;
+    }
+    
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    
+    if (cacheKey === 'sections') {
+        sectionsCache = data;
+        cacheTimestamp.sections = now;
+    } else if (cacheKey === 'users') {
+        usersCache = data;
+        cacheTimestamp.users = now;
+    } else if (cacheKey === 'pdfs') {
+        pdfsCache = data;
+        cacheTimestamp.pdfs = now;
+    }
+    
+    return data;
+}
+
+// دالة لكتابة البيانات وتحديث Cache
+function writeWithCache(file, data, cacheKey) {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    
+    if (cacheKey === 'sections') {
+        sectionsCache = data;
+        cacheTimestamp.sections = Date.now();
+    } else if (cacheKey === 'users') {
+        usersCache = data;
+        cacheTimestamp.users = Date.now();
+    } else if (cacheKey === 'pdfs') {
+        pdfsCache = data;
+        cacheTimestamp.pdfs = Date.now();
+    }
+}
 
 // إنشاء مجلدات التخزين إذا لم تكن موجودة
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -67,6 +124,7 @@ if (!fs.existsSync(PDFS_FILE)) {
 }
 
 // إعدادات Middleware
+app.use(compression()); // ضغط الاستجابات لتحسين السرعة
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -107,10 +165,10 @@ app.get('/', (req, res) => {
 
 // ========== الأقسام (Sections) ==========
 
-// الحصول على جميع الأقسام
+// الحصول على جميع الأقسام (مع Cache)
 app.get('/api/sections', (req, res) => {
     try {
-        const sections = JSON.parse(fs.readFileSync(SECTIONS_FILE, 'utf8'));
+        const sections = readWithCache(SECTIONS_FILE, 'sections');
         res.json({ success: true, data: sections });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -196,13 +254,48 @@ app.post('/api/users', (req, res) => {
     }
 });
 
+// تسجيل مستخدم جديد (Sign Up)
+app.post('/api/signup', (req, res) => {
+    try {
+        const users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+        
+        // التحقق من وجود البريد الإلكتروني
+        const existingUser = users.find(u => u.email.toLowerCase() === req.body.email.toLowerCase());
+        if (existingUser) {
+            return res.status(400).json({ success: false, error: 'البريد الإلكتروني مستخدم بالفعل' });
+        }
+        
+        // إنشاء مستخدم جديد
+        const newUser = {
+            id: Date.now(),
+            name: req.body.name,
+            email: req.body.email.toLowerCase(),
+            password: req.body.password, // في الإنتاج، يجب تشفير كلمة المرور
+            registeredAt: new Date().toISOString(),
+            lastLogin: null
+        };
+        
+        users.push(newUser);
+        fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+        
+        res.json({ success: true, data: { id: newUser.id, name: newUser.name, email: newUser.email } });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // تسجيل الدخول
 app.post('/api/login', (req, res) => {
     try {
         const users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
-        const user = users.find(u => u.email === req.body.email && u.password === req.body.password);
+        const user = users.find(u => u.email.toLowerCase() === req.body.email.toLowerCase() && u.password === req.body.password);
         if (user) {
-            res.json({ success: true, data: user });
+            // تحديث آخر تسجيل دخول
+            const userIndex = users.findIndex(u => u.id === user.id);
+            users[userIndex].lastLogin = new Date().toISOString();
+            fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+            
+            res.json({ success: true, data: { id: user.id, name: user.name, email: user.email } });
         } else {
             res.status(401).json({ success: false, error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' });
         }

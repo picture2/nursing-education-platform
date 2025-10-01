@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: #333;
             transition: all 0.3s ease;
@@ -644,9 +644,9 @@
 
         /* زر المفضلة */
         .favorite-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
+            position: relative;
+            top: 0;
+            left: 0;
             width: 40px;
             height: 40px;
             background: rgba(255, 255, 255, 0.9);
@@ -896,57 +896,27 @@
         }
 
         // التحقق من صلاحيات المشرف
-        function checkAdminPermissions() {
+        function isAdmin() {
             const adminEmails = ['admin@nursing.com', 'ahmed@0100'];
+            const userEmail = currentUser?.email?.toLowerCase().trim();
+            return adminEmails.includes(userEmail);
+        }
+        
+        function checkAdminPermissions() {
             const addPdfBtn = document.getElementById('addPdfBtn');
-            const userEmail = currentUser.email.toLowerCase().trim();
             
-            console.log('التحقق من الصلاحيات - البريد:', userEmail);
+            console.log('التحقق من الصلاحيات - البريد:', currentUser.email);
             
-            // إظهار زر الرفع فقط للمشرفين
-            if (adminEmails.includes(userEmail)) {
+            if (isAdmin()) {
+                console.log('✅ مشرف - عرض زر إضافة PDF');
                 if (addPdfBtn) {
                     addPdfBtn.style.display = 'flex';
                 }
-            }
-        }
-
-        // تحميل ملفات PDF من Backend API
-        async function loadPDFFiles() {
-            try {
-                console.log('جاري تحميل ملفات PDF من السيرفر...');
-                const response = await fetch(window.location.origin + '/api/pdfs');
-                const data = await response.json();
-                
-                if (data.success) {
-                    const allPDFs = data.data;
-                    const oldCount = pdfFiles.length;
-                    allPDFFiles = allPDFs.filter(pdf => pdf.section === currentSection);
-                    pdfFiles = [...allPDFFiles];
-                    
-                    console.log('ملفات PDF للقسم:', currentSection, pdfFiles);
-                    
-                    // إذا لم توجد ملفات للقسم، إنشاء ملفات افتراضية
-                    if (pdfFiles.length === 0) {
-                        pdfFiles = getDefaultPDFs(currentSection);
-                        allPDFFiles = [...pdfFiles];
-                        console.log('تم إنشاء ملفات PDF افتراضية للقسم:', currentSection);
-                    }
-                    
-                    // إذا تغير عدد الملفات، تحديث العرض
-                    if (oldCount !== pdfFiles.length) {
-                        applyCurrentSort();
-                        renderPDFFiles();
-                    }
-                } else {
-                    console.error('خطأ في تحميل ملفات PDF:', data.error);
-                    pdfFiles = getDefaultPDFs(currentSection);
+            } else {
+                console.log('❌ مستخدم عادي - إخفاء زر إضافة PDF');
+                if (addPdfBtn) {
+                    addPdfBtn.style.display = 'none';
                 }
-            } catch (error) {
-                console.error('خطأ في الاتصال بالسيرفر:', error);
-                // استخدام ملفات افتراضية في حالة فشل الاتصال
-                pdfFiles = getDefaultPDFs(currentSection);
-                console.log('⚠️ تحذير: لم يتم الاتصال بالسيرفر. تأكد من تشغيل السيرفر (npm start)');
             }
         }
 
@@ -1060,16 +1030,18 @@
                 const userRating = ratingSystem.getUserRating(pdf.id, currentUser.email);
                 
                 pdfCard.innerHTML = `
-                    <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${pdf.id}, event)">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                    <div class="pdf-preview">
-                        ${previewContent}
+                    <div class="pdf-preview" style="background-image: url('${pdf.image || ''}'); background-size: cover; background-position: center;">
+                        ${pdf.image ? '' : previewContent}
                     </div>
                     <div class="pdf-icon">
                         <i class="fas fa-file-pdf"></i>
                     </div>
-                    <h3 class="pdf-title">${pdf.title}</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 class="pdf-title" style="margin: 0;">${pdf.title}</h3>
+                        <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${pdf.id}, event)" style="position: static; margin: 0; transform: none;">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
                     <p class="pdf-description">${pdf.description}</p>
                     
                     <!-- نظام التقييمات -->
@@ -1108,10 +1080,12 @@
                             <i class="fas fa-download"></i>
                             تحميل
                         </button>
+                        ${isAdmin() ? `
                         <button class="action-btn delete-btn" onclick="deletePDF(${pdf.id})">
                             <i class="fas fa-trash"></i>
                             حذف
                         </button>
+                        ` : ''}
                     </div>
                 `;
                 pdfGrid.appendChild(pdfCard);
