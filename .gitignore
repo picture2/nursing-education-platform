@@ -2,7 +2,7 @@
 node_modules/
 
 # البيانات المحلية
-data/
+# data/  ← تم التعطيل للرفع على Railway
 uploads/
 
 # ملفات النظام
