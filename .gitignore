@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+
+# البيانات المحلية
+data/
+uploads/
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
+
+# ملفات المحرر
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ملفات Log
+*.log
+npm-debug.log*
+
+# ملفات مؤقتة
+*.tmp
+*.temp
+
+# Environment variables
+.env
+.env.local

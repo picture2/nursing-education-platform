@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - مركز التمريض</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        /* بطاقة المستخدم */
+        .user-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            height: fit-content;
+        }
+
+        .user-avatar-large {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .user-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* الشارات */
+        .badges-section {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .badge-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .badge-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        /* محتوى الملف الشخصي */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        /* قائمة النشاطات */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .activity-time {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* المفضلة */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .favorite-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .favorite-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .favorite-icon {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .favorite-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .favorite-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-arrow-right"></i>
+                العودة للوحة التحكم
+            </button>
+            <h1 style="color: #667eea; font-size: 24px;">
+                <i class="fas fa-user-circle"></i> الملف الشخصي
+            </h1>
+        </div>
+
+        <div class="profile-grid">
+            <!-- بطاقة المستخدم -->
+            <div class="user-card">
+                <div class="user-avatar-large" id="userAvatar">A</div>
+                <h2 class="user-name" id="userName">أحمد محمد</h2>
+                <p class="user-email" id="userEmail">ahmed@example.com</p>
+                
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="uploadsCount">0</div>
+                        <div class="stat-label">ملف مرفوع</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="viewsCount">0</div>
+                        <div class="stat-label">مشاهدة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="favoritesCount">0</div>
+                        <div class="stat-label">مفضلة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="ratingsCount">0</div>
+                        <div class="stat-label">تقييم</div>
+                    </div>
+                </div>
+
+                <!-- الشارات -->
+                <div class="badges-section">
+                    <h3 class="section-title">🏆 الإنجازات</h3>
+                    <div class="badges-grid" id="badgesGrid">
+                        <!-- ستتم إضافة الشارات هنا -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- محتوى الملف الشخصي -->
+            <div class="profile-content">
+                <!-- النشاطات الأخيرة -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-history"></i>
+                            النشاطات الأخيرة
+                        </h3>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- ستتم إضافة النشاطات هنا -->
+                    </div>
+                </div>
+
+                <!-- المفضلة -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-star"></i>
+                            ملفاتي المفضلة (<span id="favCount">0</span>)
+                        </h3>
+                    </div>
+                    <div class="favorites-grid" id="favoritesList">
+                        <!-- ستتم إضافة المفضلة هنا -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="enhanced-features.js"></script>
+    <script>
+        let currentUser = null;
+
+        // تهيئة الصفحة
+        function initProfile() {
+            // التحقق من تسجيل الدخول
+            const userStr = localStorage.getItem('currentUser');
+            if (!userStr) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            currentUser = JSON.parse(userStr);
+            loadUserData();
+            loadUserActivities();
+            loadUserFavorites();
+            loadUserBadges();
+        }
+
+        // تحميل بيانات المستخدم
+        function loadUserData() {
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+            // الإحصائيات
+            const achievements = achievementsSystem.getUserAchievements(currentUser.email);
+            if (achievements) {
+                document.getElementById('uploadsCount').textContent = achievements.uploads;
+                document.getElementById('viewsCount').textContent = achievements.views;
+                document.getElementById('favoritesCount').textContent = achievements.favorites;
+                document.getElementById('ratingsCount').textContent = achievements.ratings;
+            }
+        }
+
+        // تحميل النشاطات
+        function loadUserActivities() {
+            const activities = activityLogSystem.getUserActivities(currentUser.email, 10);
+            const activityList = document.getElementById('activityList');
+
+            if (activities.length === 0) {
+                activityList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div>لا توجد نشاطات بعد</div>
+                    </div>
+                `;
+                return;
+            }
+
+            activityList.innerHTML = activities.map(activity => {
+                const icons = {
+                    'upload': '📤',
+                    'view': '👁️',
+                    'download': '📥',
+                    'rate': '⭐',
+                    'favorite': '❤️'
+                };
+
+                const labels = {
+                    'upload': 'رفع ملف',
+                    'view': 'مشاهدة',
+                    'download': 'تحميل',
+                    'rate': 'تقييم',
+                    'favorite': 'إضافة للمفضلة'
+                };
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon">${icons[activity.type]}</div>
+                        <div class="activity-details">
+                            <div class="activity-title">${labels[activity.type]}: ${activity.details}</div>
+                            <div class="activity-time">${activity.date} - ${activity.time}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // تحميل المفضلة
+        function loadUserFavorites() {
+            const favIds = favoritesSystem.getFavorites(currentUser.email);
+            document.getElementById('favCount').textContent = favIds.length;
+
+            const favoritesList = document.getElementById('favoritesList');
+
+            if (favIds.length === 0) {
+                favoritesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⭐</div>
+                        <div>لم تضف أي ملفات للمفضلة بعد</div>
+                    </div>
+                `;
+                return;
+            }
+
+            // تحميل تفاصيل الملفات المفضلة من السيرفر
+            loadFavoritePDFs(favIds);
+        }
+
+        async function loadFavoritePDFs(favIds) {
+            try {
+                const response = await fetch('http://localhost:3000/api/pdfs');
+                const data = await response.json();
+
+                if (data.success) {
+                    const favPDFs = data.data.filter(pdf => favIds.includes(pdf.id));
+                    const favoritesList = document.getElementById('favoritesList');
+
+                    favoritesList.innerHTML = favPDFs.map(pdf => `
+                        <div class="favorite-item" onclick="window.location.href='pdf-viewer.html?section=${encodeURIComponent(pdf.section)}'">
+                            <div class="favorite-icon">📄</div>
+                            <div class="favorite-title">${pdf.title}</div>
+                            <div class="favorite-desc">${pdf.description}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل المفضلة:', error);
+            }
+        }
+
+        // تحميل الشارات
+        function loadUserBadges() {
+            const badges = achievementsSystem.getUserBadges(currentUser.email);
+            const badgesGrid = document.getElementById('badgesGrid');
+
+            if (badges.length === 0) {
+                badgesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; color: #999; padding: 20px;">
+                        ابدأ باستخدام الموقع لتحصل على الشارات!
+                    </div>
+                `;
+                return;
+            }
+
+            badgesGrid.innerHTML = badges.map(badge => `
+                <div class="badge-item" title="${badge.description}">
+                    <div class="badge-icon">${badge.icon}</div>
+                    <div>${badge.title}</div>
+                </div>
+            `).join('');
+        }
+
+        // تهيئة عند التحميل
+        document.addEventListener('DOMContentLoaded', initProfile);
+    </script>
+</body>
+</html>
