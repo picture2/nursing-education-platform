@@ -1433,7 +1433,17 @@
                 
                 // تعطيل الزر وإظهار التحميل
                 uploadBtn.disabled = true;
-                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+                
+                // إضافة progress bar
+                const progressDiv = document.createElement('div');
+                progressDiv.style.cssText = 'margin-top: 15px; text-align: center;';
+                progressDiv.innerHTML = `
+                    <div style="background: #f0f0f0; border-radius: 10px; overflow: hidden; height: 30px; margin-bottom: 10px;">
+                        <div id="uploadProgress" style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;"></div>
+                    </div>
+                    <p id="uploadStatus" style="color: #667eea; font-weight: 600;">جاري رفع الملف... 0%</p>
+                `;
+                uploadBtn.parentElement.appendChild(progressDiv);
                 
                 try {
                     // رفع الملف إلى السيرفر
@@ -1443,14 +1453,39 @@
                     formData.append('description', description);
                     formData.append('section', currentSection);
                     
-                    const response = await fetch(window.location.origin + '/api/pdfs/upload', {
-                        method: 'POST',
-                        body: formData
+                    // استخدام XMLHttpRequest لتتبع التقدم
+                    const response = await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        
+                        // تتبع تقدم الرفع
+                        xhr.upload.addEventListener('progress', (e) => {
+                            if (e.lengthComputable) {
+                                const percentComplete = Math.round((e.loaded / e.total) * 100);
+                                document.getElementById('uploadProgress').style.width = percentComplete + '%';
+                                document.getElementById('uploadProgress').textContent = percentComplete + '%';
+                                document.getElementById('uploadStatus').textContent = `جاري رفع الملف... ${percentComplete}%`;
+                            }
+                        });
+                        
+                        xhr.addEventListener('load', () => {
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                resolve(JSON.parse(xhr.responseText));
+                            } else {
+                                reject(new Error('فشل الرفع'));
+                            }
+                        });
+                        
+                        xhr.addEventListener('error', () => reject(new Error('خطأ في الاتصال')));
+                        
+                        xhr.open('POST', window.location.origin + '/api/pdfs/upload');
+                        xhr.send(formData);
                     });
                     
-                    const data = await response.json();
+                    const data = response;
                     
                     if (data.success) {
+                        document.getElementById('uploadStatus').textContent = '✅ تم الرفع بنجاح!';
+                        document.getElementById('uploadStatus').style.color = '#28a745';
                         uploadBtn.innerHTML = '<i class="fas fa-check"></i> تم الرفع بنجاح!';
                         uploadBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
                         

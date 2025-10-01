@@ -45,6 +45,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   animation: float 6s ease-in-out infinite;
+  will-change: transform, opacity; /* تحسين الأداء */
 }
 
 @keyframes float {
@@ -131,12 +132,12 @@ form:hover {
 }
 form .svgContainer {
   position: relative;
-  width: 220px;
-  height: 220px;
-  margin: 0 auto 1.5em;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto 2em;
   border-radius: 50%;
   pointer-events: none;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -463,8 +464,8 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
   }
   
   form .svgContainer {
-    width: 160px;
-    height: 160px;
+    width: 200px;
+    height: 200px;
   }
   
   form input, form button {
@@ -481,6 +482,8 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
 @media (max-width: 480px) {
   body {
     font-size: 12px;
+    /* تقليل تعقيد الـ gradient للأداء الأفضل */
+    background-size: 200% 200%;
   }
   
   form {
@@ -490,8 +493,8 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
   }
   
   form .svgContainer {
-    width: 140px;
-    height: 140px;
+    width: 170px;
+    height: 170px;
   }
   
   form input, form button {
@@ -505,5 +508,10 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
   
   .author_info ul li a img {
     width: 35px;
+  }
+  
+  /* تحسين أداء الـ particles على الموبايل */
+  .particle {
+    animation-duration: 8s; /* إبطاء الحركة */
   }
 }

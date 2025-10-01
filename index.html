@@ -823,6 +823,7 @@ function calculateFaceMove(e) {
 };
 function onEmailInput(e) {
     calculateFaceMove(e);
+    caretMove(); // تتبع حركة الكتابة بالعيون
     var value = email.value;
     curEmailIndex = value.length;
 
@@ -1082,7 +1083,11 @@ function initLoginForm() {
 }
 // Enhanced functions for new features
 function createParticles() {
-    for (let i = 0; i < 50; i++) {
+    // تقليل عدد الـ particles على الموبايل للأداء الأفضل
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 15 : 50; // 15 للموبايل، 50 للكمبيوتر
+    
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
