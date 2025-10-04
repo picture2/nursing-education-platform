@@ -855,7 +855,6 @@
         <i class="fas fa-moon"></i>
     </button>
 
-    <script src="enhanced-features.js"></script>
     <script>
         let currentSection = null;
         let pdfFiles = [];
@@ -863,9 +862,65 @@
         let autoRefreshInterval = null;
         let currentSort = 'default';
         let currentUser = null;
+        
+        // نظام المفضلة
+        const favoritesSystem = {
+            getFavorites: function(userEmail) {
+                const key = `favorites_${userEmail}`;
+                return JSON.parse(localStorage.getItem(key) || '[]');
+            },
+            isFavorite: function(userEmail, pdfId) {
+                const favorites = this.getFavorites(userEmail);
+                return favorites.includes(pdfId);
+            },
+            toggleFavorite: function(userEmail, pdfId) {
+                const key = `favorites_${userEmail}`;
+                let favorites = this.getFavorites(userEmail);
+                
+                if (favorites.includes(pdfId)) {
+                    favorites = favorites.filter(id => id !== pdfId);
+                    localStorage.setItem(key, JSON.stringify(favorites));
+                    return false;
+                } else {
+                    favorites.push(pdfId);
+                    localStorage.setItem(key, JSON.stringify(favorites));
+                    return true;
+                }
+            }
+        };
+        
+        // نظام التقييم
+        const ratingSystem = {
+            getRatings: function(pdfId) {
+                const key = `ratings_${pdfId}`;
+                return JSON.parse(localStorage.getItem(key) || '{}');
+            },
+            getAverageRating: function(pdfId) {
+                const ratings = this.getRatings(pdfId);
+                const values = Object.values(ratings);
+                if (values.length === 0) return 0;
+                const sum = values.reduce((a, b) => a + b, 0);
+                return (sum / values.length).toFixed(1);
+            },
+            getRatingCount: function(pdfId) {
+                const ratings = this.getRatings(pdfId);
+                return Object.keys(ratings).length;
+            },
+            getUserRating: function(pdfId, userEmail) {
+                const ratings = this.getRatings(pdfId);
+                return ratings[userEmail] || 0;
+            },
+            ratePDF: function(pdfId, rating, userEmail) {
+                const key = `ratings_${pdfId}`;
+                let ratings = this.getRatings(pdfId);
+                ratings[userEmail] = rating;
+                localStorage.setItem(key, JSON.stringify(ratings));
+                return this.getAverageRating(pdfId);
+            }
+        };
 
         // تهيئة الصفحة
-        function initPDFViewer() {
+        async function initPDFViewer() {
             // التحقق من تسجيل الدخول
             const userStr = localStorage.getItem('currentUser');
             if (!userStr) {
@@ -887,12 +942,64 @@
                 return;
             }
 
-            loadPDFFiles();
-            renderPDFFiles();
+            // ✅ انتظار تحميل الملفات (هتعرض تلقائياً)
+            await loadPDFFiles();
             createParticles();
             
             // تفعيل التحديث التلقائي كل 5 ثوان
             startAutoRefresh();
+        }
+
+        // منع التحميل المتزامن (Loading Guard)
+        let isLoading = false;
+        let lastLoadTime = 0;
+        const MIN_LOAD_INTERVAL = 1000; // 1 ثانية على الأقل بين كل طلب
+
+        // تحميل ملفات PDF من السيرفر
+        async function loadPDFFiles() {
+            // منع الطلبات المتزامنة
+            if (isLoading) {
+                console.log('⏳ تحميل جاري بالفعل - تجاهل الطلب');
+                return;
+            }
+            
+            // منع الطلبات المتكررة بسرعة
+            const now = Date.now();
+            if (now - lastLoadTime < MIN_LOAD_INTERVAL) {
+                console.log('⏱️ طلب سريع جداً - تجاهل (Cooldown)');
+                return;
+            }
+            
+            isLoading = true;
+            lastLoadTime = now;
+            
+            try {
+                console.log('🔵 تحميل ملفات PDF للقسم:', currentSection);
+                
+                const response = await fetch(`/api/pdfs?section=${encodeURIComponent(currentSection)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    pdfFiles = data.data || [];
+                    allPDFFiles = [...pdfFiles]; // نسخة للبحث
+                    console.log('✅ تم تحميل', pdfFiles.length, 'ملف');
+                    
+                    // ✅ عرض الملفات تلقائياً بعد التحميل
+                    renderPDFFiles();
+                } else {
+                    console.error('❌ خطأ في تحميل الملفات:', data.error);
+                    pdfFiles = [];
+                    allPDFFiles = [];
+                    renderPDFFiles(); // عرض رسالة "لا توجد ملفات"
+                }
+            } catch (error) {
+                console.error('❌ خطأ في الاتصال:', error);
+                pdfFiles = [];
+                allPDFFiles = [];
+                renderPDFFiles(); // عرض رسالة خطأ
+            } finally {
+                isLoading = false;
+            }
         }
 
         // التحقق من صلاحيات المشرف
@@ -1030,8 +1137,8 @@
                 const userRating = ratingSystem.getUserRating(pdf.id, currentUser.email);
                 
                 pdfCard.innerHTML = `
-                    <div class="pdf-preview" style="background-image: url('${pdf.image || ''}'); background-size: cover; background-position: center;">
-                        ${pdf.image ? '' : previewContent}
+                    <div class="pdf-preview" style="background-image: url('${pdf.coverImage || ''}'); background-size: cover; background-position: center;">
+                        ${pdf.coverImage ? '' : previewContent}
                     </div>
                     <div class="pdf-icon">
                         <i class="fas fa-file-pdf"></i>
@@ -1164,16 +1271,15 @@
             if (confirm(`هل أنت متأكد من حذف "${pdf.title}"؟`)) {
                 try {
                     showLoading();
-                    const response = await fetch(`${window.location.origin}/api/pdfs/${pdfId}`, {
+                    const response = await fetch(`/api/pdfs/${pdfId}`, {
                         method: 'DELETE'
                     });
                     const data = await response.json();
                     
                     if (data.success) {
                         showToast(`تم حذف "${pdf.title}" بنجاح`, 'success');
-                        // إعادة تحميل قائمة PDFs
+                        // إعادة تحميل قائمة PDFs (تعرض تلقائياً)
                         await loadPDFFiles();
-                        renderPDFFiles();
                     } else {
                         showToast(`فشل حذف الملف: ${data.error}`, 'error');
                     }
@@ -1223,6 +1329,142 @@
             const currentSection = getCurrentSection();
             if (!currentSection) return;
             
+            // استخدام الـ Modal الثابت بدلاً من الديناميكي
+            initializeFixedUploadModal(currentSection);
+        }
+        
+        // تهيئة الـ Modal الثابت
+        function initializeFixedUploadModal(sectionName) {
+            const modal = document.getElementById('uploadPDFModalFixed');
+            const uploadArea = document.getElementById('uploadAreaFixed');
+            const fileInput = document.getElementById('pdfFileFixed');
+            const fileInfo = document.getElementById('fileInfoFixed');
+            const fileName = document.getElementById('fileNameFixed');
+            const fileSize = document.getElementById('fileSizeFixed');
+            const uploadBtn = document.getElementById('uploadBtnFixed');
+            const cancelBtn = document.getElementById('cancelBtnFixed');
+            const titleInput = document.getElementById('pdfTitleFixed');
+            const descInput = document.getElementById('pdfDescriptionFixed');
+            const sectionNameEl = document.getElementById('uploadSectionName');
+            
+            // عرض اسم القسم
+            sectionNameEl.textContent = `إضافة ملف جديد لقسم: ${sectionName}`;
+            
+            // تنظيف الحقول
+            titleInput.value = '';
+            descInput.value = '';
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            
+            // عرض Modal
+            modal.style.display = 'flex';
+            
+            let selectedFile = null;
+            
+            // Click على منطقة الرفع
+            const clickHandler = () => fileInput.click();
+            uploadArea.removeEventListener('click', clickHandler);
+            uploadArea.addEventListener('click', clickHandler);
+            
+            // اختيار ملف
+            const changeHandler = (e) => {
+                const file = e.target.files[0];
+                if (file && file.type === 'application/pdf') {
+                    if (file.size > 50 * 1024 * 1024) {
+                        alert('❌ حجم الملف كبير جداً. الحد الأقصى 50 ميجابايت');
+                        return;
+                    }
+                    selectedFile = file;
+                    fileName.textContent = '📄 ' + file.name;
+                    fileSize.textContent = 'الحجم: ' + (file.size / 1024 / 1024).toFixed(2) + ' ميجابايت';
+                    fileInfo.style.display = 'block';
+                    
+                    // Auto-fill العنوان
+                    if (!titleInput.value) {
+                        titleInput.value = file.name.replace('.pdf', '');
+                    }
+                } else {
+                    alert('❌ يرجى اختيار ملف PDF فقط');
+                }
+            };
+            fileInput.removeEventListener('change', changeHandler);
+            fileInput.addEventListener('change', changeHandler);
+            
+            // زر الرفع
+            const uploadHandler = async () => {
+                const title = titleInput.value.trim();
+                const description = descInput.value.trim();
+                
+                if (!title || !description) {
+                    alert('❌ يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+                
+                if (!selectedFile) {
+                    alert('❌ يرجى اختيار ملف PDF أولاً');
+                    return;
+                }
+                
+                uploadBtn.disabled = true;
+                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+                
+                try {
+                    // جلب sectionId
+                    const sectionsResponse = await fetch('/api/sections');
+                    const sectionsData = await sectionsResponse.json();
+                    const section = sectionsData.data.find(s => s.title === sectionName);
+                    const sectionId = section ? section.id : 1;
+                    
+                    // رفع الملف
+                    const formData = new FormData();
+                    formData.append('pdf', selectedFile);
+                    formData.append('sectionId', sectionId);
+                    formData.append('title', title);
+                    formData.append('description', description);
+                    
+                    const response = await fetch('/api/upload-pdf', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        uploadBtn.innerHTML = '<i class="fas fa-check"></i> تم الرفع بنجاح!';
+                        uploadBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                        
+                        setTimeout(async () => {
+                            modal.style.display = 'none';
+                            showToast('تم رفع الملف بنجاح', 'success');
+                            await loadPDFFiles();
+                        }, 1500);
+                    } else {
+                        throw new Error(data.error || 'فشل رفع الملف');
+                    }
+                } catch (error) {
+                    console.error('❌ خطأ:', error);
+                    showToast('حدث خطأ أثناء رفع الملف: ' + error.message, 'error');
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = 'رفع الملف';
+                    uploadBtn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                }
+            };
+            uploadBtn.removeEventListener('click', uploadHandler);
+            uploadBtn.addEventListener('click', uploadHandler);
+            
+            // زر الإلغاء
+            const cancelHandler = () => {
+                modal.style.display = 'none';
+            };
+            cancelBtn.removeEventListener('click', cancelHandler);
+            cancelBtn.addEventListener('click', cancelHandler);
+        }
+        
+        // الدالة القديمة - لم تعد مستخدمة
+        function addPDFToCurrentSection_OLD() {
+            const currentSection = getCurrentSection();
+            if (!currentSection) return;
+            
             // إنشاء واجهة رفع محسنة
             const uploadDiv = document.createElement('div');
             uploadDiv.style.cssText = `
@@ -1258,9 +1500,9 @@
                     
                     <div style="margin-bottom: 20px;">
                         <input type="text" id="pdfTitle" placeholder="عنوان الملف..." 
-                               style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; margin-bottom: 15px;">
+                               style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; margin-bottom: 15px; font-family: 'Cairo', sans-serif; transition: all 0.3s;">
                         <textarea id="pdfDescription" placeholder="وصف الملف..." rows="3"
-                                  style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; resize: vertical;"></textarea>
+                                  style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; resize: vertical; font-family: 'Cairo', sans-serif; transition: all 0.3s;"></textarea>
                     </div>
                     
                     <div id="uploadArea" style="
@@ -1289,7 +1531,7 @@
                         <div id="fileSize" style="color: #666;"></div>
                     </div>
                     
-                    <div style="display: flex; gap: 15px; justify-content: center;">
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
                         <button id="uploadBtn" style="
                             background: linear-gradient(135deg, #667eea, #764ba2);
                             color: white;
@@ -1325,6 +1567,18 @@
             const cancelBtn = uploadDiv.querySelector('#cancelBtn');
             const titleInput = uploadDiv.querySelector('#pdfTitle');
             const descInput = uploadDiv.querySelector('#pdfDescription');
+            
+            // إضافة focus styles
+            [titleInput, descInput].forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.style.borderColor = '#667eea';
+                    input.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                });
+                input.addEventListener('blur', () => {
+                    input.style.borderColor = '#e0e0e0';
+                    input.style.boxShadow = 'none';
+                });
+            });
             
             let selectedFile = null;
             
@@ -1392,8 +1646,18 @@
             }
             
             uploadBtn.addEventListener('click', async () => {
+                // التحقق من وجود العناصر
+                if (!titleInput || !descInput) {
+                    console.error('❌ Elements not found:', { titleInput, descInput });
+                    alert('❌ خطأ: لم يتم العثور على حقول الإدخال. الرجاء إعادة تحميل الصفحة (Ctrl+Shift+R)');
+                    return;
+                }
+                
                 const title = titleInput.value.trim();
                 const description = descInput.value.trim();
+                
+                console.log('📝 Title:', title);
+                console.log('📝 Description:', description);
                 
                 if (!title || !description) {
                     alert('❌ يرجى ملء جميع الحقول المطلوبة');
@@ -1405,27 +1669,37 @@
                     return;
                 }
                 
-                // تعطيل الزر وإظهار التحميل
+                // تعطيل الزر
                 uploadBtn.disabled = true;
-                
-                // إضافة progress bar
-                const progressDiv = document.createElement('div');
-                progressDiv.style.cssText = 'margin-top: 15px; text-align: center;';
-                progressDiv.innerHTML = `
-                    <div style="background: #f0f0f0; border-radius: 10px; overflow: hidden; height: 30px; margin-bottom: 10px;">
-                        <div id="uploadProgress" style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;"></div>
-                    </div>
-                    <p id="uploadStatus" style="color: #667eea; font-weight: 600;">جاري رفع الملف... 0%</p>
-                `;
-                uploadBtn.parentElement.appendChild(progressDiv);
+                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحضير...';
                 
                 try {
-                    // رفع الملف إلى السيرفر
+                    // 1. الحصول على sectionId من اسم القسم
+                    const sectionsResponse = await fetch('/api/sections');
+                    const sectionsData = await sectionsResponse.json();
+                    const section = sectionsData.data.find(s => s.title === currentSection);
+                    const sectionId = section ? section.id : 1;
+                    
+                    console.log('📤 رفع ملف للقسم:', currentSection, '- ID:', sectionId);
+                    
+                    // 2. إضافة progress bar
+                    const progressDiv = document.createElement('div');
+                    progressDiv.style.cssText = 'margin-top: 15px; text-align: center;';
+                    progressDiv.innerHTML = `
+                        <div style="background: #f0f0f0; border-radius: 10px; overflow: hidden; height: 30px; margin-bottom: 10px;">
+                            <div id="uploadProgress" style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;"></div>
+                        </div>
+                        <p id="uploadStatus" style="color: #667eea; font-weight: 600;">جاري رفع الملف... 0%</p>
+                    `;
+                    uploadBtn.parentElement.appendChild(progressDiv);
+                    uploadBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> جاري الرفع...';
+                    
+                    // 3. رفع الملف إلى السيرفر
                     const formData = new FormData();
-                    formData.append('pdfFile', selectedFile);
+                    formData.append('pdf', selectedFile);
+                    formData.append('sectionId', sectionId);
                     formData.append('title', title);
                     formData.append('description', description);
-                    formData.append('section', currentSection);
                     
                     // استخدام XMLHttpRequest لتتبع التقدم
                     const response = await new Promise((resolve, reject) => {
@@ -1442,22 +1716,29 @@
                         });
                         
                         xhr.addEventListener('load', () => {
+                            console.log('📡 Response status:', xhr.status);
+                            console.log('📦 Response text:', xhr.responseText);
+                            
                             if (xhr.status >= 200 && xhr.status < 300) {
-                                resolve(JSON.parse(xhr.responseText));
+                                try {
+                                    resolve(JSON.parse(xhr.responseText));
+                                } catch (e) {
+                                    reject(new Error('خطأ في قراءة الاستجابة'));
+                                }
                             } else {
-                                reject(new Error('فشل الرفع'));
+                                reject(new Error(`فشل الرفع - كود الخطأ: ${xhr.status}`));
                             }
                         });
                         
-                        xhr.addEventListener('error', () => reject(new Error('خطأ في الاتصال')));
+                        xhr.addEventListener('error', () => reject(new Error('خطأ في الاتصال بالسيرفر')));
                         
-                        xhr.open('POST', window.location.origin + '/api/pdfs/upload');
+                        xhr.open('POST', '/api/upload-pdf');
                         xhr.send(formData);
                     });
                     
-                    const data = response;
+                    console.log('✅ Response data:', response);
                     
-                    if (data.success) {
+                    if (response.success) {
                         document.getElementById('uploadStatus').textContent = '✅ تم الرفع بنجاح!';
                         document.getElementById('uploadStatus').style.color = '#28a745';
                         uploadBtn.innerHTML = '<i class="fas fa-check"></i> تم الرفع بنجاح!';
@@ -1466,19 +1747,22 @@
                         setTimeout(async () => {
                             document.body.removeChild(uploadDiv);
                             showToast('تم رفع الملف بنجاح', 'success');
-                            // إعادة تحميل قائمة PDFs وتحديث العرض فوراً
+                            // إعادة تحميل قائمة PDFs (تعرض تلقائياً)
                             await loadPDFFiles();
-                            renderPDFFiles();
                         }, 1500);
                     } else {
-                        throw new Error(data.error || 'فشل رفع الملف');
+                        throw new Error(response.error || response.message || 'فشل رفع الملف');
                     }
                 } catch (error) {
-                    console.error('خطأ في رفع الملف:', error);
+                    console.error('❌ خطأ في رفع الملف:', error);
                     showToast('حدث خطأ أثناء رفع الملف: ' + error.message, 'error');
                     uploadBtn.disabled = false;
                     uploadBtn.innerHTML = 'رفع الملف';
                     uploadBtn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                    
+                    // حذف progress bar
+                    const progressDiv = document.querySelector('[id="uploadProgress"]')?.parentElement?.parentElement;
+                    if (progressDiv) progressDiv.remove();
                 }
             });
             
@@ -1502,10 +1786,9 @@
         
         // بدء التحديث التلقائي
         function startAutoRefresh() {
-            // تحديث كل 5 ثوان
+            // تحديث كل 5 ثوان (loadPDFFiles يعرض تلقائياً)
             autoRefreshInterval = setInterval(async () => {
                 await loadPDFFiles();
-                renderPDFFiles();
             }, 5000);
         }
         
@@ -1687,5 +1970,41 @@
         // تهيئة الصفحة عند التحميل
         document.addEventListener('DOMContentLoaded', initPDFViewer);
     </script>
-</body>
-</html>
+    
+    <!-- Modal رفع PDF (ثابت زي admin) -->
+    <div id="uploadPDFModalFixed" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; font-family: 'Cairo', sans-serif;">
+        <div style="background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <h2 style="color: #667eea; margin-bottom: 20px;">
+                <i class="fas fa-file-pdf"></i> رفع ملف PDF
+            </h2>
+            <p id="uploadSectionName" style="color: #666; margin-bottom: 30px;"></p>
+            
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="pdfTitleFixed" placeholder="عنوان الملف..." 
+                       style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; margin-bottom: 15px; font-family: 'Cairo', sans-serif; transition: all 0.3s; box-sizing: border-box;">
+                <textarea id="pdfDescriptionFixed" placeholder="وصف الملف..." rows="3"
+                          style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; resize: vertical; font-family: 'Cairo', sans-serif; transition: all 0.3s; box-sizing: border-box;"></textarea>
+            </div>
+            
+            <div id="uploadAreaFixed" style="border: 3px dashed #667eea; border-radius: 15px; padding: 40px; margin: 20px 0; background: #f8f9fa; cursor: pointer; transition: all 0.3s ease;">
+                <div style="font-size: 3rem; color: #667eea; margin-bottom: 15px;">📄</div>
+                <div style="font-size: 1.2rem; color: #333; margin-bottom: 10px;">اضغط لاختيار ملف PDF</div>
+                <div style="color: #666; font-size: 0.9rem;">أو اسحب الملف هنا</div>
+                <input type="file" id="pdfFileFixed" accept=".pdf" style="display: none;">
+            </div>
+            
+            <div id="fileInfoFixed" style="background: #e9ecef; padding: 15px; border-radius: 10px; margin: 15px 0; display: none;">
+                <div id="fileNameFixed" style="font-weight: 600; color: #333; margin-bottom: 5px;"></div>
+                <div id="fileSizeFixed" style="color: #666;"></div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button id="uploadBtnFixed" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600;">رفع الملف</button>
+                <button id="cancelBtnFixed" style="background: #6c757d; color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نظام الشات العائم -->
+    <div id="floatingChat"></div>
+    <script src="chat-widget.js"></script>

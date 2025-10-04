@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القيم المخبرية الطبيعية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .lab-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .lab-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .lab-name {
+            font-size: 1.5em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .lab-value {
+            font-size: 1.3em;
+            color: #5dff5d;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .lab-note {
+            font-size: 0.95em;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .lab-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🧪 القيم المخبرية الطبيعية</h1>
+        <p>المعدلات الطبيعية للفحوصات المخبرية الشائعة</p>
+    </div>
+
+    <div class="container">
+        <div class="lab-grid">
+            <div class="lab-card">
+                <div class="lab-name">Hemoglobin (Hb)</div>
+                <div class="lab-value">ذكور: 13.5-17.5 g/dL<br>إناث: 12-15.5 g/dL</div>
+                <div class="lab-note">الهيموجلوبين - يقيس قدرة الدم على حمل الأكسجين</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">WBC (خلايا الدم البيضاء)</div>
+                <div class="lab-value">4,000-11,000 cells/μL</div>
+                <div class="lab-note">مؤشر على المناعة والالتهابات</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Platelets (الصفائح الدموية)</div>
+                <div class="lab-value">150,000-400,000/μL</div>
+                <div class="lab-note">مسؤولة عن تخثر الدم ووقف النزيف</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Glucose (السكر الصائم)</div>
+                <div class="lab-value">70-100 mg/dL</div>
+                <div class="lab-note">مستوى السكر في الدم أثناء الصيام</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">HbA1c (السكر التراكمي)</div>
+                <div class="lab-value">أقل من 5.7%</div>
+                <div class="lab-note">متوسط السكر خلال 2-3 أشهر الماضية</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Creatinine (الكرياتينين)</div>
+                <div class="lab-value">ذكور: 0.7-1.3 mg/dL<br>إناث: 0.6-1.1 mg/dL</div>
+                <div class="lab-note">مؤشر على وظائف الكلى</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">BUN (نيتروجين اليوريا)</div>
+                <div class="lab-value">7-20 mg/dL</div>
+                <div class="lab-note">يقيم وظائف الكلى والكبد</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">ALT (إنزيم الكبد)</div>
+                <div class="lab-value">7-56 U/L</div>
+                <div class="lab-note">مؤشر على صحة الكبد</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">AST (إنزيم الكبد)</div>
+                <div class="lab-value">10-40 U/L</div>
+                <div class="lab-note">يقيم وظائف الكبد والقلب</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Sodium (الصوديوم)</div>
+                <div class="lab-value">136-145 mEq/L</div>
+                <div class="lab-note">أهم الكهارل في توازن السوائل</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Potassium (البوتاسيوم)</div>
+                <div class="lab-value">3.5-5.0 mEq/L</div>
+                <div class="lab-note">ضروري لوظائف القلب والعضلات</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Calcium (الكالسيوم)</div>
+                <div class="lab-value">8.5-10.5 mg/dL</div>
+                <div class="lab-note">أساسي للعظام والأعصاب</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Total Cholesterol</div>
+                <div class="lab-value">أقل من 200 mg/dL</div>
+                <div class="lab-note">الكوليسترول الكلي في الدم</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">LDL (الكوليسترول الضار)</div>
+                <div class="lab-value">أقل من 100 mg/dL</div>
+                <div class="lab-note">مرتبط بأمراض القلب</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">HDL (الكوليسترول النافع)</div>
+                <div class="lab-value">أكثر من 40 mg/dL</div>
+                <div class="lab-note">يحمي من أمراض القلب</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">Triglycerides</div>
+                <div class="lab-value">أقل من 150 mg/dL</div>
+                <div class="lab-note">الدهون الثلاثية في الدم</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">TSH (الغدة الدرقية)</div>
+                <div class="lab-value">0.4-4.0 mIU/L</div>
+                <div class="lab-note">يقيم وظائف الغدة الدرقية</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">INR (سيولة الدم)</div>
+                <div class="lab-value">0.8-1.1</div>
+                <div class="lab-note">يراقب فعالية مضادات التخثر</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">PT (زمن البروثرومبين)</div>
+                <div class="lab-value">11-13.5 ثانية</div>
+                <div class="lab-note">يقيس سرعة تخثر الدم</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-name">PTT (زمن الثرومبوبلاستين)</div>
+                <div class="lab-value">25-35 ثانية</div>
+                <div class="lab-note">يراقب علاج الهيبارين</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

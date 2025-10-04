@@ -246,8 +246,8 @@
         .btn:active {
             transform: translateY(-1px);
         }
-        
         /* جدول المستخدمين */
+        
         .users-list table {
             width: 100%;
             background: white;
@@ -720,6 +720,11 @@
                         onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                         <i class="fas fa-home"></i> لوحة التحكم
                     </button>
+                    <button id="messagesBtn" onclick="window.location.href='messages.html'" style="background: linear-gradient(135deg, #0084ff, #00c6ff); color: white; border: none; padding: 12px 22px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3); position: relative;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fas fa-comments"></i> إدارة الرسائل
+                        <span id="messagesBadge" style="display: none; position: absolute; top: -8px; right: -8px; background: #ff4757; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center;">0</span>
+                    </button>
                     <button onclick="window.location.href='index.html'" style="background: linear-gradient(135deg, #dc3545, #c82333); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);"
                         onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                         <i class="fas fa-sign-out-alt"></i> خروج
@@ -752,10 +757,122 @@
         </div>
 
         <div class="admin-sections">
-            <h2 class="section-title">إدارة الأقسام</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="section-title">إدارة الأقسام</h2>
+                <button onclick="openAddSectionModal()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1em; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-plus"></i> إضافة قسم جديد
+                </button>
+            </div>
 
             <div class="sections-grid" id="sectionsGrid">
-                <!-- الأقسام ستظهر هنا -->
+                <div style="text-align: center; padding: 40px; color: #667eea; grid-column: 1 / -1;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 3em; margin-bottom: 15px;"></i>
+                    <p style="font-size: 1.1em;">جاري تحميل الأقسام...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal إضافة قسم -->
+        <div id="addSectionModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; overflow-y: auto;">
+            <div style="background: white; padding: 30px; border-radius: 20px; max-width: 600px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); margin: 20px auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h2 style="margin: 0; color: #667eea;"><i class="fas fa-plus-circle"></i> إضافة قسم جديد</h2>
+                    <button onclick="closeAddSectionModal()" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #999; line-height: 1;">&times;</button>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">📚 اسم القسم</label>
+                    <input type="text" id="sectionTitle" placeholder="مثال: التشريح" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1em;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">📝 الوصف</label>
+                    <textarea id="sectionDescription" placeholder="مثال: تعلم أساسيات التشريح البشري" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1em; min-height: 100px; resize: vertical;"></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">🖼️ صورة القسم</label>
+                    <input type="file" id="sectionImage" accept="image/*" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1em;">
+                    <div id="sectionImagePreview" style="margin-top: 10px; text-align: center;"></div>
+                </div>
+                <button onclick="addNewSection()" style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s ease;">
+                    <i class="fas fa-check"></i> إضافة القسم
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal رفع PDF -->
+        <div id="uploadPDFModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 35px; border-radius: 20px; max-width: 550px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative;">
+                <button onclick="closeUploadPDFModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; line-height: 1;">&times;</button>
+
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <i class="fas fa-file-upload" style="font-size: 4em; color: #667eea; margin-bottom: 15px;"></i>
+                    <h2 style="margin: 0; color: #667eea; font-size: 1.8em;">رفع ملف PDF</h2>
+                    <p id="uploadModalSectionName" style="color: #666; margin-top: 8px; font-size: 1em;"></p>
+                </div>
+
+                <!-- اسم الملف -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333; font-size: 0.95em;">
+                        <i class="fas fa-heading"></i> اسم الملف
+                    </label>
+                    <input type="text" id="pdfTitle" placeholder="مثال: دليل الإسعافات الأولية" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1em; box-sizing: border-box;">
+                </div>
+
+                <!-- الوصف -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333; font-size: 0.95em;">
+                        <i class="fas fa-align-left"></i> الوصف
+                    </label>
+                    <textarea id="pdfDescription" placeholder="وصف مختصر عن محتوى الملف..." style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1em; min-height: 80px; resize: vertical; box-sizing: border-box;"></textarea>
+                </div>
+
+                <!-- صورة الغلاف -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333; font-size: 0.95em;">
+                        <i class="fas fa-image"></i> صورة الغلاف (اختياري)
+                    </label>
+                    <input type="file" id="pdfCoverImage" accept="image/*" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 0.9em; box-sizing: border-box;">
+                    <div id="coverImagePreview" style="margin-top: 10px; text-align: center;"></div>
+                </div>
+
+                <div style="border: 3px dashed #667eea; border-radius: 15px; padding: 40px 20px; text-align: center; margin-bottom: 20px; background: #f8f9fa; cursor: pointer; transition: all 0.3s;" id="dropZone">
+                    <input type="file" id="pdfFileInput" accept=".pdf" style="display: none;">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3.5em; color: #667eea; margin-bottom: 12px; display: block;"></i>
+                    <h3 style="margin: 0 0 8px 0; color: #333; font-size: 1.2em;">اسحب الملف هنا أو انقر للاختيار</h3>
+                    <p style="margin: 0; color: #999; font-size: 0.9em;">PDF فقط - الحد الأقصى 100 ميجا</p>
+                </div>
+
+                <div id="selectedFilePreview" style="display: none; background: #e8f5e9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-file-pdf" style="font-size: 2.5em; color: #dc3545;"></i>
+                        <div style="flex: 1;">
+                            <strong id="selectedFileName" style="display: block; color: #333; font-size: 1em;"></strong>
+                            <span id="selectedFileSize" style="color: #666; font-size: 0.85em;"></span>
+                        </div>
+                        <button onclick="clearSelectedFile()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="uploadBtn" onclick="confirmUploadPDF()" style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s ease;">
+                    <i class="fas fa-upload"></i> رفع الملف
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal عرض ملفات PDF -->
+        <div id="viewPDFsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; overflow-y: auto;">
+            <div style="background: white; padding: 35px; border-radius: 20px; max-width: 800px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; margin: 20px auto;">
+                <button onclick="closeViewPDFsModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; line-height: 1;">&times;</button>
+                
+                <h2 style="margin: 0 0 10px 0; color: #333; font-size: 1.6em;">
+                    <i class="fas fa-folder-open" style="color: #667eea;"></i> ملفات PDF
+                </h2>
+                <p id="viewPDFsSectionName" style="margin: 0 0 25px 0; color: #666; font-size: 1em;"></p>
+                
+                <div id="pdfsList" style="max-height: 500px; overflow-y: auto;">
+                    <!-- ستتم إضافة الملفات هنا -->
+                </div>
             </div>
         </div>
 
@@ -774,14 +891,601 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- استدعاء مباشر للمستخدمين -->
         <script>
+            // ============ دوال PDF - يجب أن تكون هنا في البداية ============
+            let currentSectionId = null;
+            let selectedPDFFile = null;
+
+            window.openUploadPDFModal = function(sectionId, sectionTitle) {
+                console.log('🟢 Modal opened:', sectionId);
+                currentSectionId = sectionId;
+                document.getElementById('uploadModalSectionName').textContent = 'القسم: ' + sectionTitle;
+                document.getElementById('uploadPDFModal').style.display = 'flex';
+                selectedPDFFile = null;
+
+                // تنظيف الحقول
+                document.getElementById('pdfTitle').value = '';
+                document.getElementById('pdfDescription').value = '';
+                document.getElementById('pdfCoverImage').value = '';
+                document.getElementById('coverImagePreview').innerHTML = '';
+                document.getElementById('selectedFilePreview').style.display = 'none';
+                
+                // تفعيل Drop Zone
+                setTimeout(initDropZone, 50);
+                
+                // تفعيل preview صورة الغلاف
+                setupCoverImagePreview();
+            }
+            
+            function setupCoverImagePreview() {
+                const coverInput = document.getElementById('pdfCoverImage');
+                const previewDiv = document.getElementById('coverImagePreview');
+                
+                coverInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        if (!file.type.startsWith('image/')) {
+                            alert('⚠️ الرجاء اختيار صورة فقط');
+                            coverInput.value = '';
+                            previewDiv.innerHTML = '';
+                            return;
+                        }
+                        
+                        // عرض preview
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            previewDiv.innerHTML = `
+                                <div style="position: relative; display: inline-block;">
+                                    <img src="${event.target.result}" style="max-width: 200px; max-height: 200px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                                    <button onclick="clearCoverImage(event)" style="position: absolute; top: 5px; right: 5px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px; line-height: 1;">×</button>
+                                </div>
+                                <p style="margin-top: 10px; color: #666; font-size: 0.9em;">${file.name}</p>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+            
+            window.clearCoverImage = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                document.getElementById('pdfCoverImage').value = '';
+                document.getElementById('coverImagePreview').innerHTML = '';
+            }
+            
+            function initDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                const fileInput = document.getElementById('pdfFileInput');
+                
+                dropZone.onclick = function() {
+                    fileInput.click();
+                }
+                
+                fileInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) handleFileSelect(file);
+                }
+                
+                console.log('✅ Drop Zone ready');
+            }
+            
+            function handleFileSelect(file) {
+                if (!file.name.toLowerCase().endsWith('.pdf')) {
+                    alert('⚠️ الرجاء اختيار ملف PDF فقط');
+                    return;
+                }
+                
+                if (file.size > 100 * 1024 * 1024) {
+                    alert('⚠️ حجم الملف أكبر من 100 ميجا');
+                    return;
+                }
+                
+                selectedPDFFile = file;
+                document.getElementById('selectedFileName').textContent = file.name;
+                document.getElementById('selectedFileSize').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+                document.getElementById('selectedFilePreview').style.display = 'block';
+            }
+
+            window.closeUploadPDFModal = function() {
+                document.getElementById('uploadPDFModal').style.display = 'none';
+                currentSectionId = null;
+                selectedPDFFile = null;
+            }
+
+            window.clearSelectedFile = function() {
+                selectedPDFFile = null;
+                document.getElementById('pdfFileInput').value = '';
+                document.getElementById('selectedFilePreview').style.display = 'none';
+            }
+            
+            // رفع الملف
+            window.confirmUploadPDF = async function() {
+                if (!selectedPDFFile) {
+                    alert('⚠️ الرجاء اختيار ملف PDF أولاً');
+                    return;
+                }
+
+                const file = selectedPDFFile;
+                const sectionId = currentSectionId;
+                
+                // إيجاد زر الرفع
+                const uploadBtn = document.getElementById('uploadBtn');
+                const originalBtnContent = uploadBtn.innerHTML;
+                
+                // الحصول على البيانات من الحقول أولاً
+                const title = document.getElementById('pdfTitle').value.trim();
+                const description = document.getElementById('pdfDescription').value.trim();
+                const coverImage = document.getElementById('pdfCoverImage').files[0];
+                
+                // التحقق من الحقول المطلوبة
+                if (!title) {
+                    alert('⚠️ الرجاء إدخال اسم الملف');
+                    return;
+                }
+                
+                if (!description) {
+                    alert('⚠️ الرجاء إدخال وصف الملف');
+                    return;
+                }
+                
+                // تعطيل الزر
+                uploadBtn.disabled = true;
+                uploadBtn.style.cursor = 'not-allowed';
+                uploadBtn.style.opacity = '0.7';
+                
+                // إضافة شريط التقدم الجميل مع الوقت في الزر
+                uploadBtn.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fas fa-cloud-upload-alt fa-pulse" style="font-size: 1.2em;"></i>
+                            <span style="font-weight: 600;">جاري الرفع...</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); border-radius: 12px; height: 10px; overflow: hidden; position: relative; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                            <div id="uploadProgressBar" style="background: linear-gradient(90deg, #fff 0%, #e3f2fd 50%, #fff 100%); background-size: 200% 100%; height: 100%; width: 0%; transition: width 0.4s ease; animation: shimmer 1.5s infinite; box-shadow: 0 0 10px rgba(255,255,255,0.5);"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85em; opacity: 0.95; font-weight: 500;">
+                            <span id="uploadProgressText" style="color: #fff;">0%</span>
+                            <span id="uploadProgressSize" style="color: #fff;">0 MB / ${(file.size / (1024 * 1024)).toFixed(2)} MB</span>
+                        </div>
+                        <div style="text-align: center; font-size: 0.85em; opacity: 0.9; font-weight: 500;">
+                            <i class="fas fa-clock" style="margin-left: 5px;"></i>
+                            <span id="uploadTimeRemaining" style="color: #fff;">حساب الوقت...</span>
+                        </div>
+                    </div>
+                    <style>
+                        @keyframes shimmer {
+                            0% { background-position: 200% 0; }
+                            100% { background-position: -200% 0; }
+                        }
+                    </style>
+                `;
+
+                try {
+                    // تأكيد currentSectionId
+                    console.log('🔍 Before upload - currentSectionId:', currentSectionId);
+                    console.log('📝 Title:', title);
+                    console.log('📝 Description:', description);
+                    
+                    if (!currentSectionId) {
+                        throw new Error('❌ خطأ: لم يتم تحديد القسم (currentSectionId is null)');
+                    }
+                    
+                    // إنشاء FormData للرفع
+                    const formData = new FormData();
+                    formData.append('pdf', file);
+                    formData.append('sectionId', currentSectionId);
+                    formData.append('title', title);
+                    formData.append('description', description);
+                    if (coverImage) {
+                        formData.append('coverImage', coverImage);
+                    }
+                    
+                    console.log('📦 FormData created with sectionId:', currentSectionId);
+
+                    // استخدام XMLHttpRequest لتتبع التقدم
+                    const xhr = new XMLHttpRequest();
+                    
+                    // متغيرات حساب الوقت
+                    let startTime = Date.now();
+                    let lastLoaded = 0;
+                    let lastTime = Date.now();
+                    
+                    // تتبع التقدم مع حساب الوقت الحقيقي
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percentComplete = Math.round((e.loaded / e.total) * 100);
+                            const uploadedMB = (e.loaded / (1024 * 1024)).toFixed(2);
+                            const totalMB = (e.total / (1024 * 1024)).toFixed(2);
+                            
+                            // حساب الوقت المتبقي
+                            const currentTime = Date.now();
+                            const elapsedTime = (currentTime - startTime) / 1000; // بالثواني
+                            const uploadSpeed = e.loaded / elapsedTime; // bytes per second
+                            const remainingBytes = e.total - e.loaded;
+                            const remainingSeconds = Math.ceil(remainingBytes / uploadSpeed);
+                            
+                            let timeText = '';
+                            if (percentComplete < 100) {
+                                if (remainingSeconds < 2) {
+                                    timeText = 'ثانية واحدة متبقية...';
+                                } else if (remainingSeconds < 60) {
+                                    timeText = remainingSeconds + ' ثانية متبقية';
+                                } else {
+                                    const minutes = Math.floor(remainingSeconds / 60);
+                                    const seconds = remainingSeconds % 60;
+                                    timeText = minutes + ':' + seconds.toString().padStart(2, '0') + ' دقيقة';
+                                }
+                            } else {
+                                timeText = 'اكتمل!';
+                            }
+                            
+                            // تحديث شريط التقدم في الزر
+                            const bar = document.getElementById('uploadProgressBar');
+                            const text = document.getElementById('uploadProgressText');
+                            const size = document.getElementById('uploadProgressSize');
+                            const time = document.getElementById('uploadTimeRemaining');
+                            
+                            if (bar) bar.style.width = percentComplete + '%';
+                            if (text) text.textContent = percentComplete + '%';
+                            if (size) size.textContent = uploadedMB + ' MB / ' + totalMB + ' MB';
+                            if (time) time.textContent = timeText;
+                        }
+                    });
+
+                    // عند اكتمال الرفع
+                    const data = await new Promise((resolve, reject) => {
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    const result = JSON.parse(xhr.responseText);
+                                    resolve(result);
+                                } catch (e) {
+                                    reject(new Error('خطأ في قراءة البيانات: ' + e.message));
+                                }
+                            } else {
+                                reject(new Error('فشل رفع الملف - كود الخطأ: ' + xhr.status));
+                            }
+                        };
+                        
+                        xhr.onerror = function() {
+                            reject(new Error('خطأ في الاتصال بالسيرفر'));
+                        };
+                        
+                        xhr.open('POST', '/api/upload-pdf');
+                        xhr.send(formData);
+                    });
+
+                    console.log('📦 Response data:', data);
+
+                    if (data.success) {
+                        // عرض رسالة نجاح جميلة في الزر مع animation
+                        uploadBtn.innerHTML = `
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; animation: successPop 0.6s ease;">
+                                <i class="fas fa-check-circle" style="font-size: 1.3em; animation: scaleIn 0.5s ease;"></i>
+                                <span style="font-weight: 600;">تم الرفع بنجاح!</span>
+                            </div>
+                            <style>
+                                @keyframes successPop {
+                                    0% { transform: scale(0.8); opacity: 0; }
+                                    50% { transform: scale(1.1); }
+                                    100% { transform: scale(1); opacity: 1; }
+                                }
+                                @keyframes scaleIn {
+                                    0% { transform: scale(0) rotate(0deg); }
+                                    50% { transform: scale(1.2) rotate(180deg); }
+                                    100% { transform: scale(1) rotate(360deg); }
+                                }
+                            </style>
+                        `;
+                        uploadBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                        uploadBtn.style.boxShadow = '0 8px 20px rgba(40, 167, 69, 0.4)';
+
+                        // حفظ معلومات القسم من المتغيرات الموجودة
+                        const uploadedSectionId = currentSectionId; // استخدام المتغير الصحيح
+                        const uploadedSectionTitle = document.getElementById('uploadModalSectionName').textContent.replace('القسم: ', '');
+
+                        console.log('✅ رفع ناجح - القسم:', uploadedSectionId, uploadedSectionTitle);
+                        console.log('📄 بيانات الملف المرفوع:', data.data);
+                        console.log('🔍 تأكيد sectionId في البيانات:', data.data.sectionId);
+
+                        // إغلاق Modal فوراً
+                        closeUploadPDFModal();
+                        
+                        // إعادة تعيين الزر
+                        uploadBtn.innerHTML = originalBtnContent;
+                        uploadBtn.disabled = false;
+                        uploadBtn.style.cursor = 'pointer';
+                        uploadBtn.style.opacity = '1';
+                        uploadBtn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                        
+                        // ⚡ عرض فوري بدون انتظار - استخدام البيانات المُرجعة
+                        (async () => {
+                            console.log('🔄 عرض الملف الجديد فوراً...');
+                            
+                            // تحديث العدادات في الخلفية (بدون انتظار)
+                            loadPDFCounts();
+                            loadSections();
+                            
+                            // ⚡ فتح القائمة فوراً وعرض الملف الجديد
+                            if (uploadedSectionId) {
+                                console.log('📂 فتح قائمة الملفات مع الملف الجديد');
+                                await viewSectionPDFsWithNewFile(uploadedSectionId, uploadedSectionTitle, data.data);
+                                console.log('✅ تم العرض فوراً!');
+                            }
+                        })();
+                    } else {
+                        throw new Error(data.message || 'فشل رفع الملف');
+                    }
+
+                } catch (error) {
+                    // عرض رسالة خطأ جميلة في الزر مع animation
+                    uploadBtn.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; animation: shake 0.5s ease;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 1.2em;"></i>
+                            <span style="font-weight: 600;">فشل الرفع - حاول مرة أخرى</span>
+                        </div>
+                        <style>
+                            @keyframes shake {
+                                0%, 100% { transform: translateX(0); }
+                                25% { transform: translateX(-10px); }
+                                75% { transform: translateX(10px); }
+                            }
+                        </style>
+                    `;
+                    uploadBtn.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+                    uploadBtn.style.boxShadow = '0 8px 20px rgba(220, 53, 69, 0.4)';
+                    
+                    setTimeout(() => {
+                        uploadBtn.innerHTML = originalBtnContent;
+                        uploadBtn.disabled = false;
+                        uploadBtn.style.cursor = 'pointer';
+                        uploadBtn.style.opacity = '1';
+                        uploadBtn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                    }, 2000);
+
+                    // رسالة خطأ
+                    alert(`❌ خطأ في رفع الملف:\n${error.message}\n\nملاحظة: تأكد من تشغيل السيرفر`);
+                    console.error('Upload error:', error);
+                }
+            }
+
+            // ⚡ عرض ملفات مع الملف الجديد فوراً (بدون انتظار!)
+            window.viewSectionPDFsWithNewFile = async function(sectionId, sectionTitle, newPDF) {
+                console.log('⚡ عرض فوري - الملف الجديد:', newPDF);
+                
+                // فتح الـ Modal فوراً
+                document.getElementById('viewPDFsSectionName').textContent = 'القسم: ' + sectionTitle;
+                document.getElementById('viewPDFsModal').style.display = 'flex';
+                
+                const pdfsList = document.getElementById('pdfsList');
+                
+                try {
+                    // جلب جميع ملفات القسم
+                    const response = await fetch(`/api/pdfs/section/${sectionId}?t=${Date.now()}`);
+                    const data = await response.json();
+                    
+                    let allPDFs = data.success ? data.data : [];
+                    
+                    // ✅ إضافة الملف الجديد إذا لم يكن موجود
+                    const exists = allPDFs.some(pdf => pdf.id === newPDF.id);
+                    if (!exists) {
+                        console.log('➕ إضافة الملف الجديد للقائمة');
+                        allPDFs.unshift(newPDF); // إضافة في الأول
+                    }
+                    
+                    console.log('📄 إجمالي الملفات:', allPDFs.length);
+                    
+                    // عرض الملفات
+                    if (allPDFs.length > 0) {
+                        pdfsList.innerHTML = allPDFs.map(pdf => `
+                            <div style="background: ${pdf.id === newPDF.id ? 'linear-gradient(135deg, #e3f2fd, #f3e5f5)' : '#f8f9fa'}; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: ${pdf.id === newPDF.id ? '2px solid #667eea' : '1px solid #e0e0e0'}; animation: ${pdf.id === newPDF.id ? 'slideIn 0.5s ease' : 'none'};">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    ${pdf.coverImage ? 
+                                        `<img src="${pdf.coverImage}" style="width: 80px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 2px solid #e0e0e0;">` : 
+                                        `<div style="width: 80px; height: 110px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);"><i class="fas fa-file-pdf" style="font-size: 2.5em; color: white;"></i></div>`
+                                    }
+                                    <div style="flex: 1;">
+                                        <h4 style="margin: 0 0 5px 0; color: #333; font-size: 1em;">${pdf.title || pdf.originalName} ${pdf.id === newPDF.id ? '<span style="background: #667eea; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7em; margin-right: 5px;">جديد</span>' : ''}</h4>
+                                        <p style="margin: 0 0 5px 0; color: #666; font-size: 0.85em;">${pdf.description || 'لا يوجد وصف'}</p>
+                                        <div style="display: flex; gap: 10px; color: #999; font-size: 0.8em;">
+                                            <span><i class="fas fa-calendar"></i> ${new Date(pdf.uploadedAt).toLocaleDateString('ar-EG')}</span>
+                                            <span><i class="fas fa-file"></i> ${(pdf.size / (1024 * 1024)).toFixed(2)} MB</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-direction: column;">
+                                        <button onclick="window.open('${pdf.path}', '_blank')" style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">
+                                            <i class="fas fa-eye"></i> عرض
+                                        </button>
+                                        <a href="${pdf.path}" download="${pdf.title || pdf.originalName}" style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; text-decoration: none; display: block; text-align: center;">
+                                            <i class="fas fa-download"></i> تحميل
+                                        </a>
+                                        <button onclick="deletePDF(${pdf.id}, ${sectionId})" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                                            <i class="fas fa-trash"></i> حذف
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <style>
+                                @keyframes slideIn {
+                                    from { transform: translateX(20px); opacity: 0; }
+                                    to { transform: translateX(0); opacity: 1; }
+                                }
+                            </style>
+                        `).join('');
+                    } else {
+                        pdfsList.innerHTML = '<div style="text-align: center; padding: 60px; color: #999;"><i class="fas fa-folder-open" style="font-size: 4em; margin-bottom: 15px; opacity: 0.3;"></i><p style="font-size: 1.1em;">لا توجد ملفات PDF في هذا القسم</p></div>';
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ خطأ:', error);
+                    pdfsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc3545;"><i class="fas fa-exclamation-triangle" style="font-size: 2em; margin-bottom: 10px;"></i><p>حدث خطأ في تحميل الملفات</p></div>';
+                }
+            }
+            
+            // عرض ملفات PDF الخاصة بقسم
+            window.viewSectionPDFs = async function(sectionId, sectionTitle, event, retryCount = 0) {
+                if (event) event.stopPropagation();
+                
+                console.log('📂 ========== عرض ملفات القسم ==========');
+                console.log('🎯 القسم ID:', sectionId, '| العنوان:', sectionTitle);
+                if (retryCount > 0) console.log('🔄 محاولة:', retryCount);
+                
+                // فتح الـ Modal فوراً
+                document.getElementById('viewPDFsSectionName').textContent = 'القسم: ' + sectionTitle;
+                document.getElementById('viewPDFsModal').style.display = 'flex';
+                
+                const pdfsList = document.getElementById('pdfsList');
+                pdfsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;"><i class="fas fa-spinner fa-spin" style="font-size: 2em;"></i><p style="margin-top: 10px;">جاري التحميل...</p></div>';
+                
+                try {
+                    // جلب البيانات بسرعة (مع timestamp لمنع cache)
+                    const apiUrl = `/api/pdfs/section/${sectionId}?t=${Date.now()}`;
+                    console.log('🌐 طلب API:', apiUrl);
+                    
+                    const response = await fetch(apiUrl);
+                    console.log('📡 استجابة السيرفر - Status:', response.status);
+                    
+                    const data = await response.json();
+                    console.log('📦 البيانات المستلمة:', data);
+                    console.log('📄 عدد الملفات:', data.data ? data.data.length : 0);
+                    
+                    // ✅ إذا كانت القائمة فارغة ونحن في محاولة أولى، انتظر ثم أعد المحاولة
+                    if (data.success && data.data.length === 0 && retryCount === 0) {
+                        console.log('⏳ القائمة فارغة - إعادة المحاولة بعد 800ms...');
+                        pdfsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;"><i class="fas fa-spinner fa-spin" style="font-size: 2em;"></i><p style="margin-top: 10px;">جاري التحميل...</p></div>';
+                        await new Promise(resolve => setTimeout(resolve, 800));
+                        return viewSectionPDFs(sectionId, sectionTitle, null, 1);
+                    }
+                    
+                    if (data.success && data.data.length > 0) {
+                        pdfsList.innerHTML = data.data.map(pdf => `
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e0e0e0;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    ${pdf.coverImage ? 
+                                        `<img src="${pdf.coverImage}" style="width: 80px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 2px solid #e0e0e0;">` : 
+                                        `<div style="width: 80px; height: 110px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);"><i class="fas fa-file-pdf" style="font-size: 2.5em; color: white;"></i></div>`
+                                    }
+                                    <div style="flex: 1;">
+                                        <h4 style="margin: 0 0 5px 0; color: #333; font-size: 1em;">${pdf.title || pdf.originalName}</h4>
+                                        <p style="margin: 0 0 5px 0; color: #666; font-size: 0.85em;">${pdf.description || 'لا يوجد وصف'}</p>
+                                        <div style="display: flex; gap: 10px; color: #999; font-size: 0.8em;">
+                                            <span><i class="fas fa-calendar"></i> ${new Date(pdf.uploadedAt).toLocaleDateString('ar-EG')}</span>
+                                            <span><i class="fas fa-file"></i> ${(pdf.size / (1024 * 1024)).toFixed(2)} MB</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-direction: column;">
+                                        <button onclick="window.open('${pdf.path}', '_blank')" style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; white-space: nowrap;">
+                                            <i class="fas fa-eye"></i> عرض
+                                        </button>
+                                        <a href="${pdf.path}" download="${pdf.title || pdf.originalName}" style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; text-decoration: none; display: block; text-align: center;">
+                                            <i class="fas fa-download"></i> تحميل
+                                        </a>
+                                        <button onclick="deletePDF(${pdf.id}, ${sectionId})" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                                            <i class="fas fa-trash"></i> حذف
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        pdfsList.innerHTML = `
+                            <div style="text-align: center; padding: 60px; color: #999;">
+                                <i class="fas fa-folder-open" style="font-size: 4em; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <p style="font-size: 1.1em;">لا توجد ملفات PDF في هذا القسم</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    pdfsList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #dc3545;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 3em; margin-bottom: 15px;"></i>
+                            <p>حدث خطأ في تحميل الملفات</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            window.closeViewPDFsModal = function() {
+                document.getElementById('viewPDFsModal').style.display = 'none';
+            }
+            
+            // حذف ملف PDF
+            window.deletePDF = async function(pdfId, sectionId) {
+                if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) {
+                    return;
+                }
+                
+                try {
+                    console.log('🗑️ حذف ملف PDF:', pdfId, 'من القسم:', sectionId);
+                    
+                    const response = await fetch(`/api/pdfs/${pdfId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('📦 نتيجة الحذف:', data);
+                    
+                    if (data.success) {
+                        alert('✅ تم حذف الملف بنجاح');
+                        
+                        // تحديث عدد الملفات
+                        await loadPDFCounts();
+                        
+                        // إعادة فتح modal لتحديث القائمة
+                        const sectionTitle = document.getElementById('viewPDFsSectionName').textContent.replace('القسم: ', '');
+                        await viewSectionPDFs(sectionId, sectionTitle);
+                    } else {
+                        throw new Error(data.error || 'فشل حذف الملف');
+                    }
+                } catch (error) {
+                    console.error('❌ خطأ في حذف الملف:', error);
+                    alert('❌ حدث خطأ في حذف الملف: ' + error.message);
+                }
+            }
+            
+            // تحديث عدد PDFs لكل قسم
+            async function loadPDFCounts() {
+                try {
+                    const response = await fetch('/api/pdfs');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // حساب عدد PDFs لكل قسم
+                        const counts = {};
+                        data.data.forEach(pdf => {
+                            // تحويل sectionId لـ number (في حالة كان string)
+                            const sectionId = typeof pdf.sectionId === 'string' ? parseInt(pdf.sectionId) : pdf.sectionId;
+                            counts[sectionId] = (counts[sectionId] || 0) + 1;
+                        });
+                        
+                        // تحديث العداد لكل قسم
+                        Object.keys(counts).forEach(sectionId => {
+                            const countElement = document.getElementById(`pdfCount-${sectionId}`);
+                            if (countElement) {
+                                countElement.textContent = counts[sectionId] + ' ملف';
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error loading PDF counts:', error);
+                }
+            }
+
+            console.log('✅ PDF Functions loaded!');
+
             (function() {
                 console.log('✅ Inline script executed!');
                 setTimeout(function() {
                     console.log('🔵 Fetching users...');
-                    fetch(window.location.origin + '/api/users')
+                    fetch('/api/users')
                         .then(res => {
                             console.log('📡 Response:', res.status);
                             return res.json();
@@ -790,13 +1494,17 @@
                             console.log('📦 Data:', data);
                             if (data.success && data.data.length > 0) {
                                 const usersList = document.getElementById('usersList');
-                                let html = '<table style="width:100%; background:white; border-radius:15px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.1);"><thead style="background:linear-gradient(135deg,#667eea,#764ba2); color:white;"><tr><th style="padding:18px; text-align:center;">#</th><th style="padding:18px; text-align:right;">الاسم</th><th style="padding:18px; text-align:right;">البريد</th><th style="padding:18px; text-align:right;">كلمة المرور</th><th style="padding:18px; text-align:right;">التاريخ</th></tr></thead><tbody>';
-                                
+                                let html = '<table style="width:100%; background:white; border-radius:15px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.1);"><thead style="background:linear-gradient(135deg,#667eea,#764ba2); color:white;"><tr><th style="padding:18px; text-align:center;">#</th><th style="padding:18px; text-align:right;">الاسم</th><th style="padding:18px; text-align:right;">البريد</th><th style="padding:18px; text-align:right;">كلمة المرور</th><th style="padding:18px; text-align:right;">التاريخ</th><th style="padding:18px; text-align:center;">الحالة</th><th style="padding:18px; text-align:center;">إجراءات</th></tr></thead><tbody>';
+
                                 data.data.forEach((user, index) => {
                                     const date = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG') : 'غير محدد';
-                                    html += '<tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:16px; text-align:center; font-weight:700; color:#667eea;">' + (index + 1) + '</td><td style="padding:16px;"><strong>' + user.name + '</strong></td><td style="padding:16px; direction:ltr; text-align:right;">' + user.email + '</td><td style="padding:16px;"><code style="background:#f0f0f0; padding:6px 12px; border-radius:6px; color:#e74c3c; font-weight:600;">' + user.password + '</code></td><td style="padding:16px; font-size:0.9em; color:#666;">' + date + '</td></tr>';
+                                    const isActive = user.isActive !== false;
+                                    const statusBadge = isActive ? '<span style="background:#28a745; color:white; padding:6px 12px; border-radius:20px; font-size:0.85em;">✅ مفعّل</span>' : '<span style="background:#dc3545; color:white; padding:6px 12px; border-radius:20px; font-size:0.85em;">🚫 محظور</span>';
+                                    const actionBtn = isActive ? '<button onclick="toggleUserStatus(' + user.id + ')" style="background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:0.9em;"><i class="fas fa-ban"></i> حظر</button>' : '<button onclick="toggleUserStatus(' + user.id + ')" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:0.9em;"><i class="fas fa-check"></i> تفعيل</button>';
+
+                                    html += '<tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:16px; text-align:center; font-weight:700; color:#667eea;">' + (index + 1) + '</td><td style="padding:16px;"><strong>' + user.name + '</strong></td><td style="padding:16px; direction:ltr; text-align:right;">' + user.email + '</td><td style="padding:16px;"><code style="background:#f0f0f0; padding:6px 12px; border-radius:6px; color:#e74c3c; font-weight:600;">' + user.password + '</code></td><td style="padding:16px; font-size:0.9em; color:#666;">' + date + '</td><td style="padding:16px; text-align:center;">' + statusBadge + '</td><td style="padding:16px; text-align:center;">' + actionBtn + '</td></tr>';
                                 });
-                                
+
                                 html += '</tbody></table><div style="margin-top:20px; text-align:center; color:#999; font-size:0.9em;"><i class="fas fa-info-circle"></i> إجمالي المستخدمين: <strong style="color:#667eea;">' + data.data.length + '</strong></div>';
                                 usersList.innerHTML = html;
                                 console.log('✅ Users displayed!');
@@ -808,52 +1516,281 @@
                         });
                 }, 500);
             })();
+
+            // دالة تفعيل/حظر المستخدم
+            function toggleUserStatus(userId) {
+                if (!confirm('هل أنت متأكد من تغيير حالة هذا المستخدم؟')) {
+                    return;
+                }
+
+                fetch('/api/users/' + userId + '/toggle-status', {
+                        method: 'PUT'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.data.isActive ? '✅ تم تفعيل المستخدم بنجاح!' : '🚫 تم حظر المستخدم بنجاح!');
+                            location.reload(); // إعادة تحميل الصفحة لتحديث الجدول
+                        } else {
+                            alert('❌ خطأ: ' + data.error);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('❌ Error:', err);
+                        alert('❌ حدث خطأ في الاتصال بالسيرفر!');
+                    });
+            }
+
+            // تحميل الأقسام
+            async function loadSections() {
+                console.log('🔵 بدء تحميل الأقسام...');
+                const sectionsGrid = document.getElementById('sectionsGrid');
+
+                try {
+                    const response = await fetch('/api/sections?t=' + Date.now());
+                    console.log('📡 Response status:', response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('📦 Data received:', data);
+
+                    if (data.success && Array.isArray(data.data)) {
+                        // فلترة الأقسام الفاسدة (بدون title أو description)
+                        const validSections = data.data.filter(section =>
+                            section.title && section.description
+                        );
+
+                        console.log(`✅ عدد الأقسام الصحيحة: ${validSections.length} من ${data.data.length}`);
+
+                        if (validSections.length === 0) {
+                            sectionsGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #999; grid-column: 1 / -1;"><i class="fas fa-folder-open" style="font-size: 3em; margin-bottom: 15px;"></i><p>لا توجد أقسام حتى الآن</p></div>';
+                        } else {
+                            sectionsGrid.innerHTML = validSections.map(section => {
+                                // تحديد إذا كان فيه صورة
+                                const hasImage = section.image;
+                                const bgStyle = hasImage ? 
+                                    `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${section.image}'); background-size: cover; background-position: center; background-repeat: no-repeat;` : 
+                                    'background: white;';
+                                const textColor = hasImage ? 'color: white;' : '';
+                                const textShadow = hasImage ? 'text-shadow: 0 3px 8px rgba(0,0,0,0.9);' : '';
+                                
+                                return `
+                                <div class="section-card" style="${bgStyle} padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: all 0.3s ease; min-height: 450px; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+                                    ${!hasImage ? `<div style="font-size: 3em; margin-bottom: 15px; text-align: center;">${section.icon || '📚'}</div>` : ''}
+                                    <div>
+                                        <h3 style="margin: 0 0 10px 0; ${textColor} ${textShadow} font-size: 1.3em; font-weight: 700;">${section.title}</h3>
+                                        <p style="margin: 0 0 15px 0; ${hasImage ? 'color: rgba(255,255,255,0.95);' : 'color: #666;'} ${hasImage ? 'text-shadow: 0 2px 6px rgba(0,0,0,0.8);' : ''} font-size: 0.95em;">${section.description}</p>
+                                    </div>
+                                    
+                                    <!-- إدارة ملفات PDF -->
+                                    <div style="background: ${hasImage ? 'rgba(255, 255, 255, 0.95)' : '#f8f9fa'}; padding: 15px; border-radius: 10px; margin-bottom: 15px; ${hasImage ? 'box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(10px);' : ''}">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                            <h4 style="margin: 0; color: #333; font-size: 1em;"><i class="fas fa-file-pdf" style="color: #dc3545;"></i> ملفات PDF</h4>
+                                            <span id="pdfCount-${section.id}" style="background: #667eea; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8em;">
+                                                0 ملف
+                                            </span>
+                                        </div>
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                            <button onclick="viewSectionPDFs(${section.id}, '${section.title}', event)" style="flex: 1; background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85em; min-width: 100px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                                <i class="fas fa-folder-open"></i> عرض الملفات
+                                            </button>
+                                            <button onclick="openUploadPDFModal(${section.id}, '${section.title}'); return false;" style="flex: 1; background: #667eea; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85em; min-width: 100px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                                <i class="fas fa-upload"></i> رفع ملف
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid ${hasImage ? 'rgba(255,255,255,0.3)' : '#f0f0f0'};">
+                                        <span style="${hasImage ? 'color: rgba(255,255,255,0.9); text-shadow: 0 2px 4px rgba(0,0,0,0.7);' : 'color: #999;'} font-size: 0.9em;"><i class="fas fa-eye"></i> ${section.views || 0} مشاهدة</span>
+                                        <button onclick="deleteSection(${section.id}, event)" style="background: ${hasImage ? 'rgba(220, 53, 69, 0.95)' : '#dc3545'}; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; ${hasImage ? 'box-shadow: 0 4px 10px rgba(0,0,0,0.3);' : ''}"><i class="fas fa-trash"></i> حذف القسم</button>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('');
+                            console.log('✅ تم عرض الأقسام بنجاح!');
+                            
+                            // تحديث عدد PDFs لكل قسم
+                            loadPDFCounts();
+                        }
+                    } else {
+                        throw new Error('البيانات المستلمة غير صحيحة');
+                    }
+                } catch (error) {
+                    console.error('❌ خطأ في تحميل الأقسام:', error);
+                    sectionsGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff6b6b; grid-column: 1 / -1;"><i class="fas fa-exclamation-triangle" style="font-size: 3em; margin-bottom: 15px;"></i><p>خطأ في تحميل الأقسام!</p><p style="font-size: 0.9em; color: #999;">' + error.message + '</p><button onclick="loadSections()" style="margin-top: 15px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">إعادة المحاولة</button></div>';
+                }
+            }
+            
+            // فتح Modal إضافة قسم
+            function openAddSectionModal() {
+                const modal = document.getElementById('addSectionModal');
+                modal.style.display = 'flex';
+            }
+            
+            // إغلاق Modal
+            function closeAddSectionModal() {
+                const modal = document.getElementById('addSectionModal');
+                modal.style.display = 'none';
+                document.getElementById('sectionTitle').value = '';
+                document.getElementById('sectionDescription').value = '';
+                document.getElementById('sectionImage').value = '';
+                document.getElementById('sectionImagePreview').innerHTML = '';
+            }
+            
+            // معاينة الصورة
+            document.getElementById('sectionImage').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const preview = document.getElementById('sectionImagePreview');
+                
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: 10px; margin-top: 10px;">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = '';
+                }
+            });
+            
+            // إضافة قسم جديد
+            async function addNewSection() {
+                console.log('\n=== 🔵 بدء إضافة قسم جديد ===');
+                
+                const title = document.getElementById('sectionTitle').value.trim();
+                const description = document.getElementById('sectionDescription').value.trim();
+                const imageFile = document.getElementById('sectionImage').files[0];
+                
+                console.log('📝 البيانات المدخلة:');
+                console.log('  - الاسم:', `"${title}"`, `(${title.length} حرف)`);
+                console.log('  - الوصف:', `"${description}"`, `(${description.length} حرف)`);
+                console.log('  - الصورة:', imageFile ? imageFile.name : 'لا توجد');
+                
+                // Validation محلي
+                if (!title || title.length < 2) {
+                    alert('❌ يرجى إدخال اسم القسم (على الأقل حرفان)');
+                    console.log('❌ Validation فشل: الاسم قصير جداً');
+                    return;
+                }
+                
+                if (!description || description.length < 5) {
+                    alert('❌ يرجى إدخال وصف القسم (على الأقل 5 أحرف)');
+                    console.log('❌ Validation فشل: الوصف قصير جداً');
+                    return;
+                }
+                
+                // رفع الصورة والبيانات
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('description', description);
+                
+                // إضافة الصورة إن وجدت
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                    console.log('📷 سيتم رفع الصورة:', imageFile.name);
+                } else {
+                    console.log('📚 لا توجد صورة - سيتم استخدام emoji افتراضي');
+                }
+                
+                // طباعة محتوى FormData
+                console.log('📦 محتوى FormData:');
+                for (let pair of formData.entries()) {
+                    console.log('  -', pair[0] + ':', pair[1]);
+                }
+                
+                console.log('📤 إرسال الطلب إلى السيرفر...');
+                
+                try {
+                    const url = '/api/sections';
+                    console.log('🌐 URL:', url);
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    console.log('📡 Response status:', response.status);
+                    
+                    const data = await response.json();
+                    console.log('📦 Response data:', JSON.stringify(data, null, 2));
+                    
+                    if (data.success) {
+                        console.log('✅ القسم تم إضافته بنجاح!');
+                        console.log('📋 بيانات القسم الجديد:', data.data);
+                        alert('✅ تم إضافة القسم بنجاح!');
+                        closeAddSectionModal();
+                        console.log('🔄 إعادة تحميل الأقسام...');
+                        await loadSections();
+                    } else {
+                        console.error('❌ خطأ من السيرفر:', data.error);
+                        alert('❌ خطأ: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('❌ Error adding section:', error);
+                    alert('❌ حدث خطأ في الاتصال بالسيرفر: ' + error.message);
+                }
+                
+                console.log('=== ✅ انتهى addNewSection ===\n');
+            }
+            
+            // حذف قسم
+            async function deleteSection(sectionId, event) {
+                event.stopPropagation();
+                
+                console.log('🗑️ محاولة حذف القسم:', sectionId);
+                
+                if (!confirm('هل أنت متأكد من حذف هذا القسم؟')) {
+                    console.log('❌ تم إلغاء الحذف');
+                    return;
+                }
+                
+                try {
+                    const url = '/api/sections/' + sectionId;
+                    console.log('📤 إرسال طلب الحذف إلى:', url);
+                    
+                    const response = await fetch(url, {
+                        method: 'DELETE'
+                    });
+                    
+                    console.log('📡 Response status:', response.status);
+                    const data = await response.json();
+                    console.log('📦 Response data:', data);
+                    
+                    if (data.success) {
+                        console.log('✅ تم الحذف بنجاح!');
+                        alert('✅ تم حذف القسم بنجاح!');
+                        await loadSections(); // انتظار تحميل الأقسام
+                    } else {
+                        console.error('❌ فشل الحذف:', data.error);
+                        alert('❌ خطأ: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('❌ Error deleting section:', error);
+                    alert('❌ حدث خطأ: ' + error.message);
+                }
+            }
+            
+            // تحميل الأقسام عند تحميل الصفحة
+            setTimeout(() => {
+                loadSections();
+            }, 500);
         </script>
 
-    </div> <!-- إغلاق admin-container -->
+    </div>
+    <!-- إغلاق admin-container -->
 
     <button class="refresh-btn" onclick="refreshAdmin()" title="تحديث البيانات">
         <i class="fas fa-sync-alt"></i>
     </button>
 
     <!-- زر إضافة قسم عائم -->
-    <button class="floating-add-btn" onclick="openAddModal()" title="إضافة قسم جديد">
+    <button class="floating-add-btn" onclick="openAddSectionModal()" title="إضافة قسم جديد">
         <i class="fas fa-plus"></i>
     </button>
 
-    <!-- Modal إضافة قسم -->
-    <div class="modal" id="addSectionModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-plus-circle"></i> إضافة قسم جديد</h2>
-                <button class="modal-close" onclick="closeAddModal()">×</button>
-            </div>
-            <form id="addSectionForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>اسم القسم</label>
-                        <input type="text" id="sectionName" required placeholder="مثال: التشريح">
-                    </div>
-                    <div class="form-group">
-                        <label>الأيقونة (إيموجي)</label>
-                        <input type="text" id="sectionIcon" placeholder="مثال: 🫀">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>رفع صورة (اختياري)</label>
-                    <input type="file" id="sectionImage" accept="image/*" onchange="previewImage(this)">
-                    <div id="imagePreview" class="image-preview"></div>
-                </div>
-                <div class="form-group">
-                    <label>وصف القسم</label>
-                    <textarea id="sectionDescription" rows="4" required placeholder="اكتب وصف مختصر للقسم..."></textarea>
-                </div>
-                <button type="submit" class="btn" style="width: 100%; padding: 16px;">
-                    <i class="fas fa-plus-circle"></i> إضافة القسم
-                </button>
-            </form>
-        </div>
-    </div>
 
     <!-- ربط ملفات JavaScript -->
     <script>
@@ -895,56 +1832,41 @@
             throw new Error('Access denied');
         }
 
-        // فتح Modal إضافة قسم
-        function openAddModal() {
-            const modal = document.getElementById('addSectionModal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // منع الـ scroll
-        }
-
-        // إغلاق Modal إضافة قسم
-        function closeAddModal() {
-            const modal = document.getElementById('addSectionModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // تفعيل الـ scroll
-
-            // مسح الفورم
-            document.getElementById('addSectionForm').reset();
-            document.getElementById('imagePreview').innerHTML = '';
-        }
-
-        // إغلاق عند الضغط خارج الـ Modal
-        document.getElementById('addSectionModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAddModal();
-            }
-        });
-
-        // إغلاق بـ ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAddModal();
-            }
-        });
-        
         // ========== إدارة المستخدمين ==========
-        
+
+        let allUsers = [];
+        let displayedCount = 10;
+        let searchQuery = '';
+        let bannedDevices = [];
+
         // تحميل المستخدمين
         async function loadUsers() {
+            // تحميل قائمة الأجهزة المحظورة
+            try {
+                const bannedResponse = await fetch('/api/banned-devices');
+                const bannedData = await bannedResponse.json();
+                if (bannedData.success) {
+                    bannedDevices = bannedData.data || [];
+                }
+            } catch (error) {
+                console.log('لا توجد أجهزة محظورة');
+                bannedDevices = [];
+            }
             console.log('🔵 بدء تحميل المستخدمين...');
             try {
-                const url = window.location.origin + '/api/users';
+                const url = '/api/users';
                 console.log('🔵 URL:', url);
-                
+
                 const response = await fetch(url);
                 console.log('🔵 Response status:', response.status);
-                
+
                 const data = await response.json();
                 console.log('🔵 Data received:', data);
-                
+
                 if (data.success) {
                     console.log('✅ عدد المستخدمين:', data.data.length);
-                    displayUsers(data.data);
+                    allUsers = data.data;
+                    displayUsers();
                 } else {
                     console.error('❌ خطأ في تحميل المستخدمين:', data.error);
                 }
@@ -966,26 +1888,72 @@
                 }
             }
         }
-        
+
+        // بحث في المستخدمين
+        function searchUsers(query) {
+            searchQuery = query.toLowerCase();
+            displayedCount = 10;
+            displayUsers();
+        }
+
+        // عرض المزيد
+        function showMore() {
+            displayedCount += 10;
+            displayUsers();
+        }
+
         // عرض المستخدمين في جدول
-        function displayUsers(users) {
-            console.log('🟢 عرض المستخدمين...', users);
+        function displayUsers() {
+            console.log('🟢 عرض المستخدمين...');
             const usersList = document.getElementById('usersList');
             console.log('🟢 usersList element:', usersList);
             const adminEmails = ['admin@nursing.com', 'ahmed@0100'];
-            
-            if (users.length === 0) {
+
+            // فلترة المستخدمين حسب البحث
+            let filteredUsers = allUsers;
+            if (searchQuery) {
+                filteredUsers = allUsers.filter(user => 
+                    user.name.toLowerCase().includes(searchQuery) ||
+                    user.email.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            if (filteredUsers.length === 0) {
                 usersList.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #999;">
                         <i class="fas fa-users" style="font-size: 3em; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <p style="font-size: 1.1em;">لا يوجد مستخدمين مسجلين حالياً</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">استخدم زر "إضافة مستخدم جديد" لإنشاء حسابات</p>
+                        <p style="font-size: 1.1em;">${searchQuery ? 'لا توجد نتائج' : 'لا يوجد مستخدمين مسجلين حالياً'}</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">${searchQuery ? 'جرب كلمات بحث أخرى' : 'استخدم زر "إضافة مستخدم جديد" لإنشاء حسابات'}</p>
                     </div>
                 `;
                 return;
             }
-            
-            let tableHTML = `
+
+            // عرض عدد محدود من المستخدمين
+            const usersToShow = filteredUsers.slice(0, displayedCount);
+            const hasMore = filteredUsers.length > displayedCount;
+
+            // إضافة مربع البحث
+            let searchHTML = `
+                <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+                    <div style="flex: 1; position: relative;">
+                        <i class="fas fa-search" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                        <input type="text" 
+                            id="userSearchInput" 
+                            placeholder="ابحث بالاسم أو البريد الإلكتروني..."
+                            onkeyup="searchUsers(this.value)"
+                            value="${searchQuery}"
+                            style="width: 100%; padding: 12px 45px 12px 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; transition: all 0.3s;"
+                            onfocus="this.style.borderColor='#667eea'"
+                            onblur="this.style.borderColor='#e0e0e0'">
+                    </div>
+                    <div style="color: #666; font-size: 14px; white-space: nowrap;">
+                        <i class="fas fa-users"></i> ${filteredUsers.length} مستخدم
+                    </div>
+                </div>
+            `;
+
+            let tableHTML = searchHTML + `
                 <table>
                     <thead>
                         <tr>
@@ -995,23 +1963,29 @@
                             <th>كلمة المرور</th>
                             <th>تاريخ التسجيل</th>
                             <th style="text-align: center;">الصلاحية</th>
+                            <th style="text-align: center;">الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
-            
-            users.forEach((user, index) => {
+
+            usersToShow.forEach((user, index) => {
                 const isAdmin = adminEmails.includes(user.email.toLowerCase());
+                const deviceId = user.deviceId || user.deviceFingerprint;
+                const isBanned = deviceId && bannedDevices.includes(deviceId);
                 const registeredDate = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 }) : 'غير محدد';
-                
+
                 tableHTML += `
-                    <tr>
+                    <tr ${isBanned ? 'style="background: #fff5f5;"' : ''}>
                         <td style="text-align: center; font-weight: 700; color: #667eea;">${index + 1}</td>
-                        <td><strong style="color: #333;">${user.name || 'غير محدد'}</strong></td>
+                        <td>
+                            <strong style="color: #333;">${user.name || 'غير محدد'}</strong>
+                            ${isBanned ? '<br><span style="color: #ff4757; font-size: 11px;"><i class="fas fa-ban"></i> محظور</span>' : ''}
+                        </td>
                         <td style="direction: ltr; text-align: right;">
                             <i class="fas fa-envelope" style="color: #667eea; margin-left: 8px;"></i>
                             ${user.email}
@@ -1031,24 +2005,112 @@
                                 '<span class="user-badge badge-user"><i class="fas fa-user"></i> مستخدم</span>'
                             }
                         </td>
+                        <td style="text-align: center;">
+                            ${!isAdmin ? (deviceId ? (isBanned ? `
+                                <button onclick="unbanUserDevice('${user.email}', '${deviceId}')" 
+                                    style="background: linear-gradient(135deg, #4ade80, #22c55e); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s; box-shadow: 0 3px 10px rgba(74,222,128,0.3);"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(74,222,128,0.4)'"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 10px rgba(74,222,128,0.3)'">
+                                    <i class="fas fa-unlock"></i> فك الحظر
+                                </button>
+                            ` : `
+                                <button onclick="banUserDevice('${user.email}')" 
+                                    style="background: linear-gradient(135deg, #ff4757, #ff6348); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s; box-shadow: 0 3px 10px rgba(255,71,87,0.3);"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(255,71,87,0.4)'"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 10px rgba(255,71,87,0.3)'">
+                                    <i class="fas fa-ban"></i> حظر الجهاز
+                                </button>
+                            `) : '<span style="color: #999; font-size: 12px;">لا يوجد جهاز</span>') : '<span style="color: #999;">-</span>'}
+                        </td>
                     </tr>
                 `;
             });
-            
+
             tableHTML += `
                     </tbody>
                 </table>
+            `;
+
+            // زر المزيد
+            if (hasMore) {
+                tableHTML += `
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button onclick="showMore()" 
+                            style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; box-shadow: 0 4px 15px rgba(102,126,234,0.3);"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102,126,234,0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102,126,234,0.3)'">
+                            <i class="fas fa-chevron-down"></i> عرض المزيد (${filteredUsers.length - displayedCount} متبقي)
+                        </button>
+                    </div>
+                `;
+            }
+
+            tableHTML += `
                 <div style="margin-top: 20px; text-align: center; color: #999; font-size: 0.9em;">
-                    <i class="fas fa-info-circle"></i> إجمالي المستخدمين: <strong style="color: #667eea;">${users.length}</strong>
+                    <i class="fas fa-info-circle"></i> عرض ${usersToShow.length} من أصل <strong style="color: #667eea;">${filteredUsers.length}</strong>
                 </div>
             `;
-            
+
             usersList.innerHTML = tableHTML;
         }
-        
+
+        // حظر جهاز المستخدم
+        async function banUserDevice(email) {
+            if (!confirm(`هل أنت متأكد من حظر جهاز المستخدم:\n${email}\n\nلن يستطيع التسجيل بأي حساب آخر من نفس الجهاز!`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/ban-device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ تم حظر الجهاز بنجاح!\n\nلن يستطيع المستخدم التسجيل من هذا الجهاز مرة أخرى.');
+                    loadUsers(); // إعادة تحميل
+                } else {
+                    alert('❌ حدث خطأ: ' + data.error);
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                alert('❌ حدث خطأ في حظر الجهاز');
+            }
+        }
+
+        // فك حظر جهاز المستخدم
+        async function unbanUserDevice(email, deviceId) {
+            if (!confirm(`هل أنت متأكد من فك حظر جهاز:\n${email}\n\nسيستطيع التسجيل من هذا الجهاز مرة أخرى.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/unban-device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ deviceId: deviceId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ تم فك الحظر بنجاح!\n\nيمكن للمستخدم الآن التسجيل من هذا الجهاز.');
+                    loadUsers(); // إعادة تحميل
+                } else {
+                    alert('❌ حدث خطأ: ' + data.error);
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                alert('❌ حدث خطأ في فك الحظر');
+            }
+        }
+
         // تحميل المستخدمين عند تحميل الصفحة
         console.log('🟡 Script loaded!');
-        
+
         // استدعاء فوري
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadUsers);
@@ -1056,13 +2118,13 @@
             // Document already loaded
             loadUsers();
         }
-        
+
         // Backup: استدعاء بعد ثانية واحدة
         setTimeout(() => {
             console.log('⏰ Backup call to loadUsers...');
             loadUsers();
         }, 1000);
-        
+
         // Manual trigger - استدعاء مباشر بعد 2 ثانية
         setTimeout(() => {
             console.log('🔴 FORCE LOAD - استدعاء إجباري!');
@@ -1072,4 +2134,123 @@
                 loadUsers();
             }
         }, 2000);
-    
+
+        // ============= دوال إدارة PDF =============
+
+        // عرض PDF
+        window.viewPDF = function(pdfUrl, event) {
+            if (event) event.stopPropagation();
+            if (pdfUrl) {
+                window.open(pdfUrl, '_blank');
+            } else {
+                alert('لا يوجد ملف PDF لهذا القسم');
+            }
+        }
+
+        // تم نقل الدوال للأعلى في السكريبت الأول
+
+        // تهيئة Drop Zone بعد تحميل الصفحة
+        setTimeout(() => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('pdfFileInput');
+
+            if (dropZone && fileInput) {
+                dropZone.onclick = function() {
+                    fileInput.click();
+                }
+
+                fileInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) handleFileSelect(file);
+                }
+
+                dropZone.ondragover = function(e) {
+                    e.preventDefault();
+                    this.style.background = '#e3f2fd';
+                    this.style.borderColor = '#2196f3';
+                }
+
+                dropZone.ondragleave = function(e) {
+                    e.preventDefault();
+                    this.style.background = '#f8f9fa';
+                    this.style.borderColor = '#667eea';
+                }
+
+                dropZone.ondrop = function(e) {
+                    e.preventDefault();
+                    this.style.background = '#f8f9fa';
+                    this.style.borderColor = '#667eea';
+                    const file = e.dataTransfer.files[0];
+                    if (file) handleFileSelect(file);
+                }
+
+                console.log('✅ Drop Zone initialized');
+            }
+        }, 100);
+
+        function handleFileSelect(file) {
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('⚠️ الرجاء اختيار ملف PDF فقط');
+                return;
+            }
+
+            if (file.size > 100 * 1024 * 1024) {
+                alert('⚠️ حجم الملف أكبر من 100 ميجا');
+                return;
+            }
+
+            selectedPDFFile = file;
+            document.getElementById('selectedFileName').textContent = file.name;
+            document.getElementById('selectedFileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+            document.getElementById('selectedFilePreview').style.display = 'block';
+        }
+
+        window.clearSelectedFile = function() {
+            selectedPDFFile = null;
+            fileInput.value = '';
+            document.getElementById('selectedFilePreview').style.display = 'none';
+        }
+
+        // حذف PDF من قسم
+        window.deletePDFFromSection = function(sectionId, event) {
+            if (event) event.stopPropagation();
+
+            if (confirm('هل أنت متأكد من حذف ملف PDF من هذا القسم؟')) {
+                alert(`تم حذف PDF من القسم #${sectionId}`);
+
+                // هنا يمكن إضافة كود لحذف الملف من السيرفر
+                // await fetch(`/api/sections/${sectionId}/pdf`, { method: 'DELETE' });
+
+                // إعادة تحميل الأقسام
+                setTimeout(() => {
+                    loadSections();
+                }, 500);
+            }
+        }
+        
+        // ========== نظام الرسائل ==========
+        
+        // تحديث عدد الرسائل غير المقروءة
+        async function updateMessagesCount() {
+            try {
+                const response = await fetch('/api/messages/unread/count');
+                const data = await response.json();
+                
+                if (data.success && data.count > 0) {
+                    const badge = document.getElementById('messagesBadge');
+                    if (badge) {
+                        badge.textContent = data.count;
+                        badge.style.display = 'flex';
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل عدد الرسائل:', error);
+            }
+        }
+        
+        // تحديث عدد الرسائل كل 5 ثواني
+        setInterval(updateMessagesCount, 5000);
+        updateMessagesCount(); // تحديث فوري
+    </script>
+</body>
+</html>

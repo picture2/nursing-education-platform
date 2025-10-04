@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختصارات الطبية - Medical Abbreviations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .category-section {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+        .category-title {
+            font-size: 2.2em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(77, 195, 255, 0.4);
+            border-bottom: 3px solid rgba(77, 195, 255, 0.3);
+            padding-bottom: 15px;
+        }
+        .abbr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .abbr-card {
+            background: rgba(35, 35, 60, 0.6);
+            border: 1px solid rgba(77, 195, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4dc3ff;
+            transition: all 0.3s;
+        }
+        .abbr-card:hover {
+            transform: translateX(-5px);
+            border-color: rgba(77, 195, 255, 0.5);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.2);
+        }
+        .abbr-short {
+            font-size: 1.5em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .abbr-full {
+            font-size: 1.05em;
+            color: #fff;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .abbr-arabic {
+            font-size: 0.95em;
+            color: #b0b0b0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .abbr-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>📋 الاختصارات الطبية الشائعة</h1>
+        <p>دليل شامل لأكثر من 60 اختصار طبي مع الترجمة والشرح</p>
+    </div>
+
+    <div class="container">
+        <!-- Vital Signs -->
+        <div class="category-section">
+            <div class="category-title">📊 العلامات الحيوية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">BP</div>
+                    <div class="abbr-full">Blood Pressure</div>
+                    <div class="abbr-arabic">ضغط الدم</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">HR</div>
+                    <div class="abbr-full">Heart Rate</div>
+                    <div class="abbr-arabic">معدل نبضات القلب</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">RR</div>
+                    <div class="abbr-full">Respiratory Rate</div>
+                    <div class="abbr-arabic">معدل التنفس</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">Temp</div>
+                    <div class="abbr-full">Temperature</div>
+                    <div class="abbr-arabic">درجة الحرارة</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">SpO2</div>
+                    <div class="abbr-full">Oxygen Saturation</div>
+                    <div class="abbr-arabic">تشبع الأكسجين</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">BPM</div>
+                    <div class="abbr-full">Beats Per Minute</div>
+                    <div class="abbr-arabic">نبضة في الدقيقة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments -->
+        <div class="category-section">
+            <div class="category-title">🏥 الأقسام الطبية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">ICU</div>
+                    <div class="abbr-full">Intensive Care Unit</div>
+                    <div class="abbr-arabic">وحدة العناية المركزة</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">ER</div>
+                    <div class="abbr-full">Emergency Room</div>
+                    <div class="abbr-arabic">غرفة الطوارئ</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">OR</div>
+                    <div class="abbr-full">Operating Room</div>
+                    <div class="abbr-arabic">غرفة العمليات</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">CCU</div>
+                    <div class="abbr-full">Coronary Care Unit</div>
+                    <div class="abbr-arabic">وحدة العناية بالقلب</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">NICU</div>
+                    <div class="abbr-full">Neonatal ICU</div>
+                    <div class="abbr-arabic">عناية مركزة الأطفال حديثي الولادة</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">OPD</div>
+                    <div class="abbr-full">Out-Patient Department</div>
+                    <div class="abbr-arabic">العيادات الخارجية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medication Routes -->
+        <div class="category-section">
+            <div class="category-title">💊 طرق إعطاء الأدوية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">IV</div>
+                    <div class="abbr-full">Intravenous</div>
+                    <div class="abbr-arabic">عن طريق الوريد</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">IM</div>
+                    <div class="abbr-full">Intramuscular</div>
+                    <div class="abbr-arabic">عن طريق العضل</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">SC</div>
+                    <div class="abbr-full">Subcutaneous</div>
+                    <div class="abbr-arabic">تحت الجلد</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">PO</div>
+                    <div class="abbr-full">Per Os (by mouth)</div>
+                    <div class="abbr-arabic">عن طريق الفم</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">SL</div>
+                    <div class="abbr-full">Sublingual</div>
+                    <div class="abbr-arabic">تحت اللسان</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">INH</div>
+                    <div class="abbr-full">Inhalation</div>
+                    <div class="abbr-arabic">عن طريق الاستنشاق</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timing -->
+        <div class="category-section">
+            <div class="category-title">⏰ توقيت الأدوية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">PRN</div>
+                    <div class="abbr-full">Pro Re Nata (as needed)</div>
+                    <div class="abbr-arabic">عند الحاجة</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">STAT</div>
+                    <div class="abbr-full">Immediately</div>
+                    <div class="abbr-arabic">فوراً</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">BID</div>
+                    <div class="abbr-full">Twice a day</div>
+                    <div class="abbr-arabic">مرتين يومياً</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">TID</div>
+                    <div class="abbr-full">Three times a day</div>
+                    <div class="abbr-arabic">ثلاث مرات يومياً</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">QID</div>
+                    <div class="abbr-full">Four times a day</div>
+                    <div class="abbr-arabic">أربع مرات يومياً</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">AC</div>
+                    <div class="abbr-full">Before meals</div>
+                    <div class="abbr-arabic">قبل الأكل</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">PC</div>
+                    <div class="abbr-full">After meals</div>
+                    <div class="abbr-arabic">بعد الأكل</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">HS</div>
+                    <div class="abbr-full">At bedtime</div>
+                    <div class="abbr-arabic">عند النوم</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab Tests -->
+        <div class="category-section">
+            <div class="category-title">🧪 التحاليل المخبرية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">CBC</div>
+                    <div class="abbr-full">Complete Blood Count</div>
+                    <div class="abbr-arabic">تعداد الدم الكامل</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">WBC</div>
+                    <div class="abbr-full">White Blood Cell</div>
+                    <div class="abbr-arabic">كريات الدم البيضاء</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">RBC</div>
+                    <div class="abbr-full">Red Blood Cell</div>
+                    <div class="abbr-arabic">كريات الدم الحمراء</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">Hgb</div>
+                    <div class="abbr-full">Hemoglobin</div>
+                    <div class="abbr-arabic">الهيموجلوبين</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">PLT</div>
+                    <div class="abbr-full">Platelets</div>
+                    <div class="abbr-arabic">الصفائح الدموية</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">LFT</div>
+                    <div class="abbr-full">Liver Function Test</div>
+                    <div class="abbr-arabic">وظائف الكبد</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">RFT</div>
+                    <div class="abbr-full">Renal Function Test</div>
+                    <div class="abbr-arabic">وظائف الكلى</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">FBS</div>
+                    <div class="abbr-full">Fasting Blood Sugar</div>
+                    <div class="abbr-arabic">سكر الدم الصائم</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conditions -->
+        <div class="category-section">
+            <div class="category-title">🏥 الحالات المرضية</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">MI</div>
+                    <div class="abbr-full">Myocardial Infarction</div>
+                    <div class="abbr-arabic">احتشاء عضلة القلب</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">CVA</div>
+                    <div class="abbr-full">Cerebrovascular Accident</div>
+                    <div class="abbr-arabic">سكتة دماغية</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">DM</div>
+                    <div class="abbr-full">Diabetes Mellitus</div>
+                    <div class="abbr-arabic">داء السكري</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">HTN</div>
+                    <div class="abbr-full">Hypertension</div>
+                    <div class="abbr-arabic">ارتفاع ضغط الدم</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">CHF</div>
+                    <div class="abbr-full">Congestive Heart Failure</div>
+                    <div class="abbr-arabic">قصور القلب الاحتقاني</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">COPD</div>
+                    <div class="abbr-full">Chronic Obstructive Pulmonary Disease</div>
+                    <div class="abbr-arabic">مرض الانسداد الرئوي المزمن</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">UTI</div>
+                    <div class="abbr-full">Urinary Tract Infection</div>
+                    <div class="abbr-arabic">التهاب المسالك البولية</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">CAD</div>
+                    <div class="abbr-full">Coronary Artery Disease</div>
+                    <div class="abbr-arabic">مرض الشريان التاجي</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Procedures -->
+        <div class="category-section">
+            <div class="category-title">🔬 الإجراءات</div>
+            <div class="abbr-grid">
+                <div class="abbr-card">
+                    <div class="abbr-short">CPR</div>
+                    <div class="abbr-full">Cardiopulmonary Resuscitation</div>
+                    <div class="abbr-arabic">الإنعاش القلبي الرئوي</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">EKG</div>
+                    <div class="abbr-full">Electrocardiogram</div>
+                    <div class="abbr-arabic">تخطيط القلب</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">CT</div>
+                    <div class="abbr-full">Computed Tomography</div>
+                    <div class="abbr-arabic">التصوير المقطعي</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">MRI</div>
+                    <div class="abbr-full">Magnetic Resonance Imaging</div>
+                    <div class="abbr-arabic">الرنين المغناطيسي</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">NGT</div>
+                    <div class="abbr-full">Nasogastric Tube</div>
+                    <div class="abbr-arabic">أنبوب أنفي معدي</div>
+                </div>
+                <div class="abbr-card">
+                    <div class="abbr-short">DNR</div>
+                    <div class="abbr-full">Do Not Resuscitate</div>
+                    <div class="abbr-arabic">عدم الإنعاش</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

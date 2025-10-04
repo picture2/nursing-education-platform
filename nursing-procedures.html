@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإجراءات التمريضية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .proc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        .proc-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .proc-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .proc-title {
+            font-size: 1.8em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .proc-steps {
+            margin-top: 15px;
+        }
+        .step {
+            background: rgba(35, 35, 60, 0.5);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 3px solid #4dc3ff;
+        }
+        .step strong {
+            color: #4dc3ff;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .proc-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🔬 الإجراءات التمريضية الأساسية</h1>
+        <p>دليل خطوة بخطوة للإجراءات التمريضية الشائعة</p>
+    </div>
+
+    <div class="container">
+        <div class="proc-grid">
+            <div class="proc-card">
+                <div class="proc-title">قياس ضغط الدم</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> اجلس المريض وذراعه على مستوى القلب</div>
+                    <div class="step"><strong>2.</strong> لف الكفة حول العضد 2-3 سم فوق المرفق</div>
+                    <div class="step"><strong>3.</strong> انفخ الكفة حتى 180-200 mmHg</div>
+                    <div class="step"><strong>4.</strong> أفرغ الهواء ببطء واستمع للأصوات</div>
+                    <div class="step"><strong>5.</strong> سجل القراءة (الانقباضي/الانبساطي)</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">إعطاء حقنة عضلية (IM)</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> اغسل يديك وارتدِ القفازات</div>
+                    <div class="step"><strong>2.</strong> حضر الدواء وتحقق من الجرعة</div>
+                    <div class="step"><strong>3.</strong> اختر المكان (العضلة الدالية أو الفخذ)</div>
+                    <div class="step"><strong>4.</strong> نظف الجلد بالكحول</div>
+                    <div class="step"><strong>5.</strong> أدخل الإبرة بزاوية 90 درجة</div>
+                    <div class="step"><strong>6.</strong> احقن الدواء ببطء واسحب الإبرة</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">تركيب قسطرة بولية</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> اشرح الإجراء للمريض</div>
+                    <div class="step"><strong>2.</strong> اغسل يديك واستخدم التقنية المعقمة</div>
+                    <div class="step"><strong>3.</strong> نظف المنطقة التناسلية</div>
+                    <div class="step"><strong>4.</strong> أدخل القسطرة المعقمة حتى خروج البول</div>
+                    <div class="step"><strong>5.</strong> انفخ البالون بالماء المعقم</div>
+                    <div class="step"><strong>6.</strong> وصل كيس جمع البول</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">تضميد الجروح</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> اغسل يديك وارتدِ القفازات المعقمة</div>
+                    <div class="step"><strong>2.</strong> أزل الضماد القديم بعناية</div>
+                    <div class="step"><strong>3.</strong> نظف الجرح بالمحلول الملحي</div>
+                    <div class="step"><strong>4.</strong> جفف المنطقة المحيطة</div>
+                    <div class="step"><strong>5.</strong> ضع ضماد معقم جديد</div>
+                    <div class="step"><strong>6.</strong> ثبت الضماد بشريط لاصق</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">تركيب أنبوب أنفي معدي (NGT)</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> قس المسافة من الأنف للأذن للصدر</div>
+                    <div class="step"><strong>2.</strong> ضع المريض بوضعية فاولر</div>
+                    <div class="step"><strong>3.</strong> بلل طرف الأنبوب بالماء</div>
+                    <div class="step"><strong>4.</strong> أدخل الأنبوب عبر الأنف ببطء</div>
+                    <div class="step"><strong>5.</strong> تحقق من الموقع الصحيح</div>
+                    <div class="step"><strong>6.</strong> ثبت الأنبوب على الأنف</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">شفط الإفرازات</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> اشرح الإجراء للمريض</div>
+                    <div class="step"><strong>2.</strong> ارتدِ القفازات والنظارات الواقية</div>
+                    <div class="step"><strong>3.</strong> شغل جهاز الشفط</div>
+                    <div class="step"><strong>4.</strong> أدخل القسطرة بدون شفط</div>
+                    <div class="step"><strong>5.</strong> اسحب مع الشفط بحركة دائرية</div>
+                    <div class="step"><strong>6.</strong> لا تتجاوز 10-15 ثانية</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">إعطاء الأكسجين</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> تحقق من طلب الطبيب</div>
+                    <div class="step"><strong>2.</strong> اختر الطريقة المناسبة (قناع/أنبوب أنفي)</div>
+                    <div class="step"><strong>3.</strong> وصل الجهاز بمصدر الأكسجين</div>
+                    <div class="step"><strong>4.</strong> اضبط معدل التدفق</div>
+                    <div class="step"><strong>5.</strong> راقب تشبع الأكسجين</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">نقل الدم</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> تحقق من فصيلة الدم مع زميل</div>
+                    <div class="step"><strong>2.</strong> قس العلامات الحيوية قبل البدء</div>
+                    <div class="step"><strong>3.</strong> ابدأ النقل ببطء أول 15 دقيقة</div>
+                    <div class="step"><strong>4.</strong> راقب المريض لأي ردود فعل</div>
+                    <div class="step"><strong>5.</strong> قس العلامات الحيوية كل 15 دقيقة</div>
+                    <div class="step"><strong>6.</strong> أوقف النقل فوراً عند أي تفاعل</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">غسيل اليدين الجراحي</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> بلل اليدين بالماء الجاري</div>
+                    <div class="step"><strong>2.</strong> ضع الصابون المعقم</div>
+                    <div class="step"><strong>3.</strong> افرك اليدين لمدة 40-60 ثانية</div>
+                    <div class="step"><strong>4.</strong> نظف بين الأصابع وتحت الأظافر</div>
+                    <div class="step"><strong>5.</strong> اشطف بالماء</div>
+                    <div class="step"><strong>6.</strong> جفف بمنشفة معقمة</div>
+                </div>
+            </div>
+
+            <div class="proc-card">
+                <div class="proc-title">تركيب محلول وريدي (IV)</div>
+                <div class="proc-steps">
+                    <div class="step"><strong>1.</strong> تحقق من طلب الطبيب</div>
+                    <div class="step"><strong>2.</strong> اختر الوريد المناسب</div>
+                    <div class="step"><strong>3.</strong> ضع العاصبة فوق موقع الإدخال</div>
+                    <div class="step"><strong>4.</strong> نظف الموقع بالكحول</div>
+                    <div class="step"><strong>5.</strong> أدخل القنية بزاوية 15-30 درجة</div>
+                    <div class="step"><strong>6.</strong> وصل المحلول واضبط السرعة</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

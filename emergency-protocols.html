@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بروتوكولات الطوارئ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(255, 77, 77, 0.2), rgba(255, 165, 0, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(255, 77, 77, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #ff4d4d;
+            text-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        .emergency-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(255, 77, 77, 0.4);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .emergency-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 77, 77, 0.7);
+            box-shadow: 0 10px 30px rgba(255, 77, 77, 0.3);
+        }
+        .emergency-title {
+            font-size: 1.8em;
+            color: #ff4d4d;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .emergency-steps {
+            margin-top: 15px;
+        }
+        .step {
+            background: rgba(35, 35, 60, 0.5);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 3px solid #ff4d4d;
+        }
+        .step strong {
+            color: #ff4d4d;
+        }
+        .warning {
+            background: rgba(255, 77, 77, 0.1);
+            border: 2px solid rgba(255, 77, 77, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            color: #ffcc00;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .emergency-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🚨 بروتوكولات الطوارئ</h1>
+        <p>إجراءات الطوارئ الحرجة - حياة أو موت</p>
+    </div>
+
+    <div class="container">
+        <div class="emergency-grid">
+            <div class="emergency-card">
+                <div class="emergency-title">🫀 الإنعاش القلبي الرئوي (CPR)</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> تحقق من الاستجابة والتنفس</div>
+                    <div class="step"><strong>2.</strong> اطلب المساعدة وأحضر جهاز الصدمات</div>
+                    <div class="step"><strong>3.</strong> 30 ضغطة صدرية (100-120/دقيقة)</div>
+                    <div class="step"><strong>4.</strong> نفسان إنقاذيان</div>
+                    <div class="step"><strong>5.</strong> كرر الدورة حتى وصول المساعدة</div>
+                </div>
+                <div class="warning">⚠️ العمق: 5-6 سم | الموقع: منتصف الصدر</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">⚡ انسداد مجرى الهواء (الاختناق)</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> اسأل: "هل تختنق؟"</div>
+                    <div class="step"><strong>2.</strong> شجع على السعال إذا كان واعياً</div>
+                    <div class="step"><strong>3.</strong> نفذ ضربات الظهر (5 ضربات)</div>
+                    <div class="step"><strong>4.</strong> نفذ ضغطات البطن (مناورة هيمليك)</div>
+                    <div class="step"><strong>5.</strong> كرر حتى خروج الجسم الغريب</div>
+                </div>
+                <div class="warning">⚠️ إذا فقد الوعي: ابدأ CPR فوراً</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">💉 تفاعل الحساسية المفرطة (Anaphylaxis)</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> أعط إبينفرين 0.3-0.5 ملغ عضلياً فوراً</div>
+                    <div class="step"><strong>2.</strong> ضع المريض بوضعية الاستلقاء</div>
+                    <div class="step"><strong>3.</strong> أعط الأكسجين</div>
+                    <div class="step"><strong>4.</strong> احقن محلول وريدي</div>
+                    <div class="step"><strong>5.</strong> راقب العلامات الحيوية</div>
+                </div>
+                <div class="warning">⚠️ كرر الإبينفرين بعد 5-15 دقيقة إذا لزم</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">🔥 السكتة القلبية</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> فعّل نظام الطوارئ</div>
+                    <div class="step"><strong>2.</strong> ابدأ CPR فوراً</div>
+                    <div class="step"><strong>3.</strong> استخدم جهاز الصدمات (AED)</div>
+                    <div class="step"><strong>4.</strong> أعط الأدوية حسب البروتوكول</div>
+                    <div class="step"><strong>5.</strong> استمر بالإنعاش حتى العودة التلقائية</div>
+                </div>
+                <div class="warning">⚠️ لا تتوقف عن CPR إلا للصدمة أو التحقق من النبض</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">🧠 السكتة الدماغية (FAST)</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>F - Face:</strong> تدلي أحد جانبي الوجه</div>
+                    <div class="step"><strong>A - Arms:</strong> ضعف في الذراعين</div>
+                    <div class="step"><strong>S - Speech:</strong> صعوبة في الكلام</div>
+                    <div class="step"><strong>T - Time:</strong> اتصل بالطوارئ فوراً</div>
+                    <div class="step"><strong>5.</strong> سجل وقت بداية الأعراض بدقة</div>
+                </div>
+                <div class="warning">⚠️ الوقت = خلايا دماغية | النافذة الذهبية: 4.5 ساعة</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">🩸 النزيف الحاد</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> اضغط مباشرة على مكان النزيف</div>
+                    <div class="step"><strong>2.</strong> ارفع العضو المصاب فوق مستوى القلب</div>
+                    <div class="step"><strong>3.</strong> ضع ضماد ضاغط</div>
+                    <div class="step"><strong>4.</strong> استخدم العاصبة إذا استمر النزيف</div>
+                    <div class="step"><strong>5.</strong> ابدأ إعطاء السوائل الوريدية</div>
+                </div>
+                <div class="warning">⚠️ العاصبة: آخر حل - سجل وقت التطبيق</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">⚗️ نقص السكر الحاد (Hypoglycemia)</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> قس سكر الدم فوراً</div>
+                    <div class="step"><strong>2.</strong> إذا واعٍ: أعط سكر فموي/عصير</div>
+                    <div class="step"><strong>3.</strong> إذا غير واعٍ: لا تعط شيئاً فموياً</div>
+                    <div class="step"><strong>4.</strong> أعط جلوكوز وريدي أو جلوكاجون عضلي</div>
+                    <div class="step"><strong>5.</strong> راقب حتى يستقر مستوى السكر</div>
+                </div>
+                <div class="warning">⚠️ السكر أقل من 70 mg/dL = طوارئ</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">🫁 نوبة الربو الحادة</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> اجلس المريض بوضعية مستقيمة</div>
+                    <div class="step"><strong>2.</strong> أعط موسع شعب بالبخاخ فوراً</div>
+                    <div class="step"><strong>3.</strong> أعط الأكسجين عالي التدفق</div>
+                    <div class="step"><strong>4.</strong> أعط كورتيزون وريدياً</div>
+                    <div class="step"><strong>5.</strong> راقب تشبع الأكسجين باستمرار</div>
+                </div>
+                <div class="warning">⚠️ إذا لم يتحسن خلال دقائق: استعد للتنبيب</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">🔥 الحروق الشديدة</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> أبعد المريض عن مصدر الحرارة</div>
+                    <div class="step"><strong>2.</strong> برّد الحرق بماء جارٍ (10-20 دقيقة)</div>
+                    <div class="step"><strong>3.</strong> غطِ بضماد معقم غير لاصق</div>
+                    <div class="step"><strong>4.</strong> ابدأ السوائل الوريدية (معادلة باركلاند)</div>
+                    <div class="step"><strong>5.</strong> سيطر على الألم</div>
+                </div>
+                <div class="warning">⚠️ لا تستخدم الثلج | لا تفتح الفقاعات</div>
+            </div>
+
+            <div class="emergency-card">
+                <div class="emergency-title">⚡ النوبة التشنجية</div>
+                <div class="emergency-steps">
+                    <div class="step"><strong>1.</strong> احمِ المريض من الإصابة</div>
+                    <div class="step"><strong>2.</strong> ضعه على جانبه</div>
+                    <div class="step"><strong>3.</strong> لا تضع شيئاً في الفم</div>
+                    <div class="step"><strong>4.</strong> سجل مدة النوبة</div>
+                    <div class="step"><strong>5.</strong> إذا استمرت أكثر من 5 دقائق: أعط مضاد تشنج</div>
+                </div>
+                <div class="warning">⚠️ النوبة المستمرة (Status) = طوارئ قصوى</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

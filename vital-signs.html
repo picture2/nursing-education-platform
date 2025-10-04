@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العلامات الحيوية - Vital Signs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .vital-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .vital-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s;
+        }
+        .vital-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 15px 40px rgba(77, 195, 255, 0.25);
+        }
+        .vital-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .vital-name {
+            font-size: 2em;
+            color: #4dc3ff;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(77, 195, 255, 0.3);
+        }
+        .vital-range {
+            background: rgba(77, 195, 255, 0.1);
+            border-left: 4px solid #4dc3ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .vital-range h3 {
+            color: #4dc3ff;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .range-item {
+            color: #fff;
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+        .vital-procedure {
+            margin-top: 20px;
+        }
+        .vital-procedure h3 {
+            color: #4dc3ff;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+        }
+        .procedure-step {
+            background: rgba(35, 35, 60, 0.5);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 3px solid #4dc3ff;
+        }
+        .procedure-step strong {
+            color: #4dc3ff;
+        }
+        .alert-box {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid rgba(255, 107, 107, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .alert-box h3 {
+            color: #ff6b6b;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+        }
+        .alert-item {
+            color: #ffb3b3;
+            margin: 8px 0;
+            font-size: 1.05em;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .vital-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>💓 العلامات الحيوية - Vital Signs</h1>
+        <p>دليل شامل لقياس وتفسير العلامات الحيوية</p>
+    </div>
+
+    <div class="container">
+        <!-- 1. Heart Rate -->
+        <div class="vital-grid">
+            <div class="vital-card">
+                <div class="vital-icon">💓</div>
+                <div class="vital-name">معدل نبضات القلب<br>Heart Rate (Pulse)</div>
+                
+                <div class="vital-range">
+                    <h3>المعدل الطبيعي:</h3>
+                    <div class="range-item">👶 حديث الولادة: 120-160 نبضة/دقيقة</div>
+                    <div class="range-item">🧒 الأطفال (1-10 سنوات): 70-120 نبضة/دقيقة</div>
+                    <div class="range-item">👨 البالغين: 60-100 نبضة/دقيقة</div>
+                    <div class="range-item">🏃 الرياضيين: 40-60 نبضة/دقيقة</div>
+                </div>
+
+                <div class="vital-procedure">
+                    <h3>📝 طريقة القياس:</h3>
+                    <div class="procedure-step"><strong>1.</strong> اجلس المريض في وضع مريح لمدة 5 دقائق</div>
+                    <div class="procedure-step"><strong>2.</strong> ضع إصبعين (السبابة والوسطى) على الشريان الكعبري</div>
+                    <div class="procedure-step"><strong>3.</strong> احسب النبضات لمدة 60 ثانية كاملة</div>
+                    <div class="procedure-step"><strong>4.</strong> لاحظ الإيقاع (منتظم أم غير منتظم) والقوة</div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ الحالات غير الطبيعية:</h3>
+                    <div class="alert-item">🔴 Tachycardia (تسرع القلب): أكثر من 100 نبضة/دقيقة</div>
+                    <div class="alert-item">🔵 Bradycardia (بطء القلب): أقل من 60 نبضة/دقيقة</div>
+                </div>
+            </div>
+
+            <!-- 2. Temperature -->
+            <div class="vital-card">
+                <div class="vital-icon">🌡️</div>
+                <div class="vital-name">درجة الحرارة<br>Body Temperature</div>
+                
+                <div class="vital-range">
+                    <h3>المعدل الطبيعي:</h3>
+                    <div class="range-item">🌡️ الفم: 36.5-37.5 °C (97.7-99.5 °F)</div>
+                    <div class="range-item">👂 الأذن: 36.8-37.8 °C</div>
+                    <div class="range-item">🫃 المستقيم: 37.0-38.0 °C</div>
+                    <div class="range-item">💪 الإبط: 36.0-37.0 °C</div>
+                </div>
+
+                <div class="vital-procedure">
+                    <h3>📝 طريقة القياس:</h3>
+                    <div class="procedure-step"><strong>الفم:</strong> ضع الترمومتر تحت اللسان لمدة 3 دقائق</div>
+                    <div class="procedure-step"><strong>الأذن:</strong> استخدم ترمومتر الأذن الرقمي</div>
+                    <div class="procedure-step"><strong>الإبط:</strong> ضعه تحت الإبط لمدة 5 دقائق</div>
+                    <div class="procedure-step"><strong>ملاحظة:</strong> لا تقس بعد الأكل أو الشرب مباشرة</div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ الحالات غير الطبيعية:</h3>
+                    <div class="alert-item">🔥 Fever (حمى): أعلى من 38 °C</div>
+                    <div class="alert-item">🔥 High Fever (حمى شديدة): أعلى من 39.5 °C</div>
+                    <div class="alert-item">🧊 Hypothermia (انخفاض الحرارة): أقل من 35 °C</div>
+                </div>
+            </div>
+
+            <!-- 3. Respiratory Rate -->
+            <div class="vital-card">
+                <div class="vital-icon">🫁</div>
+                <div class="vital-name">معدل التنفس<br>Respiratory Rate</div>
+                
+                <div class="vital-range">
+                    <h3>المعدل الطبيعي:</h3>
+                    <div class="range-item">👶 حديث الولادة: 30-60 نفس/دقيقة</div>
+                    <div class="range-item">🧒 الأطفال: 20-30 نفس/دقيقة</div>
+                    <div class="range-item">👨 البالغين: 12-20 نفس/دقيقة</div>
+                    <div class="range-item">👴 كبار السن: 12-18 نفس/دقيقة</div>
+                </div>
+
+                <div class="vital-procedure">
+                    <h3>📝 طريقة القياس:</h3>
+                    <div class="procedure-step"><strong>1.</strong> راقب حركة الصدر دون إخبار المريض</div>
+                    <div class="procedure-step"><strong>2.</strong> احسب عدد الأنفاس (شهيق واحد) لمدة 60 ثانية</div>
+                    <div class="procedure-step"><strong>3.</strong> لاحظ عمق التنفس وأي صعوبة</div>
+                    <div class="procedure-step"><strong>4.</strong> استمع لأي أصوات غير طبيعية</div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ الحالات غير الطبيعية:</h3>
+                    <div class="alert-item">🔴 Tachypnea (تسرع التنفس): أكثر من 20 نفس/دقيقة</div>
+                    <div class="alert-item">🔵 Bradypnea (بطء التنفس): أقل من 12 نفس/دقيقة</div>
+                    <div class="alert-item">⚠️ Apnea (انقطاع النفس): توقف التنفس لأكثر من 20 ثانية</div>
+                </div>
+            </div>
+
+            <!-- 4. Blood Pressure -->
+            <div class="vital-card">
+                <div class="vital-icon">💉</div>
+                <div class="vital-name">ضغط الدم<br>Blood Pressure</div>
+                
+                <div class="vital-range">
+                    <h3>المعدل الطبيعي:</h3>
+                    <div class="range-item">✅ الطبيعي: 120/80 mmHg أو أقل</div>
+                    <div class="range-item">⚠️ مرحلة ما قبل الارتفاع: 120-139/80-89 mmHg</div>
+                    <div class="range-item">🔴 المرحلة 1 (ارتفاع): 140-159/90-99 mmHg</div>
+                    <div class="range-item">🔥 المرحلة 2 (ارتفاع شديد): 160/100 mmHg فأكثر</div>
+                </div>
+
+                <div class="vital-procedure">
+                    <h3>📝 طريقة القياس:</h3>
+                    <div class="procedure-step"><strong>1.</strong> اجلس المريض وذراعه على مستوى القلب</div>
+                    <div class="procedure-step"><strong>2.</strong> لف الكفة حول العضد (2-3 سم فوق المرفق)</div>
+                    <div class="procedure-step"><strong>3.</strong> انفخ الكفة حتى 180-200 mmHg</div>
+                    <div class="procedure-step"><strong>4.</strong> أفرغ الهواء ببطء واستمع للأصوات</div>
+                    <div class="procedure-step"><strong>5.</strong> أول صوت = Systolic، آخر صوت = Diastolic</div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ الحالات غير الطبيعية:</h3>
+                    <div class="alert-item">🔴 Hypertension (ارتفاع ضغط الدم): أكثر من 140/90 mmHg</div>
+                    <div class="alert-item">🔵 Hypotension (انخفاض ضغط الدم): أقل من 90/60 mmHg</div>
+                    <div class="alert-item">🚨 Hypertensive Crisis: أكثر من 180/120 mmHg</div>
+                </div>
+            </div>
+
+            <!-- 5. Oxygen Saturation -->
+            <div class="vital-card">
+                <div class="vital-icon">📊</div>
+                <div class="vital-name">تشبع الأكسجين<br>Oxygen Saturation (SpO2)</div>
+                
+                <div class="vital-range">
+                    <h3>المعدل الطبيعي:</h3>
+                    <div class="range-item">✅ الطبيعي: 95-100%</div>
+                    <div class="range-item">⚠️ منخفض قليلاً: 90-94%</div>
+                    <div class="range-item">🔴 منخفض: أقل من 90%</div>
+                    <div class="range-item">🚨 حرج: أقل من 85%</div>
+                </div>
+
+                <div class="vital-procedure">
+                    <h3>📝 طريقة القياس:</h3>
+                    <div class="procedure-step"><strong>1.</strong> نظف الإصبع وتأكد من عدم وجود طلاء أظافر</div>
+                    <div class="procedure-step"><strong>2.</strong> ضع الجهاز (Pulse Oximeter) على الإصبع</div>
+                    <div class="procedure-step"><strong>3.</strong> انتظر حتى يستقر القراءة (10-15 ثانية)</div>
+                    <div class="procedure-step"><strong>4.</strong> سجل القراءة مع معدل النبض</div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ أسباب القراءة المنخفضة:</h3>
+                    <div class="alert-item">🫁 أمراض الرئة (COPD، الربو، الالتهاب الرئوي)</div>
+                    <div class="alert-item">💓 أمراض القلب والأوعية الدموية</div>
+                    <div class="alert-item">🧪 فقر الدم الشديد</div>
+                    <div class="alert-item">🏔️ التواجد في المرتفعات</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div class="vital-card" style="grid-column: 1 / -1;">
+            <h2 style="color: #4dc3ff; font-size: 2em; margin-bottom: 20px; text-align: center;">
+                📚 نصائح عامة لقياس العلامات الحيوية
+            </h2>
+            <div class="vital-procedure">
+                <div class="procedure-step">✅ قس العلامات الحيوية في نفس الوقت يومياً للحصول على قراءات دقيقة</div>
+                <div class="procedure-step">✅ دوّن القراءات فوراً مع التاريخ والوقت</div>
+                <div class="procedure-step">✅ اجعل المريض يستريح لمدة 5 دقائق قبل القياس</div>
+                <div class="procedure-step">✅ تجنب القياس بعد التمارين أو الأكل أو التدخين مباشرة</div>
+                <div class="procedure-step">✅ استخدم أجهزة معايرة ونظيفة</div>
+                <div class="procedure-step">✅ اشرح الإجراء للمريض لتقليل القلق</div>
+                <div class="procedure-step">✅ قارن القراءات بالقيم السابقة للمريض</div>
+                <div class="procedure-step">✅ أبلغ الطبيب فوراً عن أي قراءات غير طبيعية</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

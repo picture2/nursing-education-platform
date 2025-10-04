@@ -1,58 +1,94 @@
-[
-  {
-    "id": 1759333111107,
-    "name": "Ahmed",
-    "email": "ahmed@gamil.com",
-    "password": "Ahmed123",
-    "registeredAt": "2025-10-01T15:38:31.107Z",
-    "lastLogin": "2025-10-01T15:39:37.148Z"
-  },
-  {
-    "id": 1759334091203,
-    "name": "Ahmed",
-    "email": "ahmedd@gamil.com",
-    "password": "asdasdasd",
-    "registeredAt": "2025-10-01T15:54:51.203Z",
-    "lastLogin": "2025-10-01T15:55:47.554Z"
-  },
-  {
-    "id": 1759337038102,
-    "name": "Ahmed",
-    "email": "ahmeddd@gamil.com",
-    "password": "asdfasdf",
-    "registeredAt": "2025-10-01T16:43:58.102Z",
-    "lastLogin": "2025-10-01T16:50:54.822Z"
-  },
-  {
-    "id": 1759337508178,
-    "name": "asd",
-    "email": "asd@asd.asd",
-    "password": "asdasd",
-    "registeredAt": "2025-10-01T16:51:48.178Z",
-    "lastLogin": null
-  },
-  {
-    "id": 1759337795946,
-    "name": "سشيشسي",
-    "email": "ahmedsdsd@gamil.com",
-    "password": "asdasd",
-    "registeredAt": "2025-10-01T16:56:35.946Z",
-    "lastLogin": null
-  },
-  {
-    "id": 1759338217248,
-    "name": "سشيشسي",
-    "email": "asdasd@asd.asd",
-    "password": "fsfggdfg",
-    "registeredAt": "2025-10-01T17:03:37.248Z",
-    "lastLogin": null
-  },
-  {
-    "id": 1759339796590,
-    "name": "mohmed",
-    "email": "ahmedsdsddsa@gamil.com",
-    "password": "asdasdasdasdasd",
-    "registeredAt": "2025-10-01T17:29:56.590Z",
-    "lastLogin": "2025-10-01T17:30:09.972Z"
-  }
+[{
+        "id": 1759333111107,
+        "name": "Ahmed",
+        "email": "ahmed@gamil.com",
+        "password": "Ahmed123",
+        "registeredAt": "2025-10-01T15:38:31.107Z",
+        "lastLogin": "2025-10-03T22:29:35.116Z",
+        "isActive": true
+    },
+    {
+        "id": 1759334091203,
+        "name": "Ahmed",
+        "email": "ahmedd@gamil.com",
+        "password": "asdasdasd",
+        "registeredAt": "2025-10-01T15:54:51.203Z",
+        "lastLogin": "2025-10-01T15:55:47.554Z",
+        "isActive": true
+    },
+    {
+        "id": 1759337038102,
+        "name": "Ahmed",
+        "email": "ahmeddd@gamil.com",
+        "password": "asdfasdf",
+        "registeredAt": "2025-10-01T16:43:58.102Z",
+        "lastLogin": "2025-10-01T16:50:54.822Z",
+        "isActive": true
+    },
+    {
+        "id": 1759337508178,
+        "name": "asd",
+        "email": "asd@asd.asd",
+        "password": "asdasd",
+        "registeredAt": "2025-10-01T16:51:48.178Z",
+        "lastLogin": null,
+        "isActive": true
+    },
+    {
+        "id": 1759337795946,
+        "name": "سشيشسي",
+        "email": "ahmedsdsd@gamil.com",
+        "password": "asdasd",
+        "registeredAt": "2025-10-01T16:56:35.946Z",
+        "lastLogin": null,
+        "isActive": true
+    },
+    {
+        "id": 1759338217248,
+        "name": "سشيشسي",
+        "email": "asdasd@asd.asd",
+        "password": "fsfggdfg",
+        "registeredAt": "2025-10-01T17:03:37.248Z",
+        "lastLogin": null,
+        "isActive": true
+    },
+    {
+        "id": 1759339796590,
+        "name": "mohmed",
+        "email": "ahmedsdsddsa@gamil.com",
+        "password": "asdasdasdasdasd",
+        "registeredAt": "2025-10-01T17:29:56.590Z",
+        "lastLogin": "2025-10-01T17:30:09.972Z",
+        "isActive": true
+    },
+    {
+        "id": 1759446380505,
+        "name": "Ahmed",
+        "email": "ahmed@gaamil.com",
+        "password": "1234512345",
+        "registeredAt": "2025-10-02T23:06:20.505Z",
+        "lastLogin": "2025-10-02T23:06:49.780Z",
+        "isActive": true,
+        "deviceId": "y1sno0"
+    },
+    {
+        "id": 1759446542172,
+        "name": "asdasd",
+        "email": "ahmeddad@gamil.com",
+        "password": "12341234",
+        "registeredAt": "2025-10-02T23:09:02.172Z",
+        "lastLogin": "2025-10-02T23:09:19.375Z",
+        "isActive": true,
+        "deviceId": "y1sno0"
+    },
+    {
+        "id": 1759532897646,
+        "name": "Ahmed",
+        "email": "asdadad@dasdad.dsd",
+        "password": "asdasdasd",
+        "registeredAt": "2025-10-03T23:08:17.646Z",
+        "lastLogin": "2025-10-03T23:09:07.161Z",
+        "isActive": true,
+        "deviceId": "y1sno0"
+    }
 ]

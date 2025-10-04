@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصطلحات التمريض - Nursing Terms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .term-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .term-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .term-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .term-english {
+            font-size: 1.5em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .term-arabic {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .term-definition {
+            font-size: 1em;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .term-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🩺 مصطلحات التمريض الأساسية</h1>
+        <p>المفاهيم والمصطلحات الأساسية في مهنة التمريض</p>
+    </div>
+
+    <div class="container">
+        <div class="term-grid">
+            <div class="term-card">
+                <div class="term-english">Assessment</div>
+                <div class="term-arabic">التقييم</div>
+                <div class="term-definition">عملية جمع المعلومات الشاملة عن الحالة الصحية للمريض من خلال الفحص والملاحظة والمقابلة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Diagnosis</div>
+                <div class="term-arabic">التشخيص التمريضي</div>
+                <div class="term-definition">الحكم السريري على استجابة الفرد أو الأسرة أو المجتمع للمشاكل الصحية الفعلية أو المحتملة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Planning</div>
+                <div class="term-arabic">التخطيط</div>
+                <div class="term-definition">وضع أهداف وتدخلات تمريضية لحل المشكلات الصحية المحددة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Implementation</div>
+                <div class="term-arabic">التنفيذ</div>
+                <div class="term-definition">تطبيق الخطة التمريضية من خلال تنفيذ التدخلات المخططة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Evaluation</div>
+                <div class="term-arabic">التقييم النهائي</div>
+                <div class="term-definition">قياس مدى تحقيق الأهداف التمريضية وفعالية التدخلات المنفذة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Aseptic Technique</div>
+                <div class="term-arabic">التقنية المعقمة</div>
+                <div class="term-definition">مجموعة من الإجراءات المستخدمة لمنع التلوث بالميكروبات</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Hand Hygiene</div>
+                <div class="term-arabic">نظافة اليدين</div>
+                <div class="term-definition">غسل اليدين أو استخدام المطهرات الكحولية للحد من انتشار العدوى</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Catheterization</div>
+                <div class="term-arabic">القسطرة</div>
+                <div class="term-definition">إدخال أنبوب مجوف في الجسم لإزالة السوائل أو إدخال المواد العلاجية</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Auscultation</div>
+                <div class="term-arabic">التسمع</div>
+                <div class="term-definition">الاستماع إلى الأصوات الداخلية للجسم باستخدام السماعة الطبية</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Palpation</div>
+                <div class="term-arabic">الجس</div>
+                <div class="term-definition">فحص الجسم باستخدام اليدين للكشف عن التشوهات</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Inspection</div>
+                <div class="term-arabic">الفحص البصري</div>
+                <div class="term-definition">المراقبة الدقيقة للمريض باستخدام البصر</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Percussion</div>
+                <div class="term-arabic">القرع</div>
+                <div class="term-definition">الطرق على الجسم لتقييم الأصوات والكشف عن التشوهات</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Ambulation</div>
+                <div class="term-arabic">المشي/التنقل</div>
+                <div class="term-definition">مساعدة المريض على الحركة والمشي</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Bedpan</div>
+                <div class="term-arabic">الأوتور (القصرية)</div>
+                <div class="term-definition">وعاء يُستخدم للتبرز والتبول أثناء الراحة في السرير</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Isolation</div>
+                <div class="term-arabic">العزل</div>
+                <div class="term-definition">فصل المرضى المصابين بأمراض معدية عن الآخرين</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Debridement</div>
+                <div class="term-arabic">التنظيف الجراحي</div>
+                <div class="term-definition">إزالة الأنسجة الميتة أو المتضررة من الجروح</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Dressing</div>
+                <div class="term-arabic">الضماد</div>
+                <div class="term-definition">مادة معقمة توضع على الجروح للحماية ومنع العدوى</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Gavage</div>
+                <div class="term-arabic">التغذية بالأنبوب</div>
+                <div class="term-definition">إعطاء التغذية السائلة عبر أنبوب يمر إلى المعدة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Handoff</div>
+                <div class="term-arabic">تسليم المريض</div>
+                <div class="term-definition">نقل معلومات المريض بين الممرضين أثناء تغيير المناوبات</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Rounds</div>
+                <div class="term-arabic">الجولة الطبية</div>
+                <div class="term-definition">زيارات منتظمة للأطباء والممرضين لتقييم حالة المرضى</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Intake & Output</div>
+                <div class="term-arabic">المدخول والمخرج</div>
+                <div class="term-definition">قياس كمية السوائل التي يتناولها المريض والتي يفرزها</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Fall Risk</div>
+                <div class="term-arabic">خطر السقوط</div>
+                <div class="term-definition">احتمالية سقوط المريض وإصابته</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Patient Advocacy</div>
+                <div class="term-arabic">الدفاع عن حقوق المريض</div>
+                <div class="term-definition">حماية حقوق المرضى والتأكد من حصولهم على رعاية مناسبة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Sterile Field</div>
+                <div class="term-arabic">المجال المعقم</div>
+                <div class="term-definition">منطقة خالية من الميكروبات تُستخدم أثناء الإجراءات الجراحية</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

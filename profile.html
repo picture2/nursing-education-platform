@@ -415,9 +415,34 @@
         </div>
     </div>
 
-    <script src="enhanced-features.js"></script>
     <script>
         let currentUser = null;
+        
+        // نظام المفضلة
+        const favoritesSystem = {
+            getFavorites: function(userEmail) {
+                const key = `favorites_${userEmail}`;
+                return JSON.parse(localStorage.getItem(key) || '[]');
+            },
+            isFavorite: function(userEmail, pdfId) {
+                const favorites = this.getFavorites(userEmail);
+                return favorites.includes(pdfId);
+            },
+            toggleFavorite: function(userEmail, pdfId) {
+                const key = `favorites_${userEmail}`;
+                let favorites = this.getFavorites(userEmail);
+                
+                if (favorites.includes(pdfId)) {
+                    favorites = favorites.filter(id => id !== pdfId);
+                    localStorage.setItem(key, JSON.stringify(favorites));
+                    return false;
+                } else {
+                    favorites.push(pdfId);
+                    localStorage.setItem(key, JSON.stringify(favorites));
+                    return true;
+                }
+            }
+        };
 
         // تهيئة الصفحة
         function initProfile() {
@@ -563,5 +588,8 @@
         // تهيئة عند التحميل
         document.addEventListener('DOMContentLoaded', initProfile);
     </script>
+    
+    <!-- نظام الشات العائم -->
+    <script src="chat-widget.js"></script>
 </body>
 </html>

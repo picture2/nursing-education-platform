@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكافحة العدوى</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .infection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+        .infection-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .infection-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .infection-title {
+            font-size: 1.8em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .infection-steps {
+            margin-top: 15px;
+        }
+        .step {
+            background: rgba(35, 35, 60, 0.5);
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 3px solid #4dc3ff;
+        }
+        .step strong {
+            color: #4dc3ff;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .infection-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🦠 مكافحة العدوى</h1>
+        <p>بروتوكولات الوقاية من العدوى والتعقيم</p>
+    </div>
+
+    <div class="container">
+        <div class="infection-grid">
+            <div class="infection-card">
+                <div class="infection-title">غسل اليدين</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>1.</strong> بلل اليدين بالماء الجاري</div>
+                    <div class="step"><strong>2.</strong> ضع كمية كافية من الصابون</div>
+                    <div class="step"><strong>3.</strong> افرك لمدة 40-60 ثانية على الأقل</div>
+                    <div class="step"><strong>4.</strong> نظف بين الأصابع وتحت الأظافر</div>
+                    <div class="step"><strong>5.</strong> اشطف جيداً وجفف بمنشفة نظيفة</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">معدات الحماية الشخصية (PPE)</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>الترتيب عند الارتداء:</strong> 1. غسل اليدين 2. الرداء 3. القناع 4. النظارات 5. القفازات</div>
+                    <div class="step"><strong>الترتيب عند الخلع:</strong> 1. القفازات 2. النظارات 3. الرداء 4. القناع 5. غسل اليدين</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">احتياطات العزل - القطيرات</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>•</strong> قناع جراحي لمسافة أقل من مترين</div>
+                    <div class="step"><strong>•</strong> غرفة خاصة (إذا أمكن)</div>
+                    <div class="step"><strong>•</strong> الأمثلة: الإنفلونزا، COVID-19</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">احتياطات العزل - الهواء</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>•</strong> غرفة عزل سالبة الضغط</div>
+                    <div class="step"><strong>•</strong> قناع N95</div>
+                    <div class="step"><strong>•</strong> الأمثلة: السل، الحصبة، الجدري</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">احتياطات العزل - التلامس</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>•</strong> رداء وقفازات</div>
+                    <div class="step"><strong>•</strong> أدوات خاصة بالمريض</div>
+                    <div class="step"><strong>•</strong> الأمثلة: MRSA، C. difficile</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">التعقيم والتطهير</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>التعقيم:</strong> قتل جميع الكائنات الحية (أدوات جراحية)</div>
+                    <div class="step"><strong>التطهير العالي:</strong> قتل معظم الميكروبات (منظار)</div>
+                    <div class="step"><strong>التطهير المنخفض:</strong> قتل البكتيريا النباتية (أسطح)</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">التخلص من النفايات الطبية</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>الحمراء:</strong> نفايات معدية (دم، سوائل)</div>
+                    <div class="step"><strong>الصفراء:</strong> نفايات كيميائية</div>
+                    <div class="step"><strong>السوداء:</strong> نفايات عادية</div>
+                    <div class="step"><strong>الحادة:</strong> صندوق خاص للإبر</div>
+                </div>
+            </div>
+
+            <div class="infection-card">
+                <div class="infection-title">التطعيمات للعاملين الصحيين</div>
+                <div class="infection-steps">
+                    <div class="step"><strong>•</strong> الكبد الوبائي B (إلزامي)</div>
+                    <div class="step"><strong>•</strong> الإنفلونزا (سنوياً)</div>
+                    <div class="step"><strong>•</strong> الحصبة والحصبة الألمانية والنكاف (MMR)</div>
+                    <div class="step"><strong>•</strong> جدري الماء (Varicella)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

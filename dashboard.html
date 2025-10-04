@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <meta charset="UTF-8">
@@ -13,39 +14,40 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
-            color: #333;
-            padding-bottom: 100px; /* مساحة للـ footer الثابت */
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            padding-bottom: 100px;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
+        
         .header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .welcome {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
+        
         .user-avatar {
             width: 60px;
             height: 60px;
@@ -58,18 +60,18 @@
             font-size: 24px;
             font-weight: bold;
         }
-
+        
         .welcome-text h1 {
             color: #333;
             font-size: 28px;
             margin-bottom: 5px;
         }
-
+        
         .welcome-text p {
             color: #666;
             font-size: 16px;
         }
-
+        
         .logout-btn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: white;
@@ -82,53 +84,65 @@
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
         }
-
+        
         .logout-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(255, 107, 107, 0.4);
         }
-
+        
         .sections-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
             margin-bottom: 30px;
         }
-
         .section-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(77, 195, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-
+        
         .section-card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 30px 60px rgba(77, 195, 255, 0.2);
         }
-
+        
         .section-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            height: 4px;
+            background: linear-gradient(90deg, #4dc3ff, #667eea, #764ba2);
             background-size: 200% 100%;
             animation: gradientShift 3s ease infinite;
         }
-
+        
         @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
         }
-
+        
         .section-icon {
             width: 80px;
             height: 80px;
@@ -142,45 +156,46 @@
             font-size: 32px;
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
-
+        
         .section-title {
             font-size: 24px;
             font-weight: 700;
-            color: #333;
+            color: #4dc3ff;
             margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(77, 195, 255, 0.3);
         }
-
+        
         .section-description {
-            color: #666;
+            color: #b0b0b0;
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 20px;
         }
-
+        
         .section-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid rgba(77, 195, 255, 0.2);
         }
-
+        
         .stat {
             text-align: center;
         }
-
+        
         .stat-number {
             font-size: 20px;
             font-weight: 700;
-            color: #667eea;
+            color: #4dc3ff;
         }
-
+        
         .stat-label {
             font-size: 12px;
-            color: #999;
+            color: #888;
             margin-top: 5px;
         }
-
+        
         .floating-particles {
             position: fixed;
             top: 0;
@@ -190,21 +205,28 @@
             pointer-events: none;
             z-index: -1;
         }
-
+        
         .particle {
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(77, 195, 255, 0.4);
             border-radius: 50%;
             animation: float 6s ease-in-out infinite;
         }
-
+        
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
         }
-
+        
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -220,54 +242,57 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
+        
         .loading-overlay.show {
             opacity: 1;
             visibility: visible;
         }
-
+        
         .loading-spinner {
             width: 80px;
             height: 80px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #667eea;
+            border: 4px solid rgba(77, 195, 255, 0.2);
+            border-top: 4px solid #4dc3ff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
-
+        
         .loading-text {
             color: white;
             font-size: 18px;
             margin-top: 20px;
             text-align: center;
         }
-
+        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 gap: 20px;
                 text-align: center;
             }
-
             .sections-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-
             .section-card {
                 padding: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="floating-particles" id="particles"></div>
-    
+
     <div class="loading-overlay" id="loadingOverlay">
         <div>
             <div class="loading-spinner"></div>
@@ -284,7 +309,13 @@
                     <p>مركز التمريض والتعليم الطبي</p>
                 </div>
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="logout-btn" onclick="window.location.href='skeleton-3d.html'" style="background: linear-gradient(135deg, #4dc3ff, #2a7fcc);">
+                    <i class="fas fa-bone"></i> الهيكل العظمي 3D
+                </button>
+                <button class="logout-btn" onclick="window.location.href='nursing-hub.html'" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-graduation-cap"></i> مركز المعرفة التمريضية
+                </button>
                 <button class="logout-btn" id="adminPanelBtn" onclick="window.location.href='admin-backend.html'" style="background: linear-gradient(135deg, #ffa500, #ff8c00); display: none;">
                     <i class="fas fa-crown"></i> لوحة الإدارة
                 </button>
@@ -300,16 +331,16 @@
             </div>
         </div>
 
-        <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 20px; padding: 20px; margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);">
+        <div style="background: rgba(26, 26, 46, 0.8); backdrop-filter: blur(20px); border-radius: 20px; padding: 20px; margin-bottom: 30px; border: 2px solid rgba(77, 195, 255, 0.3); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);">
             <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 200px;">
-                    <input type="text" id="searchInput" placeholder="البحث في الأقسام..." style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px;">
+                    <input type="text" id="searchInput" placeholder="البحث في الأقسام..." style="width: 100%; padding: 12px; border: 2px solid rgba(77, 195, 255, 0.3); border-radius: 10px; font-size: 16px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0;">
                 </div>
                 <div>
-                    <select id="sortSelect" style="padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px;">
-                        <option value="name">ترتيب حسب الاسم</option>
-                        <option value="views">ترتيب حسب المشاهدات</option>
-                        <option value="newest">الأحدث أولاً</option>
+                    <select id="sortSelect" style="padding: 12px; border: 2px solid rgba(77, 195, 255, 0.3); border-radius: 10px; font-size: 16px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0;">
+                        <option value="name" style="background: #1a1a2e; color: #e0e0e0;">ترتيب حسب الاسم</option>
+                        <option value="views" style="background: #1a1a2e; color: #e0e0e0;">ترتيب حسب المشاهدات</option>
+                        <option value="newest" style="background: #1a1a2e; color: #e0e0e0;">الأحدث أولاً</option>
                     </select>
                 </div>
             </div>
@@ -323,40 +354,42 @@
     <script>
         // بيانات المستخدم
         let currentUser = null;
-        let sections = [
-            {
-                id: 1,
-                title: "التشريح",
-                description: "تعلم أساسيات التشريح البشري والأعضاء المختلفة",
-                icon: "fas fa-heartbeat",
-                pdfUrl: "anatomy.pdf",
-                views: 0
-            },
-            {
-                id: 2,
-                title: "أساسيات التمريض",
-                description: "المبادئ الأساسية للتمريض ورعاية المرضى",
-                icon: "fas fa-user-md",
-                pdfUrl: "nursing-basics.pdf",
-                views: 0
-            },
-            {
-                id: 3,
-                title: "الأدوية",
-                description: "معرفة الأدوية المختلفة وطرق استخدامها",
-                icon: "fas fa-pills",
-                pdfUrl: "medications.pdf",
-                views: 0
-            },
-            {
-                id: 4,
-                title: "الطوارئ",
-                description: "التعامل مع الحالات الطارئة والإسعافات الأولية",
-                icon: "fas fa-ambulance",
-                pdfUrl: "emergency.pdf",
-                views: 0
-            }
-        ];
+        let sections = [{
+            id: 1,
+            title: "التشريح",
+            description: "تعلم أساسيات التشريح البشري والأعضاء المختلفة",
+            icon: "fas fa-heartbeat",
+            pdfUrl: "anatomy.pdf",
+            views: 0
+        }, {
+            id: 2,
+            title: "أساسيات التمريض",
+            description: "المبادئ الأساسية للتمريض ورعاية المرضى",
+            icon: "fas fa-user-md",
+            pdfUrl: "nursing-basics.pdf",
+            views: 0
+        }, {
+            id: 3,
+            title: "الأدوية",
+            description: "معرفة الأدوية المختلفة وطرق استخدامها",
+            icon: "fas fa-pills",
+            pdfUrl: "medications.pdf",
+            views: 0
+        }, {
+            id: 4,
+            title: "الطوارئ",
+            description: "التعامل مع الحالات الطارئة والإسعافات الأولية",
+            icon: "fas fa-ambulance",
+            pdfUrl: "emergency.pdf",
+            views: 0
+        }, {
+            id: 5,
+            title: "دليل التمريض الشامل",
+            description: "دليل كامل يحتوي على العلامات الحيوية ونظافة اليدين وسلامة المريض",
+            icon: "fas fa-file-pdf",
+            pdfUrl: "nursing-guide.pdf",
+            views: 0
+        }];
 
         // تحديث البيانات من السيرفر (للزر اليدوي)
         async function refreshData() {
@@ -379,14 +412,17 @@
             checkAdminPermissions();
             updateWelcomeMessage();
             createParticles();
-            
+
             // عرض رسالة تحميل
             const sectionsGrid = document.getElementById('sectionsGrid');
             sectionsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: white; font-size: 1.5rem;"><i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 20px;"></i><br>جاري تحميل الأقسام...</div>';
-            
+
             // انتظار تحميل الأقسام من السيرفر أولاً
             await loadSectionsFromAdmin();
             renderSections();
+            
+            // تحميل عدد PDFs لكل قسم
+            loadPDFCounts();
         }
 
         // التحقق من صلاحيات المشرف
@@ -394,7 +430,7 @@
             const adminEmails = ['admin@nursing.com', 'ahmed@0100'];
             const userEmail = currentUser.email.toLowerCase().trim();
             const adminPanelBtn = document.getElementById('adminPanelBtn');
-            
+
             // إظهار زر لوحة الإدارة فقط للمشرفين
             if (adminEmails.includes(userEmail)) {
                 if (adminPanelBtn) {
@@ -410,7 +446,7 @@
         function updateWelcomeMessage() {
             const welcomeMessage = document.getElementById('welcomeMessage');
             const userAvatar = document.getElementById('userAvatar');
-            
+
             welcomeMessage.textContent = `مرحباً ${currentUser.name}!`;
             userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
         }
@@ -421,7 +457,7 @@
                 console.log('جاري تحميل الأقسام من السيرفر...');
                 const response = await fetch(window.location.origin + '/api/sections');
                 const data = await response.json();
-                
+
                 if (data.success) {
                     sections = data.data;
                     console.log('تم تحميل الأقسام من السيرفر:', sections);
@@ -432,36 +468,31 @@
             } catch (error) {
                 console.error('خطأ في الاتصال بالسيرفر:', error);
                 // استخدام أقسام افتراضية في حالة فشل الاتصال
-                sections = [
-                    {
-                        id: 1,
-                        title: "التشريح",
-                        description: "تعلم أساسيات التشريح البشري والأعضاء المختلفة",
-                        icon: "🫀",
-                        views: 0
-                    },
-                    {
-                        id: 2,
-                        title: "أساسيات التمريض",
-                        description: "المبادئ الأساسية للتمريض ورعاية المرضى",
-                        icon: "👩‍⚕️",
-                        views: 0
-                    },
-                    {
-                        id: 3,
-                        title: "الأدوية",
-                        description: "معرفة الأدوية المختلفة وطرق استخدامها",
-                        icon: "💊",
-                        views: 0
-                    },
-                    {
-                        id: 4,
-                        title: "الطوارئ",
-                        description: "التعامل مع الحالات الطارئة والإسعافات الأولية",
-                        icon: "🚑",
-                        views: 0
-                    }
-                ];
+                sections = [{
+                    id: 1,
+                    title: "التشريح",
+                    description: "تعلم أساسيات التشريح البشري والأعضاء المختلفة",
+                    icon: "🫀",
+                    views: 0
+                }, {
+                    id: 2,
+                    title: "أساسيات التمريض",
+                    description: "المبادئ الأساسية للتمريض ورعاية المرضى",
+                    icon: "👩‍⚕️",
+                    views: 0
+                }, {
+                    id: 3,
+                    title: "الأدوية",
+                    description: "معرفة الأدوية المختلفة وطرق استخدامها",
+                    icon: "💊",
+                    views: 0
+                }, {
+                    id: 4,
+                    title: "الطوارئ",
+                    description: "التعامل مع الحالات الطارئة والإسعافات الأولية",
+                    icon: "🚑",
+                    views: 0
+                }];
                 console.log('⚠️ تحذير: لم يتم الاتصال بالسيرفر. تأكد من تشغيل السيرفر (npm start)');
             }
         }
@@ -473,11 +504,11 @@
 
             // فلترة وترتيب الأقسام
             let filteredSections = sections;
-            
+
             // البحث
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             if (searchTerm) {
-                filteredSections = sections.filter(section => 
+                filteredSections = sections.filter(section =>
                     section.title.toLowerCase().includes(searchTerm) ||
                     section.description.toLowerCase().includes(searchTerm)
                 );
@@ -485,7 +516,7 @@
 
             // الترتيب
             const sortBy = document.getElementById('sortSelect').value;
-            switch(sortBy) {
+            switch (sortBy) {
                 case 'views':
                     filteredSections.sort((a, b) => b.views - a.views);
                     break;
@@ -510,40 +541,46 @@
             filteredSections.forEach(section => {
                 const sectionCard = document.createElement('div');
                 sectionCard.className = 'section-card';
-                
+
                 // التحقق من نوع الأيقونة (صورة غلاف أو إيموجي)
                 let cardStyle = '';
                 let iconContent = '';
                 let textColor = '';
-                
-                if (section.icon && section.icon.startsWith('data:image')) {
-                    // صورة - استخدمها كـ background cover
-                    cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url(${section.icon}); background-size: cover; background-position: center;`;
+
+                // إذا كانت هناك صورة للقسم
+                if (section.image) {
+                    // صورة - استخدمها كـ background cover مع overlay داكن
+                    cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.image});`;
                     textColor = 'color: white;';
                     iconContent = ''; // لا نحتاج أيقونة منفصلة
+                } else if (section.icon && section.icon.startsWith('data:image')) {
+                    // صورة base64 في icon
+                    cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.icon});`;
+                    textColor = 'color: white;';
+                    iconContent = '';
                 } else {
                     // إيموجي أو أيقونة عادية
                     iconContent = `<div class="section-icon"><span style="font-size: 48px;">${section.icon || '📁'}</span></div>`;
                 }
-                
+
                 sectionCard.style.cssText = cardStyle;
-                
+
                 sectionCard.innerHTML = `
                     ${iconContent}
-                    <h3 class="section-title" style="${textColor} ${textColor ? 'text-shadow: 0 2px 4px rgba(0,0,0,0.7);' : ''}">${section.title}</h3>
-                    <p class="section-description" style="${textColor ? 'color: rgba(255,255,255,0.95);' : ''}">${section.description}</p>
-                    <div class="section-stats" style="${textColor ? 'color: white;' : ''}">
+                    <h3 class="section-title" style="${textColor} ${textColor ? 'text-shadow: 0 3px 8px rgba(0,0,0,0.9); font-weight: 700;' : ''}">${section.title}</h3>
+                    <p class="section-description" style="${textColor ? 'color: rgba(255,255,255,0.95); text-shadow: 0 2px 6px rgba(0,0,0,0.8);' : ''}">${section.description}</p>
+                    <div class="section-stats" style="${textColor ? 'color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.8);' : ''}">
                         <div class="stat">
-                            <div class="stat-number" style="${textColor}">0</div>
-                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.8);' : ''}">مشاهدات</div>
+                            <div class="stat-number" id="pdfCount-${section.id}" style="${textColor}">${textColor ? '<span style="text-shadow: 0 2px 6px rgba(0,0,0,0.9);">0</span>' : '0'}</div>
+                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.9); text-shadow: 0 2px 4px rgba(0,0,0,0.7);' : ''}">ملف PDF</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-number" style="${textColor}">0</div>
-                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.8);' : ''}">صفحات</div>
+                            <div class="stat-number" style="${textColor}">${textColor ? `<span style="text-shadow: 0 2px 6px rgba(0,0,0,0.9);">${section.views || 0}</span>` : section.views || 0}</div>
+                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.9); text-shadow: 0 2px 4px rgba(0,0,0,0.7);' : ''}">مشاهدة</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-number" style="${textColor}">0</div>
-                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.8);' : ''}">ساعات</div>
+                            <div class="stat-number" style="${textColor}">📚</div>
+                            <div class="stat-label" style="${textColor ? 'color: rgba(255,255,255,0.9); text-shadow: 0 2px 4px rgba(0,0,0,0.7);' : ''}">محتوى</div>
                         </div>
                     </div>
                     <div class="section-actions" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
@@ -558,14 +595,61 @@
             });
         }
 
+        // تحميل عدد PDFs لكل قسم
+        async function loadPDFCounts() {
+            try {
+                console.log('🔵 جاري تحميل عدد PDFs...');
+                const response = await fetch(window.location.origin + '/api/pdfs');
+                const data = await response.json();
+                
+                console.log('📦 PDFs من السيرفر:', data);
+                
+                if (data.success) {
+                    console.log('✅ عدد PDFs الكلي:', data.data.length);
+                    
+                    // حساب عدد PDFs لكل قسم
+                    const counts = {};
+                    data.data.forEach(pdf => {
+                        // تحويل sectionId لـ number (في حالة كان string)
+                        const sectionId = typeof pdf.sectionId === 'string' ? parseInt(pdf.sectionId) : pdf.sectionId;
+                        console.log(`📄 PDF: ${pdf.title} - القسم: ${sectionId} (نوع: ${typeof sectionId})`);
+                        counts[sectionId] = (counts[sectionId] || 0) + 1;
+                    });
+                    
+                    console.log('📊 عدد PDFs لكل قسم:', counts);
+                    
+                    // تحديث العداد لكل قسم
+                    Object.keys(counts).forEach(sectionId => {
+                        const countElement = document.getElementById(`pdfCount-${sectionId}`);
+                        if (countElement) {
+                            // التحقق من وجود span بداخله
+                            const span = countElement.querySelector('span');
+                            if (span) {
+                                span.textContent = counts[sectionId];
+                            } else {
+                                countElement.textContent = counts[sectionId];
+                            }
+                            console.log(`✅ تم تحديث عداد القسم ${sectionId}: ${counts[sectionId]}`);
+                        } else {
+                            console.log(`❌ لم يتم إيجاد عنصر العداد: pdfCount-${sectionId}`);
+                        }
+                    });
+                    
+                    console.log('✅ تم تحديث عدد PDFs بنجاح');
+                }
+            } catch (error) {
+                console.error('❌ خطأ في تحميل عدد PDFs:', error);
+            }
+        }
+
         // فتح القسم
         function openSection(section) {
             showLoading();
-            
+
             // تسجيل المشاهدة
             section.views++;
             updateSectionViews(section.id, section.views);
-            
+
             setTimeout(() => {
                 hideLoading();
                 // التوجه لصفحة عرض PDF
@@ -629,8 +713,14 @@
 
         // إضافة مستمعي الأحداث للبحث والترتيب
         function setupEventListeners() {
-            document.getElementById('searchInput').addEventListener('input', renderSections);
-            document.getElementById('sortSelect').addEventListener('change', renderSections);
+            document.getElementById('searchInput').addEventListener('input', () => {
+                renderSections();
+                loadPDFCounts();
+            });
+            document.getElementById('sortSelect').addEventListener('change', () => {
+                renderSections();
+                loadPDFCounts();
+            });
         }
 
         // تهيئة الصفحة عند التحميل
@@ -639,152 +729,157 @@
             setupEventListeners();
         });
     </script>
- 
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
- <style>
-     /* ** CSS للتصميم الزجاجي القوي ** */
-     .footer-container {
-         position: fixed;
-         bottom: 0;
-         left: 0;
-         right: 0;
-         width: 100%;
-         padding: 20px 0;
-         box-sizing: border-box;
-         z-index: 1000; 
-         
-         /* تطبيق الخلفية الزجاجية على الـ DIV الحاضن (كما طلبت) */
-         background: rgba(13, 17, 23, 0.75); /* خلفية شبه شفافة داكنة */
-         backdrop-filter: blur(6px); /* تمويه الزجاج */
-         -webkit-backdrop-filter: blur(6px);
-         box-shadow: 0 -3px 20px rgba(0, 0, 0, 0.4);
-         border-top: 1px solid rgba(255, 255, 255, 0.05); /* حد خفيف */
-     }
- 
-     .footer-section {
-         color: #f0f8ff;
-         text-align: center;
-     }
- 
-     /* تصغير حجم خط الاسم */
-     .name-text {
-         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         font-size: 1.3rem; /* تصغير الخط من 1.6rem */
-         font-weight: 700;
-         margin-bottom: 25px; /* تصغير المسافة السفلية */
-         letter-spacing: 1.2px;
-         text-shadow: 0 0 5px #00eaff;
-     }
- 
-     .social-links {
-         display: flex;
-         justify-content: center;
-         gap: 30px; /* تقليل المسافة بين الأيقونات قليلاً */
-     }
- 
-     .glass-icon {
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         width: 50px; /* تصغير حجم الدائرة من 60px */
-         height: 50px; /* تصغير حجم الدائرة من 60px */
-         border-radius: 50%;
-         font-size: 1.4rem; /* تصغير حجم الأيقونة من 1.8rem */
-         text-decoration: none;
-         color: #ffffff;
-         
-         /* الخصائص الزجاجية للأيقونات نفسها */
-         background: rgba(255, 255, 255, 0.1); 
-         border: 1px solid rgba(255, 255, 255, 0.3);
-         
-         /* الحركة والتفاعل */
-         transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-         cursor: pointer;
-     }
- 
-     /* تأثير عند Hover - تم تعديل قيم التحريك لتناسب الحجم الأصغر */
-     .glass-icon:hover {
-         background: rgba(255, 255, 255, 0.25); 
-         box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 10px rgba(0, 255, 255, 0.8) inset;
-         transform: scale(1.15) translateY(-5px); 
-     }
- 
-     /* تأثير عند النقر الفعلي */
-     .glass-icon:active {
-         background: rgba(255, 255, 255, 0.5); 
-         transform: scale(0.9);
-         box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-     }
- 
-     /* تخصيص لون الأيقونات عند التفاعل */
-     .facebook-icon:hover {
-         color: #1877f2; 
-     }
- 
-     .whatsapp-icon:hover {
-         color: #25d366; 
-     }
-     
-     /* Responsive Footer */
-     @media (max-width: 768px) {
-         .footer-container {
-             padding: 15px 0;
-         }
-         
-         .name-text {
-             font-size: 1.1rem;
-         }
-         
-         .glass-icon {
-             width: 45px;
-             height: 45px;
-             font-size: 1.3rem;
-         }
-         
-         .social-links {
-             gap: 20px;
-         }
-     }
-     
-     @media (max-width: 480px) {
-         .footer-container {
-             padding: 12px 0;
-         }
-         
-         .name-text {
-             font-size: 1rem;
-         }
-         
-         .glass-icon {
-             width: 40px;
-             height: 40px;
-             font-size: 1.1rem;
-         }
-         
-         .social-links {
-             gap: 15px;
-         }
-     }
- </style>
- 
- <div class="footer-container">
-     <footer class="footer-section">
-         <div class="footer-content">
-             <p class="name-text">أحمد محرم</p>
-             
-             <div class="social-links">
-                 
-                 <a href="https://www.facebook.com/ahmd.mhrm.456292" target="_blank" class="glass-icon facebook-icon">
-                     <i class="fab fa-facebook-f"></i>
-                 </a>
-                 
-                 <a href="https://wa.me/201005209667" target="_blank" class="glass-icon whatsapp-icon">
-                     <i class="fab fa-whatsapp"></i>
-                 </a>
-             </div>
-         </div>
-     </footer>
- </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* ** CSS للتصميم الزجاجي القوي ** */
+        
+        .footer-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px 0;
+            box-sizing: border-box;
+            z-index: 1000;
+            /* تطبيق الخلفية الزجاجية على الـ DIV الحاضن (كما طلبت) */
+            background: rgba(13, 17, 23, 0.75);
+            /* خلفية شبه شفافة داكنة */
+            backdrop-filter: blur(6px);
+            /* تمويه الزجاج */
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 -3px 20px rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            /* حد خفيف */
+        }
+        
+        .footer-section {
+            color: #f0f8ff;
+            text-align: center;
+        }
+        /* تصغير حجم خط الاسم */
+        
+        .name-text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.3rem;
+            /* تصغير الخط من 1.6rem */
+            font-weight: 700;
+            margin-bottom: 25px;
+            /* تصغير المسافة السفلية */
+            letter-spacing: 1.2px;
+            text-shadow: 0 0 5px #00eaff;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            /* تقليل المسافة بين الأيقونات قليلاً */
+        }
+        
+        .glass-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            /* تصغير حجم الدائرة من 60px */
+            height: 50px;
+            /* تصغير حجم الدائرة من 60px */
+            border-radius: 50%;
+            font-size: 1.4rem;
+            /* تصغير حجم الأيقونة من 1.8rem */
+            text-decoration: none;
+            color: #ffffff;
+            /* الخصائص الزجاجية للأيقونات نفسها */
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* الحركة والتفاعل */
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+        /* تأثير عند Hover - تم تعديل قيم التحريك لتناسب الحجم الأصغر */
+        
+        .glass-icon:hover {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 10px rgba(0, 255, 255, 0.8) inset;
+            transform: scale(1.15) translateY(-5px);
+        }
+        /* تأثير عند النقر الفعلي */
+        
+        .glass-icon:active {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0.9);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        /* تخصيص لون الأيقونات عند التفاعل */
+        
+        .facebook-icon:hover {
+            color: #1877f2;
+        }
+        
+        .whatsapp-icon:hover {
+            color: #25d366;
+        }
+        /* Responsive Footer */
+        
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 15px 0;
+            }
+            .name-text {
+                font-size: 1.1rem;
+            }
+            .glass-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            .social-links {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-container {
+                padding: 12px 0;
+            }
+            .name-text {
+                font-size: 1rem;
+            }
+            .glass-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            .social-links {
+                gap: 15px;
+            }
+        }
+    </style>
+
+    <div class="footer-container">
+        <footer class="footer-section">
+            <div class="footer-content">
+                <p class="name-text">أحمد محرم</p>
+
+                <div class="social-links">
+
+                    <a href="https://www.facebook.com/ahmd.mhrm.456292" target="_blank" class="glass-icon facebook-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+
+                    <a href="https://wa.me/201005209667" target="_blank" class="glass-icon whatsapp-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- نظام الشات العائم -->
+    <script src="chat-widget.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأدوية - Medications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .med-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .med-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .med-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .med-class {
+            display: inline-block;
+            background: linear-gradient(135deg, #4dc3ff, #667eea);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .med-name {
+            font-size: 1.5em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .med-arabic {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .med-use {
+            font-size: 1em;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .med-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>💊 تصنيفات الأدوية الشائعة</h1>
+        <p>الأدوية الأساسية المستخدمة في التمريض</p>
+    </div>
+
+    <div class="container">
+        <div class="med-grid">
+            <div class="med-card">
+                <span class="med-class">مسكنات</span>
+                <div class="med-name">Paracetamol (Acetaminophen)</div>
+                <div class="med-arabic">باراسيتامول</div>
+                <div class="med-use">مسكن للألم وخافض للحرارة. الجرعة: 500-1000 ملغ كل 4-6 ساعات</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مسكنات</span>
+                <div class="med-name">Ibuprofen</div>
+                <div class="med-arabic">ايبوبروفين</div>
+                <div class="med-use">مسكن ومضاد للالتهاب. الجرعة: 200-400 ملغ كل 4-6 ساعات</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات حيوية</span>
+                <div class="med-name">Amoxicillin</div>
+                <div class="med-arabic">أموكسيسيلين</div>
+                <div class="med-use">مضاد حيوي واسع الطيف لعلاج الالتهابات البكتيرية</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات حيوية</span>
+                <div class="med-name">Azithromycin</div>
+                <div class="med-arabic">أزيثروميسين</div>
+                <div class="med-use">مضاد حيوي لعلاج التهابات الجهاز التنفسي</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">خافضات الضغط</span>
+                <div class="med-name">Amlodipine</div>
+                <div class="med-arabic">أملوديبين</div>
+                <div class="med-use">خافض لضغط الدم من مجموعة حاصرات قنوات الكالسيوم</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">خافضات الضغط</span>
+                <div class="med-name">Enalapril</div>
+                <div class="med-arabic">إنالابريل</div>
+                <div class="med-use">خافض لضغط الدم من مجموعة مثبطات الإنزيم المحول للأنجيوتنسين</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات السكري</span>
+                <div class="med-name">Metformin</div>
+                <div class="med-arabic">ميتفورمين</div>
+                <div class="med-use">علاج السكري النوع الثاني عن طريق تحسين حساسية الأنسولين</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات السكري</span>
+                <div class="med-name">Insulin</div>
+                <div class="term-arabic">الأنسولين</div>
+                <div class="med-use">هرمون لتنظيم مستوى السكر في الدم</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات التخثر</span>
+                <div class="med-name">Warfarin</div>
+                <div class="med-arabic">وارفارين</div>
+                <div class="med-use">مضاد للتخثر لمنع تكون الجلطات الدموية</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مدرات البول</span>
+                <div class="med-name">Furosemide (Lasix)</div>
+                <div class="med-arabic">فيوروسيمايد</div>
+                <div class="med-use">مدر قوي للبول لعلاج احتباس السوائل</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">موسعات الشعب</span>
+                <div class="med-name">Salbutamol (Ventolin)</div>
+                <div class="med-arabic">سالبوتامول</div>
+                <div class="med-use">موسع للشعب الهوائية لعلاج الربو</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات الحموضة</span>
+                <div class="med-name">Omeprazole</div>
+                <div class="med-arabic">أوميبرازول</div>
+                <div class="med-use">مثبط لمضخة البروتون لعلاج حموضة المعدة</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات القيء</span>
+                <div class="med-name">Ondansetron</div>
+                <div class="med-arabic">أوندانسيترون</div>
+                <div class="med-use">مضاد للقيء والغثيان</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات التجلط</span>
+                <div class="med-name">Aspirin</div>
+                <div class="med-arabic">أسبرين</div>
+                <div class="med-use">مسكن ومضاد للالتهاب ومانع لتجمع الصفائح الدموية</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">كورتيكوستيرويد</span>
+                <div class="med-name">Prednisolone</div>
+                <div class="med-arabic">بريدنيزولون</div>
+                <div class="med-use">مضاد قوي للالتهاب ومثبط للمناعة</div>
+            </div>
+
+            <div class="med-card">
+                <span class="med-class">مضادات الهستامين</span>
+                <div class="med-name">Cetirizine</div>
+                <div class="med-arabic">سيتريزين</div>
+                <div class="med-use">مضاد للهستامين لعلاج الحساسية</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

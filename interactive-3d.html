@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التعلم التفاعلي 3D - منصة التمريض</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .lesson-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .lesson-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .lesson-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .lesson-title {
+            font-size: 1.5em;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .lesson-desc {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+        }
+        #canvas-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+        #canvas-container.active {
+            display: block;
+        }
+        canvas {
+            width: 100% !important;
+            height: 600px !important;
+            border-radius: 15px;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+        .info-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .info-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            background: #dc3545;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 التعلم التفاعلي ثلاثي الأبعاد</h1>
+        
+        <div class="lessons-grid" id="lessons-grid">
+            <div class="lesson-card" onclick="showLesson('heart')">
+                <div class="lesson-icon">🫀</div>
+                <div class="lesson-title">تشريح القلب</div>
+                <div class="lesson-desc">تعلم تشريح القلب بنموذج 3D تفاعلي</div>
+            </div>
+            
+            <div class="lesson-card" onclick="showLesson('injection')">
+                <div class="lesson-icon">💉</div>
+                <div class="lesson-title">الحقن الصحيح</div>
+                <div class="lesson-desc">تقنيات الحقن الوريدي والعضلي</div>
+            </div>
+            
+            <div class="lesson-card" onclick="showLesson('pressure')">
+                <div class="lesson-icon">🩺</div>
+                <div class="lesson-title">قياس الضغط</div>
+                <div class="lesson-desc">خطوات قياس ضغط الدم بالتفصيل</div>
+            </div>
+            
+            <div class="lesson-card" onclick="showLesson('skeleton')">
+                <div class="lesson-icon">🦴</div>
+                <div class="lesson-title">الهيكل العظمي</div>
+                <div class="lesson-desc">استكشف عظام الجسم البشري</div>
+            </div>
+        </div>
+        
+        <div id="canvas-container">
+            <canvas id="canvas3d"></canvas>
+            <div class="controls">
+                <button class="btn" onclick="rotateModel()">🔄 تدوير</button>
+                <button class="btn" onclick="zoomIn()">🔍 تكبير</button>
+                <button class="btn" onclick="zoomOut()">🔍 تصغير</button>
+                <button class="btn" onclick="resetView()">↺ إعادة الضبط</button>
+                <button class="btn back-btn" onclick="hideLesson()">← رجوع</button>
+            </div>
+            <div class="info-panel" id="info-panel">
+                <div class="info-title">معلومات الدرس</div>
+                <div id="lesson-info"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scene, camera, renderer, model, controls;
+        let currentLesson = null;
+
+        function initScene() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / 600, 0.1, 1000);
+            camera.position.z = 5;
+            
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), antialias: true });
+            renderer.setSize(window.innerWidth * 0.9, 600);
+            
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+        }
+
+        function createHeart() {
+            const group = new THREE.Group();
+            
+            const heartShape = new THREE.Shape();
+            heartShape.moveTo(0, 0);
+            heartShape.bezierCurveTo(0, -0.3, -0.6, -0.3, -0.6, 0);
+            heartShape.bezierCurveTo(-0.6, 0.3, 0, 0.6, 0, 1);
+            heartShape.bezierCurveTo(0, 0.6, 0.6, 0.3, 0.6, 0);
+            heartShape.bezierCurveTo(0.6, -0.3, 0, -0.3, 0, 0);
+            
+            const extrudeSettings = { depth: 0.4, bevelEnabled: true, bevelThickness: 0.1 };
+            const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+            const heart = new THREE.Mesh(geometry, material);
+            group.add(heart);
+            
+            return group;
+        }
+
+        function createInjection() {
+            const group = new THREE.Group();
+            
+            // Syringe body
+            const bodyGeometry = new THREE.CylinderGeometry(0.2, 0.2, 2, 32);
+            const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 0.8 });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            group.add(body);
+            
+            // Needle
+            const needleGeometry = new THREE.CylinderGeometry(0.02, 0.02, 1, 16);
+            const needleMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 });
+            const needle = new THREE.Mesh(needleGeometry, needleMaterial);
+            needle.position.y = -1.5;
+            group.add(needle);
+            
+            // Plunger
+            const plungerGeometry = new THREE.CylinderGeometry(0.15, 0.15, 1.5, 32);
+            const plungerMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+            const plunger = new THREE.Mesh(plungerGeometry, plungerMaterial);
+            plunger.position.y = 1.25;
+            group.add(plunger);
+            
+            return group;
+        }
+
+        function createSkeleton() {
+            const group = new THREE.Group();
+            
+            // Skull
+            const skullGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const boneMaterial = new THREE.MeshPhongMaterial({ color: 0xf5f5dc });
+            const skull = new THREE.Mesh(skullGeometry, boneMaterial);
+            skull.position.y = 2;
+            group.add(skull);
+            
+            // Spine
+            for(let i = 0; i < 5; i++) {
+                const vertebra = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.2, 0.2, 0.3, 16),
+                    boneMaterial
+                );
+                vertebra.position.y = 1.5 - (i * 0.4);
+                group.add(vertebra);
+            }
+            
+            return group;
+        }
+
+        function showLesson(type) {
+            document.getElementById('lessons-grid').style.display = 'none';
+            document.getElementById('canvas-container').classList.add('active');
+            currentLesson = type;
+            
+            initScene();
+            
+            if(model) scene.remove(model);
+            
+            let info = '';
+            
+            switch(type) {
+                case 'heart':
+                    model = createHeart();
+                    info = '<p><strong>القلب</strong> هو عضلة تضخ الدم إلى جميع أنحاء الجسم. يتكون من أربع حجرات: الأذين الأيمن، الأذين الأيسر، البطين الأيمن، والبطين الأيسر.</p>';
+                    break;
+                case 'injection':
+                    model = createInjection();
+                    info = '<p><strong>الحقن</strong> يتطلب تقنية صحيحة لتجنب الألم والمضاعفات. تأكد من تعقيم الموقع، واختيار الزاوية الصحيحة (90° للعضل، 45° للوريد).</p>';
+                    break;
+                case 'skeleton':
+                    model = createSkeleton();
+                    info = '<p><strong>الهيكل العظمي</strong> يتكون من 206 عظمة تدعم الجسم وتحمي الأعضاء الحيوية. الجمجمة تحمي الدماغ، والعمود الفقري يحمي الحبل الشوكي.</p>';
+                    break;
+            }
+            
+            scene.add(model);
+            document.getElementById('lesson-info').innerHTML = info;
+            
+            animate();
+        }
+
+        function hideLesson() {
+            document.getElementById('canvas-container').classList.remove('active');
+            document.getElementById('lessons-grid').style.display = 'grid';
+            if(renderer) {
+                renderer.dispose();
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if(controls) controls.update();
+            if(renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+        }
+
+        function rotateModel() {
+            if(model) {
+                model.rotation.y += 0.5;
+            }
+        }
+
+        function zoomIn() {
+            camera.position.z -= 0.5;
+        }
+
+        function zoomOut() {
+            camera.position.z += 0.5;
+        }
+
+        function resetView() {
+            camera.position.set(0, 0, 5);
+            if(model) {
+                model.rotation.set(0, 0, 0);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if(renderer && camera) {
+                camera.aspect = window.innerWidth / 600;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth * 0.9, 600);
+            }
+        });
+    </script>
+</body>
+</html>

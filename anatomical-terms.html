@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المصطلحات التشريحية - Anatomical Terms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(77, 195, 255, 0.2), rgba(102, 126, 234, 0.2));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid rgba(77, 195, 255, 0.5);
+        }
+        .header h1 {
+            font-size: 3em;
+            color: #4dc3ff;
+            text-shadow: 0 0 20px rgba(77, 195, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.5);
+            color: #4dc3ff; padding: 12px 24px;
+            border-radius: 25px; text-decoration: none;
+            font-weight: 600; z-index: 1000; transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(35, 35, 60, 0.9);
+            box-shadow: 0 5px 20px rgba(77, 195, 255, 0.4);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .term-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .term-card {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(77, 195, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .term-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(77, 195, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(77, 195, 255, 0.2);
+        }
+        .term-english {
+            font-size: 1.5em;
+            color: #4dc3ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .term-arabic {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .term-definition {
+            font-size: 1em;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .term-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="nursing-hub.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </a>
+
+    <div class="header">
+        <h1>🫁 المصطلحات التشريحية</h1>
+        <p>الاتجاهات والمستويات والمصطلحات الطبية التشريحية</p>
+    </div>
+
+    <div class="container">
+        <div class="term-grid">
+            <div class="term-card">
+                <div class="term-english">Anterior (Ventral)</div>
+                <div class="term-arabic">أمامي (بطني)</div>
+                <div class="term-definition">الجزء الأمامي من الجسم أو العضو</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Posterior (Dorsal)</div>
+                <div class="term-arabic">خلفي (ظهري)</div>
+                <div class="term-definition">الجزء الخلفي من الجسم أو العضو</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Superior (Cranial)</div>
+                <div class="term-arabic">علوي (قحفي)</div>
+                <div class="term-definition">نحو الأعلى أو الرأس</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Inferior (Caudal)</div>
+                <div class="term-arabic">سفلي (ذيلي)</div>
+                <div class="term-definition">نحو الأسفل أو القدمين</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Medial</div>
+                <div class="term-arabic">إنسي (وسطي)</div>
+                <div class="term-definition">نحو خط منتصف الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Lateral</div>
+                <div class="term-arabic">وحشي (جانبي)</div>
+                <div class="term-definition">بعيداً عن خط منتصف الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Proximal</div>
+                <div class="term-arabic">قريب (دانٍ)</div>
+                <div class="term-definition">قريب من نقطة الارتكاز أو الجذع</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Distal</div>
+                <div class="term-arabic">بعيد (قاصٍ)</div>
+                <div class="term-definition">بعيد عن نقطة الارتكاز أو الجذع</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Supine Position</div>
+                <div class="term-arabic">وضعية الاستلقاء على الظهر</div>
+                <div class="term-definition">النوم على الظهر والوجه للأعلى</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Prone Position</div>
+                <div class="term-arabic">وضعية الانبطاح</div>
+                <div class="term-definition">النوم على البطن والوجه للأسفل</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Fowler's Position</div>
+                <div class="term-arabic">وضعية فاولر</div>
+                <div class="term-definition">جلوس في السرير بزاوية 45-60 درجة</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Trendelenburg Position</div>
+                <div class="term-arabic">وضعية ترندلنبرج</div>
+                <div class="term-definition">الاستلقاء مع رفع القدمين فوق مستوى الرأس</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Sagittal Plane</div>
+                <div class="term-arabic">المستوى السهمي</div>
+                <div class="term-definition">مستوى عمودي يقسم الجسم إلى يمين ويسار</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Coronal Plane</div>
+                <div class="term-arabic">المستوى الإكليلي</div>
+                <div class="term-definition">مستوى عمودي يقسم الجسم إلى أمامي وخلفي</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Transverse Plane</div>
+                <div class="term-arabic">المستوى المستعرض</div>
+                <div class="term-definition">مستوى أفقي يقسم الجسم إلى علوي وسفلي</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Ipsilateral</div>
+                <div class="term-arabic">من نفس الجانب</div>
+                <div class="term-definition">على نفس جانب الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Contralateral</div>
+                <div class="term-arabic">من الجانب المقابل</div>
+                <div class="term-definition">على الجانب الآخر من الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Superficial</div>
+                <div class="term-arabic">سطحي</div>
+                <div class="term-definition">قريب من سطح الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Deep</div>
+                <div class="term-arabic">عميق</div>
+                <div class="term-definition">بعيد عن سطح الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Flexion</div>
+                <div class="term-arabic">الثني</div>
+                <div class="term-definition">تقليل الزاوية بين عظمتين</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Extension</div>
+                <div class="term-arabic">البسط</div>
+                <div class="term-definition">زيادة الزاوية بين عظمتين</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Abduction</div>
+                <div class="term-arabic">التبعيد</div>
+                <div class="term-definition">حركة الطرف بعيداً عن خط منتصف الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Adduction</div>
+                <div class="term-arabic">التقريب</div>
+                <div class="term-definition">حركة الطرف نحو خط منتصف الجسم</div>
+            </div>
+
+            <div class="term-card">
+                <div class="term-english">Rotation</div>
+                <div class="term-arabic">الدوران</div>
+                <div class="term-definition">حركة دائرية حول محور</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
