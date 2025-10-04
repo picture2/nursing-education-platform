@@ -294,17 +294,18 @@ form .svgContainer div {
     overflow: hidden;
     border-radius: 50%;
     padding-bottom: 100%;
+    clip-path: circle(50%);
 }
 
 form .svgContainer .mySVG {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     pointer-events: none;
     transition: all 0.3s ease;
-    filter: brightness(1.15) contrast(1.1);
     opacity: 1 !important;
 }
 
@@ -657,6 +658,15 @@ form .inputGroup2 #showPasswordToggle input:disabled~.indicator:after {
     form .svgContainer {
         width: 160px;
         height: 160px;
+        margin: 0 auto 1.2em;
+    }
+    form .svgContainer .mySVG {
+        transform: translate(calc(-50% - 15px), -50%) scale(0.8);
+        left: 50%;
+        top: 50%;
+    }
+    form .svgContainer:after {
+        border-width: 2px;
     }
     form input,
     form button {
@@ -690,7 +700,12 @@ form .inputGroup2 #showPasswordToggle input:disabled~.indicator:after {
     form .svgContainer {
         width: 140px;
         height: 140px;
-        margin-bottom: 1em;
+        margin: 0 auto 1em;
+    }
+    form .svgContainer .mySVG {
+        transform: translate(-50%, -50%) scale(0.85);
+        left: 50%;
+        top: 50%;
     }
     form input,
     form button {
