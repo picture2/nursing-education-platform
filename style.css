@@ -275,11 +275,12 @@ form .svgContainer {
     margin: 0 auto 1.5em;
     border-radius: 50%;
     pointer-events: none;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 20px rgba(77, 195, 255, 0.15);
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(77, 195, 255, 0.05);
 }
 
 form .svgContainer:hover {
@@ -303,6 +304,8 @@ form .svgContainer .mySVG {
     height: 100%;
     pointer-events: none;
     transition: all 0.3s ease;
+    filter: brightness(1.15) contrast(1.1);
+    opacity: 1 !important;
 }
 
 form .svgContainer:after {
