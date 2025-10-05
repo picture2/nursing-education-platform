@@ -864,12 +864,12 @@
         <div id="viewPDFsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; overflow-y: auto;">
             <div style="background: white; padding: 35px; border-radius: 20px; max-width: 800px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; margin: 20px auto;">
                 <button onclick="closeViewPDFsModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; line-height: 1;">&times;</button>
-                
+
                 <h2 style="margin: 0 0 10px 0; color: #333; font-size: 1.6em;">
                     <i class="fas fa-folder-open" style="color: #667eea;"></i> ملفات PDF
                 </h2>
                 <p id="viewPDFsSectionName" style="margin: 0 0 25px 0; color: #666; font-size: 1em;"></p>
-                
+
                 <div id="pdfsList" style="max-height: 500px; overflow-y: auto;">
                     <!-- ستتم إضافة الملفات هنا -->
                 </div>
@@ -911,18 +911,18 @@
                 document.getElementById('pdfCoverImage').value = '';
                 document.getElementById('coverImagePreview').innerHTML = '';
                 document.getElementById('selectedFilePreview').style.display = 'none';
-                
+
                 // تفعيل Drop Zone
                 setTimeout(initDropZone, 50);
-                
+
                 // تفعيل preview صورة الغلاف
                 setupCoverImagePreview();
             }
-            
+
             function setupCoverImagePreview() {
                 const coverInput = document.getElementById('pdfCoverImage');
                 const previewDiv = document.getElementById('coverImagePreview');
-                
+
                 coverInput.onchange = function(e) {
                     const file = e.target.files[0];
                     if (file) {
@@ -932,7 +932,7 @@
                             previewDiv.innerHTML = '';
                             return;
                         }
-                        
+
                         // عرض preview
                         const reader = new FileReader();
                         reader.onload = function(event) {
@@ -948,41 +948,41 @@
                     }
                 };
             }
-            
+
             window.clearCoverImage = function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 document.getElementById('pdfCoverImage').value = '';
                 document.getElementById('coverImagePreview').innerHTML = '';
             }
-            
+
             function initDropZone() {
                 const dropZone = document.getElementById('dropZone');
                 const fileInput = document.getElementById('pdfFileInput');
-                
+
                 dropZone.onclick = function() {
                     fileInput.click();
                 }
-                
+
                 fileInput.onchange = function(e) {
                     const file = e.target.files[0];
                     if (file) handleFileSelect(file);
                 }
-                
+
                 console.log('✅ Drop Zone ready');
             }
-            
+
             function handleFileSelect(file) {
                 if (!file.name.toLowerCase().endsWith('.pdf')) {
                     alert('⚠️ الرجاء اختيار ملف PDF فقط');
                     return;
                 }
-                
+
                 if (file.size > 100 * 1024 * 1024) {
                     alert('⚠️ حجم الملف أكبر من 100 ميجا');
                     return;
                 }
-                
+
                 selectedPDFFile = file;
                 document.getElementById('selectedFileName').textContent = file.name;
                 document.getElementById('selectedFileSize').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
@@ -1000,7 +1000,7 @@
                 document.getElementById('pdfFileInput').value = '';
                 document.getElementById('selectedFilePreview').style.display = 'none';
             }
-            
+
             // رفع الملف
             window.confirmUploadPDF = async function() {
                 if (!selectedPDFFile) {
@@ -1010,32 +1010,32 @@
 
                 const file = selectedPDFFile;
                 const sectionId = currentSectionId;
-                
+
                 // إيجاد زر الرفع
                 const uploadBtn = document.getElementById('uploadBtn');
                 const originalBtnContent = uploadBtn.innerHTML;
-                
+
                 // الحصول على البيانات من الحقول أولاً
                 const title = document.getElementById('pdfTitle').value.trim();
                 const description = document.getElementById('pdfDescription').value.trim();
                 const coverImage = document.getElementById('pdfCoverImage').files[0];
-                
+
                 // التحقق من الحقول المطلوبة
                 if (!title) {
                     alert('⚠️ الرجاء إدخال اسم الملف');
                     return;
                 }
-                
+
                 if (!description) {
                     alert('⚠️ الرجاء إدخال وصف الملف');
                     return;
                 }
-                
+
                 // تعطيل الزر
                 uploadBtn.disabled = true;
                 uploadBtn.style.cursor = 'not-allowed';
                 uploadBtn.style.opacity = '0.7';
-                
+
                 // إضافة شريط التقدم الجميل مع الوقت في الزر
                 uploadBtn.innerHTML = `
                     <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -1068,11 +1068,11 @@
                     console.log('🔍 Before upload - currentSectionId:', currentSectionId);
                     console.log('📝 Title:', title);
                     console.log('📝 Description:', description);
-                    
+
                     if (!currentSectionId) {
                         throw new Error('❌ خطأ: لم يتم تحديد القسم (currentSectionId is null)');
                     }
-                    
+
                     // إنشاء FormData للرفع
                     const formData = new FormData();
                     formData.append('pdf', file);
@@ -1082,31 +1082,31 @@
                     if (coverImage) {
                         formData.append('coverImage', coverImage);
                     }
-                    
+
                     console.log('📦 FormData created with sectionId:', currentSectionId);
 
                     // استخدام XMLHttpRequest لتتبع التقدم
                     const xhr = new XMLHttpRequest();
-                    
+
                     // متغيرات حساب الوقت
                     let startTime = Date.now();
                     let lastLoaded = 0;
                     let lastTime = Date.now();
-                    
+
                     // تتبع التقدم مع حساب الوقت الحقيقي
                     xhr.upload.addEventListener('progress', function(e) {
                         if (e.lengthComputable) {
                             const percentComplete = Math.round((e.loaded / e.total) * 100);
                             const uploadedMB = (e.loaded / (1024 * 1024)).toFixed(2);
                             const totalMB = (e.total / (1024 * 1024)).toFixed(2);
-                            
+
                             // حساب الوقت المتبقي
                             const currentTime = Date.now();
                             const elapsedTime = (currentTime - startTime) / 1000; // بالثواني
                             const uploadSpeed = e.loaded / elapsedTime; // bytes per second
                             const remainingBytes = e.total - e.loaded;
                             const remainingSeconds = Math.ceil(remainingBytes / uploadSpeed);
-                            
+
                             let timeText = '';
                             if (percentComplete < 100) {
                                 if (remainingSeconds < 2) {
@@ -1121,13 +1121,13 @@
                             } else {
                                 timeText = 'اكتمل!';
                             }
-                            
+
                             // تحديث شريط التقدم في الزر
                             const bar = document.getElementById('uploadProgressBar');
                             const text = document.getElementById('uploadProgressText');
                             const size = document.getElementById('uploadProgressSize');
                             const time = document.getElementById('uploadTimeRemaining');
-                            
+
                             if (bar) bar.style.width = percentComplete + '%';
                             if (text) text.textContent = percentComplete + '%';
                             if (size) size.textContent = uploadedMB + ' MB / ' + totalMB + ' MB';
@@ -1149,11 +1149,11 @@
                                 reject(new Error('فشل رفع الملف - كود الخطأ: ' + xhr.status));
                             }
                         };
-                        
+
                         xhr.onerror = function() {
                             reject(new Error('خطأ في الاتصال بالسيرفر'));
                         };
-                        
+
                         xhr.open('POST', '/api/upload-pdf');
                         xhr.send(formData);
                     });
@@ -1193,22 +1193,22 @@
 
                         // إغلاق Modal فوراً
                         closeUploadPDFModal();
-                        
+
                         // إعادة تعيين الزر
                         uploadBtn.innerHTML = originalBtnContent;
                         uploadBtn.disabled = false;
                         uploadBtn.style.cursor = 'pointer';
                         uploadBtn.style.opacity = '1';
                         uploadBtn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
-                        
+
                         // ⚡ عرض فوري بدون انتظار - استخدام البيانات المُرجعة
-                        (async () => {
+                        (async() => {
                             console.log('🔄 عرض الملف الجديد فوراً...');
-                            
+
                             // تحديث العدادات في الخلفية (بدون انتظار)
                             loadPDFCounts();
                             loadSections();
-                            
+
                             // ⚡ فتح القائمة فوراً وعرض الملف الجديد
                             if (uploadedSectionId) {
                                 console.log('📂 فتح قائمة الملفات مع الملف الجديد');
@@ -1237,7 +1237,7 @@
                     `;
                     uploadBtn.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
                     uploadBtn.style.boxShadow = '0 8px 20px rgba(220, 53, 69, 0.4)';
-                    
+
                     setTimeout(() => {
                         uploadBtn.innerHTML = originalBtnContent;
                         uploadBtn.disabled = false;
@@ -1254,33 +1254,33 @@
 
             // ⚡ عرض ملفات مع الملف الجديد فوراً (بدون انتظار!)
             window.viewSectionPDFsWithNewFile = async function(sectionId, sectionTitle, newPDF) {
-                console.log('⚡ عرض فوري - الملف الجديد:', newPDF);
-                
-                // فتح الـ Modal فوراً
-                document.getElementById('viewPDFsSectionName').textContent = 'القسم: ' + sectionTitle;
-                document.getElementById('viewPDFsModal').style.display = 'flex';
-                
-                const pdfsList = document.getElementById('pdfsList');
-                
-                try {
-                    // جلب جميع ملفات القسم
-                    const response = await fetch(`/api/pdfs/section/${sectionId}?t=${Date.now()}`);
-                    const data = await response.json();
-                    
-                    let allPDFs = data.success ? data.data : [];
-                    
-                    // ✅ إضافة الملف الجديد إذا لم يكن موجود
-                    const exists = allPDFs.some(pdf => pdf.id === newPDF.id);
-                    if (!exists) {
-                        console.log('➕ إضافة الملف الجديد للقائمة');
-                        allPDFs.unshift(newPDF); // إضافة في الأول
-                    }
-                    
-                    console.log('📄 إجمالي الملفات:', allPDFs.length);
-                    
-                    // عرض الملفات
-                    if (allPDFs.length > 0) {
-                        pdfsList.innerHTML = allPDFs.map(pdf => `
+                    console.log('⚡ عرض فوري - الملف الجديد:', newPDF);
+
+                    // فتح الـ Modal فوراً
+                    document.getElementById('viewPDFsSectionName').textContent = 'القسم: ' + sectionTitle;
+                    document.getElementById('viewPDFsModal').style.display = 'flex';
+
+                    const pdfsList = document.getElementById('pdfsList');
+
+                    try {
+                        // جلب جميع ملفات القسم
+                        const response = await fetch(`/api/pdfs/section/${sectionId}?t=${Date.now()}`);
+                        const data = await response.json();
+
+                        let allPDFs = data.success ? data.data : [];
+
+                        // ✅ إضافة الملف الجديد إذا لم يكن موجود
+                        const exists = allPDFs.some(pdf => pdf.id === newPDF.id);
+                        if (!exists) {
+                            console.log('➕ إضافة الملف الجديد للقائمة');
+                            allPDFs.unshift(newPDF); // إضافة في الأول
+                        }
+
+                        console.log('📄 إجمالي الملفات:', allPDFs.length);
+
+                        // عرض الملفات
+                        if (allPDFs.length > 0) {
+                            pdfsList.innerHTML = allPDFs.map(pdf => `
                             <div style="background: ${pdf.id === newPDF.id ? 'linear-gradient(135deg, #e3f2fd, #f3e5f5)' : '#f8f9fa'}; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: ${pdf.id === newPDF.id ? '2px solid #667eea' : '1px solid #e0e0e0'}; animation: ${pdf.id === newPDF.id ? 'slideIn 0.5s ease' : 'none'};">
                                 <div style="display: flex; align-items: center; gap: 15px;">
                                     ${pdf.coverImage ? 
@@ -1828,7 +1828,7 @@
                 console.error('خطأ في تجديد الـ session:', error);
             }
         }
-        
+
         // حماية صفحة الإدارة - التحقق من صلاحيات المشرف
         function checkAdminAccess() {
             const currentUser = localStorage.getItem('currentUser');
@@ -1838,7 +1838,7 @@
                 window.location.href = 'index.html';
                 return false;
             }
-            
+
             // تجديد الـ session
             renewSession();
 
@@ -1950,7 +1950,7 @@
             // فلترة المستخدمين حسب البحث
             let filteredUsers = allUsers;
             if (searchQuery) {
-                filteredUsers = allUsers.filter(user => 
+                filteredUsers = allUsers.filter(user =>
                     user.name.toLowerCase().includes(searchQuery) ||
                     user.email.toLowerCase().includes(searchQuery)
                 );
@@ -2008,16 +2008,16 @@
             `;
 
             usersToShow.forEach((user, index) => {
-                const isAdmin = adminEmails.includes(user.email.toLowerCase());
-                const deviceId = user.deviceId || user.deviceFingerprint;
-                const isBanned = deviceId && bannedDevices.includes(deviceId);
-                const registeredDate = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                }) : 'غير محدد';
+                        const isAdmin = adminEmails.includes(user.email.toLowerCase());
+                        const deviceId = user.deviceId || user.deviceFingerprint;
+                        const isBanned = deviceId && bannedDevices.includes(deviceId);
+                        const registeredDate = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }) : 'غير محدد';
 
-                tableHTML += `
+                        tableHTML += `
                     <tr ${isBanned ? 'style="background: #fff5f5;"' : ''}>
                         <td style="text-align: center; font-weight: 700; color: #667eea;">${index + 1}</td>
                         <td>
@@ -2336,4 +2336,5 @@
         updateMessagesCount(); // تحديث فوري
     </script>
 </body>
+
 </html>

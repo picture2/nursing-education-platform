@@ -315,7 +315,7 @@ app.delete('/api/sections/:id', (req, res) => {
 
         const beforeLength = sections.length;
         const sectionToDelete = sections.find(s => s.id == sectionId);
-        
+
         if (!sectionToDelete) {
             console.log(`❌ القسم ${sectionId} غير موجود`);
             return res.status(404).json({ success: false, error: 'القسم غير موجود' });
@@ -348,7 +348,7 @@ app.delete('/api/sections/:id', (req, res) => {
                 } else {
                     console.log(`⚠️ الملف غير موجود: ${pdf.filename}`);
                 }
-                
+
                 // حذف صورة الغلاف إن وجدت
                 if (pdf.coverImage) {
                     const coverPath = path.join(__dirname, pdf.coverImage.replace('/uploads/', 'uploads/'));
@@ -367,7 +367,7 @@ app.delete('/api/sections/:id', (req, res) => {
         fs.writeFileSync(PDFS_FILE, JSON.stringify(remainingPDFs, null, 2));
         pdfsCache = remainingPDFs;
         cacheTimestamp.pdfs = Date.now();
-        
+
         console.log(`📚 عدد PDFs قبل الحذف: ${pdfs.length}`);
         console.log(`📚 عدد PDFs بعد الحذف: ${remainingPDFs.length}`);
 
@@ -386,8 +386,8 @@ app.delete('/api/sections/:id', (req, res) => {
         console.log(`   - عدد الملفات الفعلية المحذوفة: ${deletedFilesCount}`);
         console.log(`========================================\n`);
 
-        res.json({ 
-            success: true, 
+        res.json({
+            success: true,
             message: `تم حذف القسم "${sectionToDelete.title}" وجميع الملفات التابعة له (${pdfsToDelete.length} ملف)`,
             deletedSection: sectionToDelete.title,
             deletedPDFsCount: pdfsToDelete.length,
@@ -441,12 +441,12 @@ app.post('/api/signup', (req, res) => {
             if (fs.existsSync(BANNED_DEVICES_FILE)) {
                 bannedDevices = JSON.parse(fs.readFileSync(BANNED_DEVICES_FILE, 'utf8'));
             }
-            
+
             if (bannedDevices.includes(deviceId)) {
                 log(`🚫 محاولة تسجيل من جهاز محظور: ${deviceId}`);
-                return res.status(403).json({ 
-                    success: false, 
-                    error: 'جهازك محظور من قبل الإدارة. لا يمكنك إنشاء حساب جديد من هذا الجهاز.' 
+                return res.status(403).json({
+                    success: false,
+                    error: 'جهازك محظور من قبل الإدارة. لا يمكنك إنشاء حساب جديد من هذا الجهاز.'
                 });
             }
         }
@@ -491,12 +491,12 @@ app.post('/api/login', (req, res) => {
             if (fs.existsSync(BANNED_DEVICES_FILE)) {
                 bannedDevices = JSON.parse(fs.readFileSync(BANNED_DEVICES_FILE, 'utf8'));
             }
-            
+
             if (bannedDevices.includes(deviceId)) {
                 log(`🚫 محاولة تسجيل دخول من جهاز محظور: ${req.body.email}`);
-                return res.status(403).json({ 
-                    success: false, 
-                    error: 'جهازك محظور من قبل الإدارة. لا يمكنك تسجيل الدخول من هذا الجهاز.' 
+                return res.status(403).json({
+                    success: false,
+                    error: 'جهازك محظور من قبل الإدارة. لا يمكنك تسجيل الدخول من هذا الجهاز.'
                 });
             }
         }
@@ -587,11 +587,11 @@ app.post('/api/check-device', (req, res) => {
         if (fs.existsSync(BANNED_DEVICES_FILE)) {
             bannedDevices = JSON.parse(fs.readFileSync(BANNED_DEVICES_FILE, 'utf8'));
         }
-        
+
         // دعم النوعين: string array أو object array (للتوافق القديم)
-        const isBanned = Array.isArray(bannedDevices) 
-            ? bannedDevices.includes(deviceId) || bannedDevices.some(d => d && d.deviceId === deviceId)
-            : false;
+        const isBanned = Array.isArray(bannedDevices) ?
+            bannedDevices.includes(deviceId) || bannedDevices.some(d => d && d.deviceId === deviceId) :
+            false;
 
         if (isBanned) {
             return res.json({
@@ -646,23 +646,23 @@ app.get('/api/pdfs', (req, res) => {
 app.get('/api/pdfs/section/:sectionId', (req, res) => {
     try {
         console.log('🔍 طلب ملفات القسم:', req.params.sectionId);
-        
+
         // قراءة الملف مباشرة بدون cache
         const pdfs = JSON.parse(fs.readFileSync(PDFS_FILE, 'utf8'));
         console.log('📁 إجمالي الملفات:', pdfs.length);
-        
+
         // تحويل sectionId لـ number للمقارنة
         const requestedSectionId = parseInt(req.params.sectionId);
         console.log('🎯 البحث عن sectionId:', requestedSectionId);
-        
+
         // فلترة الملفات
         const sectionPdfs = pdfs.filter(pdf => {
             console.log(`   - PDF ${pdf.id}: sectionId=${pdf.sectionId}, match=${pdf.sectionId == requestedSectionId}`);
             return pdf.sectionId == requestedSectionId;
         });
-        
+
         console.log('✅ تم إيجاد', sectionPdfs.length, 'ملفات');
-        
+
         res.json({ success: true, data: sectionPdfs });
     } catch (error) {
         console.error('❌ خطأ:', error);
@@ -745,7 +745,7 @@ app.post('/api/upload-pdf', upload.fields([
             console.log('❌ خطأ: لم يتم رفع ملف PDF');
             return res.status(400).json({ success: false, error: 'لم يتم رفع ملف PDF' });
         }
-        
+
         if (!req.body.sectionId) {
             console.log('❌ خطأ: sectionId مفقود!');
             return res.status(400).json({ success: false, error: 'sectionId is required' });
@@ -756,10 +756,10 @@ app.post('/api/upload-pdf', upload.fields([
 
         // توليد ID فريد (timestamp + random)
         const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
-        
+
         const parsedSectionId = parseInt(req.body.sectionId);
         console.log('🔢 sectionId بعد التحويل:', parsedSectionId);
-        
+
         const pdfData = {
             id: uniqueId,
             filename: pdfFile.filename,
@@ -786,21 +786,21 @@ app.post('/api/upload-pdf', upload.fields([
             console.log('⚠️ ملف PDFs فارغ أو غير موجود، إنشاء جديد');
             pdfs = [];
         }
-        
+
         console.log('📚 عدد الملفات الحالية:', pdfs.length);
         pdfs.push(pdfData);
         console.log('📚 عدد الملفات بعد الإضافة:', pdfs.length);
-        
+
         // حفظ مع التأكد من اكتمال الكتابة
         fs.writeFileSync(PDFS_FILE, JSON.stringify(pdfs, null, 2));
-        
+
         // تحديث cache فوراً
         pdfsCache = pdfs;
         cacheTimestamp.pdfs = Date.now();
-        
+
         console.log('💾 تم حفظ الملف في pdfs.json');
         console.log('✅ تم رفع PDF بنجاح');
-        
+
         res.json({ success: true, data: pdfData, message: 'تم رفع الملف بنجاح' });
     } catch (error) {
         console.error('❌ خطأ:', error);
@@ -871,13 +871,13 @@ app.post('/api/messages', (req, res) => {
         if (!req.body.message || req.body.message.trim().length === 0) {
             return res.status(400).json({ success: false, error: 'الرسالة فارغة' });
         }
-        
+
         if (!req.body.userName || !req.body.userEmail) {
             return res.status(400).json({ success: false, error: 'بيانات المستخدم ناقصة' });
         }
-        
+
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
-        
+
         const newMessage = {
             id: Date.now(),
             userId: req.body.userId || 'guest',
@@ -889,10 +889,10 @@ app.post('/api/messages', (req, res) => {
             adminReply: null,
             adminReplyTime: null
         };
-        
+
         messages.push(newMessage);
         fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
-        
+
         log('✅ رسالة جديدة من:', newMessage.userName);
         res.json({ success: true, data: newMessage });
     } catch (error) {
@@ -906,13 +906,13 @@ app.post('/api/messages/:id/reply', (req, res) => {
     try {
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
         const index = messages.findIndex(m => m.id == req.params.id);
-        
+
         if (index !== -1) {
             messages[index].adminReply = req.body.reply;
             messages[index].adminReplyTime = new Date().toISOString();
             messages[index].status = 'replied';
             messages[index].readByUser = false; // المستخدم لم يقرأ الرد بعد
-            
+
             fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
             log('✅ تم الرد على رسالة من:', messages[index].userName);
             res.json({ success: true, data: messages[index] });
@@ -930,7 +930,7 @@ app.put('/api/messages/:id/read', (req, res) => {
     try {
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
         const index = messages.findIndex(m => m.id == req.params.id);
-        
+
         if (index !== -1) {
             messages[index].status = 'read';
             fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
@@ -985,39 +985,39 @@ app.get('/api/banned-devices', (req, res) => {
 app.post('/api/ban-device', (req, res) => {
     try {
         const { email } = req.body;
-        
+
         if (!email) {
             return res.status(400).json({ success: false, error: 'البريد الإلكتروني مطلوب' });
         }
-        
+
         // البحث عن المستخدم
         const users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
         const user = users.find(u => u.email === email);
-        
+
         if (!user) {
             return res.status(404).json({ success: false, error: 'المستخدم غير موجود' });
         }
-        
+
         const deviceId = user.deviceId || user.deviceFingerprint;
         if (!deviceId) {
             return res.status(404).json({ success: false, error: 'لا يوجد معرف جهاز لهذا المستخدم' });
         }
-        
+
         // إضافة الجهاز للقائمة المحظورة
         let bannedDevices = [];
         if (fs.existsSync(BANNED_DEVICES_FILE)) {
             bannedDevices = JSON.parse(fs.readFileSync(BANNED_DEVICES_FILE, 'utf8'));
         }
-        
+
         // التحقق من عدم وجود الجهاز مسبقاً
         if (!bannedDevices.includes(deviceId)) {
             bannedDevices.push(deviceId);
             fs.writeFileSync(BANNED_DEVICES_FILE, JSON.stringify(bannedDevices, null, 2));
             log(`🚫 تم حظر جهاز المستخدم: ${email} - Device: ${deviceId}`);
         }
-        
-        res.json({ 
-            success: true, 
+
+        res.json({
+            success: true,
             message: 'تم حظر الجهاز بنجاح',
             deviceId: deviceId
         });
@@ -1031,17 +1031,17 @@ app.post('/api/ban-device', (req, res) => {
 app.post('/api/unban-device', (req, res) => {
     try {
         const deviceId = req.body.deviceId || req.body.deviceFingerprint;
-        
+
         if (!deviceId) {
             return res.status(400).json({ success: false, error: 'معرف الجهاز مطلوب' });
         }
-        
+
         // قراءة قائمة الأجهزة المحظورة
         let bannedDevices = [];
         if (fs.existsSync(BANNED_DEVICES_FILE)) {
             bannedDevices = JSON.parse(fs.readFileSync(BANNED_DEVICES_FILE, 'utf8'));
         }
-        
+
         // إزالة الجهاز من القائمة
         const index = bannedDevices.indexOf(deviceId);
         if (index > -1) {
@@ -1049,9 +1049,9 @@ app.post('/api/unban-device', (req, res) => {
             fs.writeFileSync(BANNED_DEVICES_FILE, JSON.stringify(bannedDevices, null, 2));
             log(`✅ تم فك حظر الجهاز: ${deviceId}`);
         }
-        
-        res.json({ 
-            success: true, 
+
+        res.json({
+            success: true,
             message: 'تم فك الحظر بنجاح'
         });
     } catch (error) {
@@ -1068,9 +1068,9 @@ app.post('/api/messages/admin-send', (req, res) => {
         if (!req.body.message || req.body.message.trim().length === 0) {
             return res.status(400).json({ success: false, error: 'الرسالة فارغة' });
         }
-        
+
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
-        
+
         const newMessage = {
             id: Date.now(),
             userId: 'admin',
@@ -1084,10 +1084,10 @@ app.post('/api/messages/admin-send', (req, res) => {
             readByUser: false,
             isAdminMessage: true
         };
-        
+
         messages.push(newMessage);
         fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
-        
+
         log('✅ رسالة من الأدمن إلى:', req.body.userEmail);
         res.json({ success: true, data: newMessage, message: 'تم إرسال الرسالة بنجاح' });
     } catch (error) {
@@ -1102,16 +1102,16 @@ app.post('/api/messages/send', (req, res) => {
         if (!req.body.message || req.body.message.trim().length === 0) {
             return res.status(400).json({ success: false, error: 'الرسالة فارغة' });
         }
-        
+
         if (!req.body.userName || !req.body.userEmail) {
             return res.status(400).json({ success: false, error: 'بيانات المستخدم ناقصة' });
         }
-        
+
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
-        
+
         // التحقق إذا كانت هذه أول رسالة من المستخدم
         const isFirstMessage = !messages.some(m => m.userEmail === req.body.userEmail.trim());
-        
+
         const newMessage = {
             id: Date.now(),
             userId: req.body.userId || 'guest',
@@ -1124,9 +1124,9 @@ app.post('/api/messages/send', (req, res) => {
             adminReplyTime: null,
             readByUser: false
         };
-        
+
         messages.push(newMessage);
-        
+
         // إضافة رسالة ترحيبية تلقائية لأول رسالة
         if (isFirstMessage) {
             const welcomeMessage = {
@@ -1144,9 +1144,9 @@ app.post('/api/messages/send', (req, res) => {
             };
             messages.push(welcomeMessage);
         }
-        
+
         fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
-        
+
         log('✅ رسالة جديدة من:', newMessage.userName, isFirstMessage ? '(أول رسالة - تم إرسال الترحيب)' : '');
         res.json({ success: true, data: newMessage, message: 'تم إرسال الرسالة بنجاح' });
     } catch (error) {
@@ -1162,7 +1162,7 @@ app.get('/api/messages/conversation/:email', (req, res) => {
         const userMessages = messages
             .filter(m => m.userEmail === req.params.email)
             .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        
+
         res.json({ success: true, data: userMessages });
     } catch (error) {
         console.error('❌ خطأ في جلب المحادثة:', error);
@@ -1174,12 +1174,12 @@ app.get('/api/messages/conversation/:email', (req, res) => {
 app.get('/api/messages/unread/:email', (req, res) => {
     try {
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
-        const unreadCount = messages.filter(m => 
-            m.userEmail === req.params.email && 
-            m.adminReply && 
+        const unreadCount = messages.filter(m =>
+            m.userEmail === req.params.email &&
+            m.adminReply &&
             !m.readByUser
         ).length;
-        
+
         res.json({ success: true, count: unreadCount });
     } catch (error) {
         console.error('❌ خطأ:', error);
@@ -1192,18 +1192,18 @@ app.put('/api/messages/read/:email', (req, res) => {
     try {
         const messages = JSON.parse(fs.readFileSync(MESSAGES_FILE, 'utf8'));
         let updated = false;
-        
+
         messages.forEach(m => {
             if (m.userEmail === req.params.email && m.adminReply && !m.readByUser) {
                 m.readByUser = true;
                 updated = true;
             }
         });
-        
+
         if (updated) {
             fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2));
         }
-        
+
         res.json({ success: true, message: 'تم التعليم كمقروءة' });
     } catch (error) {
         console.error('❌ خطأ:', error);
