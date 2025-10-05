@@ -99,25 +99,11 @@
          #splash {
             animation: pulse 2s ease-in-out infinite;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-            transform: scale(1.3) !important;
-         }
-         
-         @media (max-width: 768px) {
-            #splash {
-               transform: scale(1.5) !important;
-            }
          }
          
          @keyframes pulse {
-            0%, 100% { transform: scale(1.3); }
-            50% { transform: scale(1.35); }
-         }
-         
-         @media (max-width: 768px) {
-            @keyframes pulse {
-               0%, 100% { transform: scale(1.5); }
-               50% { transform: scale(1.55); }
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
          }
          
          /* رسالة بدء اللعب */
@@ -283,73 +269,18 @@
             filter: brightness(1.2);
          }
          
-         /* تكبير اللعبة لشاشة الجوال */
+         /* تحسينات للجوال */
          @media (max-width: 768px) {
             html, body {
                margin: 0;
                padding: 0;
-               width: 100vw;
-               height: 100vh;
                overflow: hidden;
             }
             
             #gamecontainer {
-               width: 100vw !important;
+               width: 100% !important;
                height: 100vh !important;
                min-height: 100vh !important;
-               max-width: 100vw !important;
-               margin: 0 !important;
-               padding: 0 !important;
-               position: fixed;
-               top: 0;
-               left: 0;
-               transform: scale(1.15) !important;
-               transform-origin: center center;
-            }
-            
-            #gamescreen {
-               width: 100vw !important;
-               height: 100vh !important;
-            }
-            
-            #sky {
-               height: 88% !important;
-               background-size: auto 100% !important;
-            }
-            
-            #land {
-               height: 12% !important;
-               background-size: auto 100% !important;
-            }
-            
-            #flyarea {
-               height: 75vh !important;
-               bottom: 12vh !important;
-            }
-            
-            /* تكبير الطائر */
-            #player {
-               transform: scale(1.6) !important;
-            }
-            
-            /* تكبير الأنابيب */
-            .pipe {
-               transform: scaleX(1.4) scaleY(1.3) !important;
-            }
-            
-            /* تكبير النقاط */
-            #bigscore {
-               top: 30px !important;
-               left: 50% !important;
-               transform: translateX(-50%) scale(1.8) !important;
-            }
-            
-            #scoreboard {
-               transform: scale(1.2) !important;
-               top: 50% !important;
-               left: 50% !important;
-               margin-left: -130px !important;
-               margin-top: -180px !important;
             }
             
             .back-to-games {
@@ -384,62 +315,6 @@
             
             #footer {
                display: none !important;
-            }
-         }
-         
-         /* للشاشات الصغيرة جداً */
-         @media (max-width: 480px) {
-            #gamecontainer {
-               transform: scale(1.25) !important;
-            }
-            
-            #player {
-               transform: scale(1.8) !important;
-            }
-            
-            .pipe {
-               transform: scaleX(1.5) scaleY(1.4) !important;
-            }
-            
-            #bigscore {
-               transform: translateX(-50%) scale(2.0) !important;
-               top: 25px !important;
-            }
-            
-            #scoreboard {
-               transform: scale(1.3) !important;
-            }
-            
-            #flyarea {
-               height: 78vh !important;
-            }
-         }
-         
-         /* وضع landscape للجوال */
-         @media (max-width: 768px) and (orientation: landscape) {
-            #gamecontainer {
-               height: 100vh !important;
-               transform: scale(1.2) !important;
-            }
-            
-            #sky {
-               height: 85% !important;
-            }
-            
-            #land {
-               height: 15% !important;
-            }
-            
-            #flyarea {
-               height: 80vh !important;
-            }
-            
-            #player {
-               transform: scale(1.7) !important;
-            }
-            
-            .pipe {
-               transform: scaleX(1.5) scaleY(1.4) !important;
             }
          }
       </style>

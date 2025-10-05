@@ -96,6 +96,7 @@
             gap: 30px;
             margin-bottom: 30px;
         }
+        
         .section-card {
             background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(20px);
@@ -408,25 +409,25 @@
                 const currentUser = localStorage.getItem('currentUser');
                 if (currentUser) {
                     const user = JSON.parse(currentUser);
-                    
+
                     // تجديد تاريخ انتهاء الـ session لـ 30 يوم من الآن
                     const newExpiry = new Date();
                     newExpiry.setDate(newExpiry.getDate() + 30);
-                    
+
                     user.sessionExpiry = newExpiry.toISOString();
                     user.rememberMe = true;
                     user.lastActivity = new Date().toISOString();
-                    
+
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     localStorage.setItem('userSession', JSON.stringify(user));
-                    
+
                     console.log('✅ تم تجديد الـ session لـ 30 يوم');
                 }
             } catch (error) {
                 console.error('خطأ في تجديد الـ session:', error);
             }
         }
-        
+
         // تهيئة الصفحة
         async function initDashboard() {
             // التحقق من تسجيل الدخول
@@ -435,7 +436,7 @@
                 window.location.href = 'index.html';
                 return;
             }
-            
+
             // تجديد الـ session عند كل زيارة
             renewSession();
 
@@ -451,7 +452,7 @@
             // انتظار تحميل الأقسام من السيرفر أولاً
             await loadSectionsFromAdmin();
             renderSections();
-            
+
             // تحميل عدد PDFs لكل قسم
             loadPDFCounts();
         }
@@ -570,33 +571,33 @@
             }
 
             filteredSections.forEach(section => {
-                const sectionCard = document.createElement('div');
-                sectionCard.className = 'section-card';
+                        const sectionCard = document.createElement('div');
+                        sectionCard.className = 'section-card';
 
-                // التحقق من نوع الأيقونة (صورة غلاف أو إيموجي)
-                let cardStyle = '';
-                let iconContent = '';
-                let textColor = '';
+                        // التحقق من نوع الأيقونة (صورة غلاف أو إيموجي)
+                        let cardStyle = '';
+                        let iconContent = '';
+                        let textColor = '';
 
-                // إذا كانت هناك صورة للقسم
-                if (section.image) {
-                    // صورة - استخدمها كـ background cover مع overlay داكن
-                    cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.image});`;
-                    textColor = 'color: white;';
-                    iconContent = ''; // لا نحتاج أيقونة منفصلة
-                } else if (section.icon && section.icon.startsWith('data:image')) {
-                    // صورة base64 في icon
-                    cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.icon});`;
-                    textColor = 'color: white;';
-                    iconContent = '';
-                } else {
-                    // إيموجي أو أيقونة عادية
-                    iconContent = `<div class="section-icon"><span style="font-size: 48px;">${section.icon || '📁'}</span></div>`;
-                }
+                        // إذا كانت هناك صورة للقسم
+                        if (section.image) {
+                            // صورة - استخدمها كـ background cover مع overlay داكن
+                            cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.image});`;
+                            textColor = 'color: white;';
+                            iconContent = ''; // لا نحتاج أيقونة منفصلة
+                        } else if (section.icon && section.icon.startsWith('data:image')) {
+                            // صورة base64 في icon
+                            cardStyle = `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(${section.icon});`;
+                            textColor = 'color: white;';
+                            iconContent = '';
+                        } else {
+                            // إيموجي أو أيقونة عادية
+                            iconContent = `<div class="section-icon"><span style="font-size: 48px;">${section.icon || '📁'}</span></div>`;
+                        }
 
-                sectionCard.style.cssText = cardStyle;
+                        sectionCard.style.cssText = cardStyle;
 
-                sectionCard.innerHTML = `
+                        sectionCard.innerHTML = `
                     ${iconContent}
                     <h3 class="section-title" style="${textColor} ${textColor ? 'text-shadow: 0 3px 8px rgba(0,0,0,0.9); font-weight: 700;' : ''}">${section.title}</h3>
                     <p class="section-description" style="${textColor ? 'color: rgba(255,255,255,0.95); text-shadow: 0 2px 6px rgba(0,0,0,0.8);' : ''}">${section.description}</p>
@@ -918,7 +919,7 @@
             </div>
         </footer>
     </div>
-    
+
     <!-- نظام الشات العائم -->
     <script src="chat-widget.js"></script>
 </body>
