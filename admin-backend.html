@@ -1724,6 +1724,7 @@
                         closeAddSectionModal();
                         console.log('🔄 إعادة تحميل الأقسام...');
                         await loadSections();
+                        updateDashboardStats(); // تحديث الإحصائيات
                     } else {
                         console.error('❌ خطأ من السيرفر:', data.error);
                         alert('❌ خطأ: ' + data.error);
@@ -1763,6 +1764,7 @@
                         console.log('✅ تم الحذف بنجاح!');
                         alert('✅ تم حذف القسم بنجاح!');
                         await loadSections(); // انتظار تحميل الأقسام
+                        updateDashboardStats(); // تحديث الإحصائيات
                     } else {
                         console.error('❌ فشل الحذف:', data.error);
                         alert('❌ خطأ: ' + data.error);
@@ -1776,7 +1778,21 @@
             // تحميل الأقسام عند تحميل الصفحة
             setTimeout(() => {
                 loadSections();
+                updateDashboardStats();
             }, 500);
+            
+            // دالة تحديث البيانات
+            function refreshAdmin() {
+                loadUsers();
+                loadSections();
+                updateDashboardStats();
+                // إظهار إشعار
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #667eea; color: white; padding: 15px 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10001; font-weight: 600;';
+                toast.innerHTML = '<i class="fas fa-check-circle"></i> تم تحديث البيانات';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            }
         </script>
 
     </div>
@@ -1794,6 +1810,25 @@
 
     <!-- ربط ملفات JavaScript -->
     <script>
+        // تجديد الـ session
+        function renewSession() {
+            try {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    const newExpiry = new Date();
+                    newExpiry.setDate(newExpiry.getDate() + 30);
+                    user.sessionExpiry = newExpiry.toISOString();
+                    user.rememberMe = true;
+                    user.lastActivity = new Date().toISOString();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('userSession', JSON.stringify(user));
+                }
+            } catch (error) {
+                console.error('خطأ في تجديد الـ session:', error);
+            }
+        }
+        
         // حماية صفحة الإدارة - التحقق من صلاحيات المشرف
         function checkAdminAccess() {
             const currentUser = localStorage.getItem('currentUser');
@@ -1803,6 +1838,9 @@
                 window.location.href = 'index.html';
                 return false;
             }
+            
+            // تجديد الـ session
+            renewSession();
 
             const user = JSON.parse(currentUser);
 
@@ -2108,22 +2146,67 @@
             }
         }
 
+        // تحديث الإحصائيات
+        async function updateDashboardStats() {
+            try {
+                // إجمالي المستخدمين
+                const usersResponse = await fetch('/api/users');
+                const usersData = await usersResponse.json();
+                if (usersData.success) {
+                    document.getElementById('totalUsers').textContent = usersData.data.length;
+                }
+
+                // إجمالي الأقسام
+                const sectionsResponse = await fetch('/api/sections');
+                const sectionsData = await sectionsResponse.json();
+                if (sectionsData.success) {
+                    document.getElementById('totalSections').textContent = sectionsData.data.length;
+                }
+
+                // إجمالي ملفات PDF
+                const pdfsResponse = await fetch('/api/pdfs');
+                const pdfsData = await pdfsResponse.json();
+                if (pdfsData.success) {
+                    const totalPDFs = pdfsData.data.length;
+                    document.getElementById('totalPDFs').textContent = totalPDFs;
+                    
+                    // إجمالي المشاهدات
+                    const totalViews = pdfsData.data.reduce((sum, pdf) => sum + (pdf.views || 0), 0);
+                    document.getElementById('totalViews').textContent = totalViews;
+                }
+
+                console.log('✅ تم تحديث الإحصائيات');
+            } catch (error) {
+                console.error('❌ خطأ في تحديث الإحصائيات:', error);
+            }
+        }
+
         // تحميل المستخدمين عند تحميل الصفحة
         console.log('🟡 Script loaded!');
 
         // استدعاء فوري
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadUsers);
+            document.addEventListener('DOMContentLoaded', () => {
+                loadUsers();
+                updateDashboardStats();
+            });
         } else {
             // Document already loaded
             loadUsers();
+            updateDashboardStats();
         }
 
         // Backup: استدعاء بعد ثانية واحدة
         setTimeout(() => {
             console.log('⏰ Backup call to loadUsers...');
             loadUsers();
+            updateDashboardStats();
         }, 1000);
+
+        // تحديث تلقائي للإحصائيات كل 10 ثواني
+        setInterval(() => {
+            updateDashboardStats();
+        }, 10000);
 
         // Manual trigger - استدعاء مباشر بعد 2 ثانية
         setTimeout(() => {

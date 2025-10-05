@@ -727,6 +727,24 @@
             }
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
         .achievement-icon {
             font-size: 64px;
             margin-bottom: 15px;
@@ -919,6 +937,25 @@
             }
         };
 
+        // تجديد الـ session
+        function renewSession() {
+            try {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    const newExpiry = new Date();
+                    newExpiry.setDate(newExpiry.getDate() + 30);
+                    user.sessionExpiry = newExpiry.toISOString();
+                    user.rememberMe = true;
+                    user.lastActivity = new Date().toISOString();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('userSession', JSON.stringify(user));
+                }
+            } catch (error) {
+                console.error('خطأ في تجديد الـ session:', error);
+            }
+        }
+        
         // تهيئة الصفحة
         async function initPDFViewer() {
             // التحقق من تسجيل الدخول
@@ -927,6 +964,9 @@
                 window.location.href = 'index.html';
                 return;
             }
+            
+            // تجديد الـ session
+            renewSession();
 
             currentUser = JSON.parse(userStr);
 
@@ -1137,7 +1177,7 @@
                 const userRating = ratingSystem.getUserRating(pdf.id, currentUser.email);
                 
                 pdfCard.innerHTML = `
-                    <div class="pdf-preview" style="background-image: url('${pdf.coverImage || ''}'); background-size: cover; background-position: center;">
+                    <div class="pdf-preview" style="background-image: url('${pdf.coverImage || ''}'); background-size: contain; background-position: center; background-repeat: no-repeat;">
                         ${pdf.coverImage ? '' : previewContent}
                     </div>
                     <div class="pdf-icon">
@@ -1203,17 +1243,23 @@
         async function viewPDF(pdfId) {
             const pdf = pdfFiles.find(p => p.id === pdfId);
             if (pdf) {
-                showLoading();
-                
-                // تسجيل المشاهدة على السيرفر
-                try {
-                    await fetch(`${window.location.origin}/api/pdfs/${pdfId}/view`, {
-                        method: 'POST'
-                    });
-                    pdf.views++;
-                } catch (error) {
-                    console.error('خطأ في تسجيل المشاهدة:', error);
+                // فتح الـ PDF فوراً بدون انتظار
+                if (pdf.path) {
+                    const pdfUrl = `${window.location.origin}${pdf.path}`;
+                    showPDFModal(pdfUrl, pdf.title);
+                } else {
+                    showToast(`لا يوجد ملف PDF`, 'error');
+                    return;
                 }
+                
+                // تسجيل المشاهدة في الخلفية (non-blocking)
+                fetch(`${window.location.origin}/api/pdfs/${pdfId}/view`, {
+                    method: 'POST'
+                }).then(() => {
+                    pdf.views++;
+                }).catch(error => {
+                    console.error('خطأ في تسجيل المشاهدة:', error);
+                });
 
                 // تسجيل النشاط
                 activityLogSystem.addActivity(currentUser.email, 'view', pdf.title);
@@ -1223,18 +1269,6 @@
                 if (newBadges.length > 0) {
                     showAchievementPopup(newBadges[0]);
                 }
-                
-                setTimeout(() => {
-                    hideLoading();
-                    
-                    if (pdf.path) {
-                        // فتح PDF من السيرفر في نافذة جديدة
-                        const pdfUrl = `${window.location.origin}${pdf.path}`;
-                        window.open(pdfUrl, '_blank');
-                    } else {
-                        showToast(`تم فتح ${pdf.title}`, 'success');
-                    }
-                }, 1000);
             }
         }
 
@@ -1242,24 +1276,20 @@
         function downloadPDF(pdfId) {
             const pdf = pdfFiles.find(p => p.id === pdfId);
             if (pdf) {
-                showLoading();
-                
-                setTimeout(() => {
-                    hideLoading();
+                if (pdf.path) {
+                    // تحميل PDF فوراً
+                    const link = document.createElement('a');
+                    link.href = `${window.location.origin}${pdf.path}`;
+                    link.download = pdf.filename || pdf.title + '.pdf';
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                     
-                    if (pdf.path) {
-                        // تحميل PDF من السيرفر
-                        const link = document.createElement('a');
-                        link.href = `${window.location.origin}${pdf.path}`;
-                        link.download = pdf.filename;
-                        link.target = '_blank';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    } else {
-                        alert(`تم تحميل ${pdf.title}`);
-                    }
-                }, 1000);
+                    showToast(`جاري تحميل ${pdf.title}...`, 'success');
+                } else {
+                    showToast(`لا يوجد ملف للتحميل`, 'error');
+                }
             }
         }
 
@@ -1965,6 +1995,97 @@
             setTimeout(() => {
                 popup.remove();
             }, 4000);
+        }
+
+        // عرض PDF في Modal
+        function showPDFModal(pdfUrl, pdfTitle) {
+            // إنشاء modal
+            const modal = document.createElement('div');
+            modal.id = 'pdfViewerModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                z-index: 10000;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.15s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="width: 100%; max-width: 1200px; height: 90vh; background: white; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.5); margin: 0 10px;">
+                    <div style="padding: 12px 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+                            <i class="fas fa-file-pdf" style="font-size: 18px; flex-shrink: 0;"></i>
+                            <h3 style="margin: 0; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${pdfTitle}</h3>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                            <button onclick="window.open('${pdfUrl}', '_blank')" class="pdf-modal-btn-new" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 14px; white-space: nowrap;">
+                                <i class="fas fa-external-link-alt"></i> <span class="desktop-only">فتح في نافذة جديدة</span>
+                            </button>
+                            <button onclick="closePDFModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; transition: all 0.3s; flex-shrink: 0;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="position: relative; flex: 1; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                        <div id="pdfLoader" style="position: absolute; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 1;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #667eea;"></i>
+                            <p style="color: #666; font-size: 16px; font-weight: 600;">جاري تحميل الملف...</p>
+                        </div>
+                        <iframe src="${pdfUrl}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: white;" allow="fullscreen" onload="document.getElementById('pdfLoader').style.display='none'"></iframe>
+                    </div>
+                </div>
+                <style>
+                    @media (max-width: 768px) {
+                        #pdfViewerModal > div {
+                            height: 95vh !important;
+                            max-width: 100% !important;
+                            border-radius: 0 !important;
+                            margin: 0 !important;
+                        }
+                        .desktop-only {
+                            display: none !important;
+                        }
+                        .pdf-modal-btn-new {
+                            padding: 8px 10px !important;
+                        }
+                    }
+                </style>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // إغلاق عند الضغط على الخلفية
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closePDFModal();
+                }
+            });
+            
+            // إغلاق عند الضغط على Escape
+            document.addEventListener('keydown', function escHandler(e) {
+                if (e.key === 'Escape') {
+                    closePDFModal();
+                    document.removeEventListener('keydown', escHandler);
+                }
+            });
+        }
+        
+        // إغلاق modal PDF
+        function closePDFModal() {
+            const modal = document.getElementById('pdfViewerModal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
         }
 
         // تهيئة الصفحة عند التحميل

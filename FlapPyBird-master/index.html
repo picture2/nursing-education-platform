@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>Floppy Bird</title>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <meta name="author" content="Nebez Briefkani" />
+      <meta name="description" content="play floppy bird. a remake of popular game flappy bird built in html/css/js" />
+      <meta name="keywords" content="flappybird,flappy,bird,floppybird,floppy,html,html5,css,css3,js,javascript,jquery,github,nebez,briefkani,nebezb,open,source,opensource" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+      <!-- Open Graph tags -->
+      <meta property="og:title" content="Floppy Bird" />
+      <meta property="og:description" content="play floppy bird. a remake of popular game flappy bird built in html/css/js" />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://nebezb.com/floppybird/assets/thumb.png" />
+      <meta property="og:url" content="https://nebezb.com/floppybird/" />
+      <meta property="og:site_name" content="Floppy Bird" />
+
+      <!-- Style sheets -->
+      <link href="css/reset.css" rel="stylesheet">
+      <link href="css/main.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+   </head>
+   <body>
+      <style>
+         /* إزالة المسافات على الجوال */
+         * {
+            -webkit-tap-highlight-color: transparent;
+         }
+         
+         html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+         }
+         
+         body {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overscroll-behavior: none;
+         }
+         
+         /* إخفاء scrollbars */
+         body::-webkit-scrollbar {
+            display: none;
+         }
+         
+         body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+         }
+         
+         /* زر الرجوع */
+         .back-to-games {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Cairo', Arial, sans-serif;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+         }
+         .back-to-games:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+         }
+         
+         /* تحسينات واقعية للعبة */
+         #gamecontainer {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+         }
+         
+         /* ظل وإضاءة للطائر */
+         #player {
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4));
+            transition: filter 0.1s ease;
+         }
+         
+         /* ظلال للأنابيب */
+         .pipe {
+            filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.3));
+         }
+         
+         /* شاشة البداية مع تأثيرات */
+         #splash {
+            animation: pulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            transform: scale(1.3) !important;
+         }
+         
+         @media (max-width: 768px) {
+            #splash {
+               transform: scale(1.5) !important;
+            }
+         }
+         
+         @keyframes pulse {
+            0%, 100% { transform: scale(1.3); }
+            50% { transform: scale(1.35); }
+         }
+         
+         @media (max-width: 768px) {
+            @keyframes pulse {
+               0%, 100% { transform: scale(1.5); }
+               50% { transform: scale(1.55); }
+            }
+         }
+         
+         /* رسالة بدء اللعب */
+         #start-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 20px;
+            font-family: 'Cairo', Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: bounce 1.5s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+         }
+         
+         #start-message:hover {
+            background: rgba(102, 126, 234, 0.9);
+            transform: translate(-50%, -50%) scale(1.1);
+         }
+         
+         @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
+         }
+         
+         #start-message .arrow {
+            display: block;
+            font-size: 36px;
+            margin-bottom: 10px;
+            animation: point 1s ease-in-out infinite;
+         }
+         
+         @keyframes point {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+         }
+         
+         /* رسالة الخسارة */
+         #lose-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(220, 53, 69, 0.95);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            font-family: 'Cairo', Arial, sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            z-index: 10001;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            animation: shakeAndScale 0.8s ease-out;
+            display: none;
+            border: 3px solid white;
+         }
+         
+         @keyframes shakeAndScale {
+            0% {
+               transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+               opacity: 0;
+            }
+            10% {
+               transform: translate(-50%, -50%) scale(1.1) rotate(-5deg);
+            }
+            20% {
+               transform: translate(-50%, -50%) scale(0.9) rotate(5deg);
+            }
+            30% {
+               transform: translate(-50%, -50%) scale(1.05) rotate(-3deg);
+            }
+            40% {
+               transform: translate(-50%, -50%) scale(0.95) rotate(3deg);
+            }
+            50% {
+               transform: translate(-50%, -50%) scale(1.02) rotate(-1deg);
+            }
+            60% {
+               transform: translate(-50%, -50%) scale(0.98) rotate(1deg);
+            }
+            100% {
+               transform: translate(-50%, -50%) scale(1) rotate(0deg);
+               opacity: 1;
+            }
+         }
+         
+         #lose-message .emoji {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 15px;
+            animation: rotate 2s ease-in-out infinite;
+         }
+         
+         @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+         }
+         
+         #lose-message .message {
+            margin-bottom: 20px;
+            line-height: 1.4;
+         }
+         
+         #lose-message .btn {
+            background: white;
+            color: #dc3545;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-family: 'Cairo', Arial, sans-serif;
+         }
+         
+         #lose-message .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+         }
+         
+         /* تأثير التدرج للسماء */
+         #sky {
+            background: linear-gradient(to bottom, #4fc3dc 0%, #4fc3dc 70%, #5ee270 100%);
+         }
+         
+         /* تأثيرات للأرض */
+         #land {
+            box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.3);
+         }
+         
+         /* شاشة النتيجة */
+         #scoreboard {
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+         }
+         
+         @keyframes slideIn {
+            from {
+               transform: translateY(-100px);
+               opacity: 0;
+            }
+            to {
+               transform: translateY(0);
+               opacity: 1;
+            }
+         }
+         
+         /* زر Replay */
+         #replay:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+         }
+         
+         /* تكبير اللعبة لشاشة الجوال */
+         @media (max-width: 768px) {
+            html, body {
+               margin: 0;
+               padding: 0;
+               width: 100vw;
+               height: 100vh;
+               overflow: hidden;
+            }
+            
+            #gamecontainer {
+               width: 100vw !important;
+               height: 100vh !important;
+               min-height: 100vh !important;
+               max-width: 100vw !important;
+               margin: 0 !important;
+               padding: 0 !important;
+               position: fixed;
+               top: 0;
+               left: 0;
+               transform: scale(1.15) !important;
+               transform-origin: center center;
+            }
+            
+            #gamescreen {
+               width: 100vw !important;
+               height: 100vh !important;
+            }
+            
+            #sky {
+               height: 88% !important;
+               background-size: auto 100% !important;
+            }
+            
+            #land {
+               height: 12% !important;
+               background-size: auto 100% !important;
+            }
+            
+            #flyarea {
+               height: 75vh !important;
+               bottom: 12vh !important;
+            }
+            
+            /* تكبير الطائر */
+            #player {
+               transform: scale(1.6) !important;
+            }
+            
+            /* تكبير الأنابيب */
+            .pipe {
+               transform: scaleX(1.4) scaleY(1.3) !important;
+            }
+            
+            /* تكبير النقاط */
+            #bigscore {
+               top: 30px !important;
+               left: 50% !important;
+               transform: translateX(-50%) scale(1.8) !important;
+            }
+            
+            #scoreboard {
+               transform: scale(1.2) !important;
+               top: 50% !important;
+               left: 50% !important;
+               margin-left: -130px !important;
+               margin-top: -180px !important;
+            }
+            
+            .back-to-games {
+               padding: 8px 12px;
+               font-size: 12px;
+               top: 5px;
+               left: 5px;
+               z-index: 10002;
+            }
+            
+            #start-message {
+               font-size: 18px;
+               padding: 20px 30px;
+               width: 90%;
+               max-width: 350px;
+            }
+            
+            #lose-message {
+               font-size: 20px;
+               padding: 30px 40px;
+               max-width: 90%;
+            }
+            
+            #lose-message .emoji {
+               font-size: 48px;
+            }
+            
+            #lose-message .btn {
+               font-size: 16px;
+               padding: 12px 30px;
+            }
+            
+            #footer {
+               display: none !important;
+            }
+         }
+         
+         /* للشاشات الصغيرة جداً */
+         @media (max-width: 480px) {
+            #gamecontainer {
+               transform: scale(1.25) !important;
+            }
+            
+            #player {
+               transform: scale(1.8) !important;
+            }
+            
+            .pipe {
+               transform: scaleX(1.5) scaleY(1.4) !important;
+            }
+            
+            #bigscore {
+               transform: translateX(-50%) scale(2.0) !important;
+               top: 25px !important;
+            }
+            
+            #scoreboard {
+               transform: scale(1.3) !important;
+            }
+            
+            #flyarea {
+               height: 78vh !important;
+            }
+         }
+         
+         /* وضع landscape للجوال */
+         @media (max-width: 768px) and (orientation: landscape) {
+            #gamecontainer {
+               height: 100vh !important;
+               transform: scale(1.2) !important;
+            }
+            
+            #sky {
+               height: 85% !important;
+            }
+            
+            #land {
+               height: 15% !important;
+            }
+            
+            #flyarea {
+               height: 80vh !important;
+            }
+            
+            #player {
+               transform: scale(1.7) !important;
+            }
+            
+            .pipe {
+               transform: scaleX(1.5) scaleY(1.4) !important;
+            }
+         }
+      </style>
+      <a href="../games.html" class="back-to-games">
+         ← رجوع للألعاب
+      </a>
+      
+      <!-- رسالة بدء اللعب -->
+      <div id="start-message">
+         <span class="arrow">👇</span>
+         <div>اضغط على الشاشة لبدء اللعب!</div>
+         <div style="font-size: 16px; margin-top: 10px; opacity: 0.8;">انقر في أي مكان أو اضغط SPACE</div>
+      </div>
+      
+      <!-- رسالة الخسارة المضحكة -->
+      <div id="lose-message">
+         <span class="emoji">😂</span>
+         <div class="message">
+            يلا يا خسران!<br>
+            من هنا ليك عين تلعب تاني؟ 🎮
+         </div>
+         <button class="btn" onclick="playAgain()">
+            يلا نلعب تاني! 🚀
+         </button>
+      </div>
+      
+      <div id="gamecontainer">
+         <div id="gamescreen">
+            <div id="sky" class="animated">
+               <div id="flyarea">
+                  <div id="ceiling" class="animated"></div>
+                  <!-- This is the flying and pipe area container -->
+                  <div id="player" class="bird animated"></div>
+
+                  <div id="bigscore"></div>
+
+                  <div id="splash"></div>
+
+                  <div id="scoreboard">
+                     <div id="medal"></div>
+                     <div id="currentscore"></div>
+                     <div id="highscore"></div>
+                     <div id="replay"><img src="assets/replay.png" alt="replay"></div>
+                  </div>
+
+                  <!-- Pipes go here! -->
+               </div>
+            </div>
+            <div id="land" class="animated"><div id="debug"></div></div>
+         </div>
+      </div>
+      <div id="footer">
+         <a href="https://www.dotgears.com/">original game/concept/art by dong nguyen</a>
+         <a href="https://nebezb.com/">recreated by nebez briefkani</a>
+         <a href="https://github.com/nebez/floppybird/">view github project</a>
+      </div>
+      <div class="boundingbox" id="playerbox"></div>
+      <div class="boundingbox" id="pipebox"></div>
+
+      <script src="js/jquery.min.js"></script>
+      <script src="js/jquery.transit.min.js"></script>
+      <script src="js/buzz.min.js"></script>
+      <script src="js/main.js"></script>
+
+      <script>
+      // إخفاء رسالة البدء عند الضغط
+      $(document).ready(function() {
+         $('#start-message').click(function() {
+            $(this).fadeOut(300);
+         });
+         
+         $(document).on('mousedown touchstart keydown', function() {
+            $('#start-message').fadeOut(300);
+         });
+      });
+      
+      // رسائل تحفيزية متنوعة
+      var funnyMessages = [
+         'يلا يا خسران!<br>من هنا ليك عين تلعب تاني؟ 🎮',
+         'إيه ده يا عم! 😂<br>خليك رجل والعب تاني! 💪',
+         'مش كده! 🤦‍♂️<br>يلا ورينا شطارتك! ⭐',
+         'حاول تاني يا بطل! 🏆<br>أنت قدها! 🔥',
+         'ياااه! 😱<br>المرة الجاية هتعملها! 🎯',
+         'لا مش معقول! 😄<br>يلا نلعب بجد المرة دي! 🚀'
+      ];
+      
+      // إظهار رسالة الخسارة المضحكة
+      var originalShowScore = window.showScore;
+      window.showScore = function() {
+         // اختيار رسالة عشوائية
+         var randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+         $('#lose-message .message').html(randomMessage);
+         
+         // إظهار الرسالة المضحكة أولاً
+         $('#lose-message').fadeIn(500);
+         
+         // إخفاءها بعد 2.5 ثانية وإظهار النتيجة
+         setTimeout(function() {
+            $('#lose-message').fadeOut(400, function() {
+               // ثم إظهار شاشة النتيجة الأصلية
+               if(originalShowScore) {
+                  originalShowScore();
+               }
+            });
+         }, 2500);
+      };
+      
+      // دالة اللعب مرة أخرى
+      function playAgain() {
+         $('#lose-message').fadeOut(300);
+         $('#replay').click();
+      }
+      </script>
+
+      <script>
+      function inIframe() {
+          try {
+              return window.self !== window.top;
+          } catch (e) {
+              return true;
+          }
+      }
+      if (!inIframe() && window.location.hostname == 'nebezb.com') {
+         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+         ga('create', 'UA-48047334-1', 'auto');
+         ga('send', 'pageview');
+      }
+      </script>
+      <script async src='https://www.google-analytics.com/analytics.js'></script>
+   </body>
+</html>

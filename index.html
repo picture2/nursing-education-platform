@@ -13,6 +13,30 @@
     
     <meta name="description" content="مركز التمريض والتعليم الطبي - منصة تعليمية متطورة للتمريض والعلوم الطبية">
     <meta name="keywords" content="تمريض,تعليم طبي,تشريح,أدوية,طوارئ,مركز تعليمي">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="apple-touch-icon" href="/images/favicon.svg">
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nursing-education-platform-production.up.railway.app">
+    <meta property="og:title" content="مركز التمريض - منصة التعليم الطبي">
+    <meta property="og:description" content="منصة تعليمية متطورة للتمريض والعلوم الطبية - تشريح، أدوية، طوارئ، وأكثر">
+    <meta property="og:image" content="https://nursing-education-platform-production.up.railway.app/images/preview.svg">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="مركز التمريض - منصة التعليم الطبي">
+    <meta property="og:site_name" content="مركز التمريض">
+    <meta property="og:locale" content="ar_AR">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مركز التمريض - منصة التعليم الطبي">
+    <meta name="twitter:description" content="منصة تعليمية متطورة للتمريض والعلوم الطبية">
+    <meta name="twitter:image" content="/images/preview.svg">
+    
     <link rel="stylesheet" href="style.css" />
     <script src="device-fingerprint.js"></script>
 
@@ -442,6 +466,46 @@
     <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin.min.js?r=182'></script>
 
     <script>
+        // التحقق من Session موجودة
+        function checkExistingSession() {
+            try {
+                const userSession = localStorage.getItem('userSession');
+                const currentUser = localStorage.getItem('currentUser');
+                
+                if (userSession && currentUser) {
+                    const session = JSON.parse(userSession);
+                    const user = JSON.parse(currentUser);
+                    
+                    // التحقق من صلاحية الـ session
+                    if (session.sessionExpiry) {
+                        const expiryDate = new Date(session.sessionExpiry);
+                        const now = new Date();
+                        
+                        if (now < expiryDate && session.rememberMe) {
+                            console.log('✅ Session صالحة - إعادة توجيه للـ Dashboard');
+                            // Session صالحة - الانتقال للـ dashboard
+                            window.location.href = 'dashboard.html';
+                            return true;
+                        } else {
+                            console.log('⏰ Session منتهية - حذف البيانات');
+                            // Session منتهية
+                            localStorage.removeItem('userSession');
+                            localStorage.removeItem('currentUser');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في التحقق من الـ session:', error);
+            }
+            return false;
+        }
+        
+        // التحقق عند تحميل الصفحة
+        if (checkExistingSession()) {
+            // إذا كانت الـ session صالحة، لا داعي لتحميل باقي الكود
+            document.body.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 24px; font-family: Arial;"><i class="fas fa-spinner fa-spin" style="margin-left: 10px;"></i> جاري تحميل لوحة التحكم...</div>';
+        }
+        
         // Enhanced variables for new features
         var emailLabel = document.querySelector('#loginEmailLabel'),
             email = document.querySelector('#loginEmail'),
@@ -1369,14 +1433,22 @@
                 // دخول مباشر للإدارة بدون تحقق من صحة البريد الإلكتروني
                 setTimeout(() => {
                     hideLoading();
-                    // Save admin session in BOTH places (with lowercase email for compatibility)
+                    console.log('Admin login successful!');
+                    // Save admin data مع session طويلة (30 يوم)
+                    const sessionExpiry = new Date();
+                    sessionExpiry.setDate(sessionExpiry.getDate() + 30);
+                    
                     const adminData = {
-                        name: 'أحمد',
-                        email: 'ahmed@0100', // حفظ بأحرف صغيرة
-                        loginTime: new Date().toISOString()
+                        name: 'المشرف',
+                        email: cleanEmail,
+                        isAdmin: true,
+                        loginTime: new Date().toISOString(),
+                        sessionExpiry: sessionExpiry.toISOString(),
+                        rememberMe: true
                     };
                     localStorage.setItem('currentUser', JSON.stringify(adminData));
                     localStorage.setItem('adminUser', JSON.stringify(adminData));
+                    localStorage.setItem('userSession', JSON.stringify(adminData));
 
                     console.log('Admin data saved:', adminData);
 
@@ -1436,12 +1508,20 @@
                         hideLoading();
 
                         if (data.success) {
-                            // تسجيل دخول ناجح
-                            localStorage.setItem('currentUser', JSON.stringify({
+                            // تسجيل دخول ناجح مع session طويلة (30 يوم)
+                            const sessionExpiry = new Date();
+                            sessionExpiry.setDate(sessionExpiry.getDate() + 30); // 30 يوم
+                            
+                            const userData = {
                                 name: data.data.name,
                                 email: data.data.email,
-                                loginTime: new Date().toISOString()
-                            }));
+                                loginTime: new Date().toISOString(),
+                                sessionExpiry: sessionExpiry.toISOString(),
+                                rememberMe: true
+                            };
+                            
+                            localStorage.setItem('currentUser', JSON.stringify(userData));
+                            localStorage.setItem('userSession', JSON.stringify(userData));
 
                             showSuccess();
                             playSound('success');

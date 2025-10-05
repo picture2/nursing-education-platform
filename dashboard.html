@@ -316,6 +316,9 @@
                 <button class="logout-btn" onclick="window.location.href='nursing-hub.html'" style="background: linear-gradient(135deg, #10b981, #059669);">
                     <i class="fas fa-graduation-cap"></i> مركز المعرفة التمريضية
                 </button>
+                <button class="logout-btn" onclick="window.location.href='games.html'" style="background: linear-gradient(135deg, #ff6b9d, #c94b85);">
+                    <i class="fas fa-gamepad"></i> ألعاب تعليمية
+                </button>
                 <button class="logout-btn" id="adminPanelBtn" onclick="window.location.href='admin-backend.html'" style="background: linear-gradient(135deg, #ffa500, #ff8c00); display: none;">
                     <i class="fas fa-crown"></i> لوحة الإدارة
                 </button>
@@ -399,6 +402,31 @@
             console.log('✅ تم التحديث!');
         }
 
+        // تجديد الـ session
+        function renewSession() {
+            try {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    
+                    // تجديد تاريخ انتهاء الـ session لـ 30 يوم من الآن
+                    const newExpiry = new Date();
+                    newExpiry.setDate(newExpiry.getDate() + 30);
+                    
+                    user.sessionExpiry = newExpiry.toISOString();
+                    user.rememberMe = true;
+                    user.lastActivity = new Date().toISOString();
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('userSession', JSON.stringify(user));
+                    
+                    console.log('✅ تم تجديد الـ session لـ 30 يوم');
+                }
+            } catch (error) {
+                console.error('خطأ في تجديد الـ session:', error);
+            }
+        }
+        
         // تهيئة الصفحة
         async function initDashboard() {
             // التحقق من تسجيل الدخول
@@ -407,6 +435,9 @@
                 window.location.href = 'index.html';
                 return;
             }
+            
+            // تجديد الـ session عند كل زيارة
+            renewSession();
 
             currentUser = JSON.parse(user);
             checkAdminPermissions();
@@ -696,8 +727,18 @@
         // تسجيل الخروج
         function logout() {
             if (confirm('هل تريد تسجيل الخروج؟')) {
+                // حذف كل بيانات الـ session
                 localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
+                localStorage.removeItem('userSession');
+                localStorage.removeItem('adminUser');
+                sessionStorage.clear();
+                
+                // إظهار رسالة
+                showToast('تم تسجيل الخروج بنجاح', 'info');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
             }
         }
 

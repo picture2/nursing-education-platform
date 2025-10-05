@@ -444,6 +444,25 @@
             }
         };
 
+        // تجديد الـ session
+        function renewSession() {
+            try {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    const newExpiry = new Date();
+                    newExpiry.setDate(newExpiry.getDate() + 30);
+                    user.sessionExpiry = newExpiry.toISOString();
+                    user.rememberMe = true;
+                    user.lastActivity = new Date().toISOString();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('userSession', JSON.stringify(user));
+                }
+            } catch (error) {
+                console.error('خطأ في تجديد الـ session:', error);
+            }
+        }
+        
         // تهيئة الصفحة
         function initProfile() {
             // التحقق من تسجيل الدخول
@@ -452,6 +471,9 @@
                 window.location.href = 'index.html';
                 return;
             }
+            
+            // تجديد الـ session
+            renewSession();
 
             currentUser = JSON.parse(userStr);
             loadUserData();
